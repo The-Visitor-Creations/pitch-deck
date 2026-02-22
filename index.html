@@ -377,6 +377,16 @@
     transform: translateY(-1px);
   }
 
+  /* Button icon scaling */
+  .btn-icon {
+    font-size: 1.3em;
+    line-height: 1;
+    vertical-align: middle;
+  }
+  .download-btn .btn-icon {
+    font-size: 1.2em;
+  }
+
   /* ═══════════════════════════════════════════════ */
   /* ARROW NAV CONTROLS                              */
   /* ═══════════════════════════════════════════════ */
@@ -846,6 +856,7 @@
     border-radius: 8px;
     padding: 20px;
     transition: border-color 0.2s;
+    min-width: 0;
   }
   .metric-card:hover { border-color: var(--accent-blue); }
   .metric-card-label {
@@ -863,6 +874,26 @@
     color: var(--text-primary);
   }
   .metric-card-value.accent { color: var(--accent-gold); }
+
+  /* 5-column metric grid variant */
+  .metric-grid-5col {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    margin: 28px 0;
+  }
+  .metric-grid-5col .metric-card-value { font-size: 20px; }
+  @media (max-width: 900px) {
+    .metric-grid-5col { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  }
+  @media (max-width: 600px) {
+    .metric-grid-5col { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .metric-grid-5col .metric-card { padding: 14px; }
+    .metric-grid-5col .metric-card-value { font-size: 18px; }
+  }
+  @media (max-width: 375px) {
+    .metric-grid-5col { grid-template-columns: 1fr; }
+  }
 
   /* ═══════════════════════════════════════════════ */
   /* BULLET LISTS                                    */
@@ -959,24 +990,25 @@
   .timeline-phase {
     padding: 0 16px 20px;
     position: relative;
-    background: rgba(255,255,255,0.05);
+    background: rgba(18,16,14,0.75);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
     border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     transition: border-color 0.3s ease, transform 0.3s ease;
   }
   .timeline-phase:hover {
-    border-color: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.28);
     transform: translateY(-2px);
   }
   .timeline-phase.completed {
-    border-color: rgba(24,74,99,0.35);
+    border-color: rgba(24,74,99,0.45);
   }
   .timeline-phase.active {
-    border-color: rgba(205,170,136,0.4);
-    background: rgba(205,170,136,0.08);
-    box-shadow: 0 0 24px rgba(205,170,136,0.12), inset 0 1px 0 rgba(255,255,255,0.1);
+    border-color: rgba(205,170,136,0.5);
+    background: rgba(18,16,14,0.8);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 24px rgba(205,170,136,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
   }
   .timeline-dot {
     width: 18px;
@@ -1017,7 +1049,7 @@
   }
   .timeline-items li {
     font-size: 13px;
-    color: rgba(255,255,255,0.75);
+    color: rgba(255,255,255,0.88);
     padding: 5px 0;
     padding-left: 16px;
     position: relative;
@@ -2157,6 +2189,7 @@
     .timeline { grid-template-columns: 1fr; }
     .contact-row { grid-template-columns: 1fr; }
     .contact-cta { flex: 1; }
+    .contact-cta-btn { font-size: 14px; padding: 14px 28px; }
     .slide-nav-arrows { bottom: 14px; right: 10px; gap: 4px; }
     .slide-nav-arrows button { width: 34px; height: 34px; font-size: 14px; }
     .slide-counter { display: none; }
@@ -2308,7 +2341,7 @@
     <div class="nav-jump-links">
       <a href="#slide-10">&#9656; Financials</a>
     </div>
-    <a href="#" class="download-btn" id="download-pdf-btn">&#8615; Download PDF</a>
+    <a href="#" class="download-btn" id="download-pdf-btn"><span class="btn-icon">&#8615;</span> Download PDF</a>
   </div>
 </header>
 
@@ -2977,7 +3010,7 @@
     <p>The Company&rsquo;s Pre-Feasibility Study confirms compelling project economics with strong margins, an attractive return profile, and a rapid payback period.</p>
 
     <!-- Financial KPI Hero Metrics -->
-    <div class="metric-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:32px;">
+    <div class="metric-grid-5col" style="margin-bottom:32px;">
       <div class="metric-card" style="text-align:center; border-top: 3px solid #9E1B32;">
         <div class="metric-card-label">After-Tax NPV&#8328;</div>
         <div class="metric-card-value accent">US$4.8 B</div>
@@ -3345,7 +3378,7 @@
     </ul>
 
     <h4 style="margin-top:32px;">Upcoming Catalysts (12&ndash;18 Months)</h4>
-    <div class="metric-grid" style="grid-template-columns: repeat(5, 1fr);">
+    <div class="metric-grid-5col">
       <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-teal);">
         <div class="metric-card-label">H1 2026</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Feasibility Study Results</p>
@@ -3386,7 +3419,7 @@
       </div>
       <div class="contact-cta">
         <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Ready to learn more?</p>
-        <a href="mailto:investor@boetmaterials.com" class="contact-cta-btn">&#9993; Contact Us</a>
+        <a href="mailto:investor@boetmaterials.com" class="contact-cta-btn"><span class="btn-icon">&#9993;</span> Contact Us</a>
         <p style="font-size:11px; color:var(--text-muted); margin-top:16px;">investor@boetmaterials.com<br>+1 (403) 555-0172</p>
       </div>
     </div>
