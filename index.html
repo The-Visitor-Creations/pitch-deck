@@ -693,15 +693,21 @@
     letter-spacing: 1px;
   }
   .ticker-badge {
-    display: inline-block;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 0;
     margin-top: 16px;
     padding: 8px 20px;
     border: 1px solid rgba(255,255,255,0.5);
     border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
+    font-size: clamp(10px, 2.2vw, 13px);
     color: #fff;
     letter-spacing: 1.5px;
+    max-width: 90vw;
+    text-align: center;
+    word-break: break-word;
   }
 
   /* Stock tracker placeholder */
@@ -871,9 +877,12 @@
   }
   .metric-card-value {
     font-family: 'Outfit', sans-serif;
-    font-size: 26px;
+    font-size: clamp(18px, 2.8vw, 26px);
     font-weight: 800;
     color: var(--text-primary);
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.2;
   }
   .metric-card-value.accent { color: var(--accent-gold); }
 
@@ -884,14 +893,15 @@
     gap: 24px;
     margin: 28px 0;
   }
-  .metric-grid-5col .metric-card-value { font-size: 20px; }
+  .metric-grid-5col .metric-card-value { font-size: clamp(16px, 2vw, 20px); }
   @media (max-width: 900px) {
     .metric-grid-5col { grid-template-columns: repeat(3, 1fr); gap: 16px; }
   }
   @media (max-width: 600px) {
-    .metric-grid-5col { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .metric-grid-5col .metric-card { padding: 14px; }
-    .metric-grid-5col .metric-card-value { font-size: 18px; }
+    .metric-grid-5col { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .metric-grid-5col .metric-card { padding: 12px 10px; }
+    .metric-grid-5col .metric-card-value { font-size: 16px; }
+    .metric-grid-5col .metric-card-label { font-size: 9px; letter-spacing: 1px; }
   }
   @media (max-width: 375px) {
     .metric-grid-5col { grid-template-columns: 1fr; }
@@ -2273,6 +2283,43 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* ═══ PIE CHART LAYOUT ═══ */
+  .pie-layout {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  @media (max-width: 600px) {
+    .pie-layout {
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .pie-layout svg { width: 150px; height: 150px; }
+  }
+
+  /* ═══ STAGGER SCROLL ANIMATIONS ═══ */
+  /* Cards, team cards, thesis cards, bullet items, blockquotes, tables */
+  .scroll-fade {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .scroll-fade.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Scale-up variant for cards */
+  .scroll-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .scroll-scale.in-view {
+    opacity: 1;
+    transform: scale(1);
+  }
 </style>
 </head>
 <body class="splash-active">
@@ -2544,8 +2591,8 @@
     <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:28px; margin:28px 0;">
       <h4 style="margin-bottom:4px; color:#FAF9F6;">Lithium Carbonate Price History (US$/t)</h4>
       <p style="font-size:12px; color:#FAF9F6; opacity:0.6; margin-bottom:20px;">Battery-grade, annual average &mdash; 2018 to 2026 YTD</p>
-      <div style="position:relative; height:240px; margin-bottom:8px;">
-        <svg id="price-line-chart" viewBox="0 0 800 240" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;">
+      <div style="position:relative; aspect-ratio:800/280; min-height:180px; margin-bottom:8px;">
+        <svg id="price-line-chart" viewBox="0 0 800 240" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%; overflow:visible;">
           <!-- Grid lines + line drawn by JS -->
         </svg>
         <div id="price-hover-dot" style="position:absolute; width:12px; height:12px; border-radius:50%; background:#9E1B32; border:2px solid #FAF9F6; display:none; pointer-events:none; transform:translate(-50%,-50%); z-index:5; box-shadow:0 0 10px rgba(158,27,50,0.5);"></div>
@@ -3085,7 +3132,7 @@
       <!-- ═══ INTERACTIVE COST STRUCTURE PIE CHART ═══ -->
       <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
         <h4 style="margin-bottom:16px; color:#184A63;">Cost Structure Breakdown</h4>
-        <div style="display:flex; align-items:center; gap:24px;">
+        <div class="pie-layout">
           <svg id="cost-pie" viewBox="0 0 200 200" width="180" height="180" style="flex-shrink:0;">
             <!-- Pie slices injected by JS -->
           </svg>
@@ -3098,7 +3145,7 @@
       <!-- ═══ INTERACTIVE LIABILITIES PIE CHART ═══ -->
       <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
         <h4 style="margin-bottom:16px; color:#184A63;">Liabilities Breakdown</h4>
-        <div style="display:flex; align-items:center; gap:24px;">
+        <div class="pie-layout">
           <svg id="liab-pie" viewBox="0 0 200 200" width="180" height="180" style="flex-shrink:0;">
           </svg>
           <div id="liab-legend" style="font-size:12px; line-height:2.2; color:#333;">
@@ -3796,16 +3843,28 @@
       path.setAttribute('fill', d.color);
       path.style.cssText = 'cursor:pointer; transition:transform 0.2s, opacity 0.2s; transform-origin:' + cx + 'px ' + cy + 'px;';
 
-      path.addEventListener('mouseenter', function() {
+      function highlightSlice() {
+        // Reset all slices in this pie
+        svg.querySelectorAll('path').forEach(function(p) {
+          p.style.transform = '';
+          p.style.opacity = '';
+        });
         path.style.transform = 'scale(1.06)';
         path.style.opacity = '0.85';
         tooltip.textContent = d.label + ': ' + d.pct + '% ($' + d.value + 'M)';
-      });
-      path.addEventListener('mouseleave', function() {
+      }
+      function unhighlightSlice() {
         path.style.transform = '';
         path.style.opacity = '';
         tooltip.innerHTML = '&nbsp;';
-      });
+      }
+
+      path.addEventListener('mouseenter', highlightSlice);
+      path.addEventListener('mouseleave', unhighlightSlice);
+      path.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        highlightSlice();
+      }, { passive: false });
 
       svg.appendChild(path);
       angle += sliceAngle;
@@ -3814,16 +3873,12 @@
       var item = document.createElement('div');
       item.style.cssText = 'display:flex; align-items:center; gap:8px; cursor:pointer;';
       item.innerHTML = '<span style="width:10px;height:10px;border-radius:2px;background:' + d.color + ';display:inline-block;flex-shrink:0;"></span><span style="color:#555;">' + d.label + ' <strong style="color:#111;">' + d.pct + '%</strong></span>';
-      item.addEventListener('mouseenter', function() {
-        path.style.transform = 'scale(1.06)';
-        path.style.opacity = '0.85';
-        tooltip.textContent = d.label + ': ' + d.pct + '% ($' + d.value + 'M)';
-      });
-      item.addEventListener('mouseleave', function() {
-        path.style.transform = '';
-        path.style.opacity = '';
-        tooltip.innerHTML = '&nbsp;';
-      });
+      item.addEventListener('mouseenter', highlightSlice);
+      item.addEventListener('mouseleave', unhighlightSlice);
+      item.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        highlightSlice();
+      }, { passive: false });
       legend.appendChild(item);
     });
   }
@@ -3985,15 +4040,19 @@
   line.setAttribute('stroke-linejoin', 'round');
   priceSvg.appendChild(line);
 
-  // Data point dots — rendered as HTML elements to avoid SVG stretching
-  var chartContainer = priceSvg.parentElement;
+  // Data point dots — rendered as SVG circles (preserveAspectRatio="meet" keeps them round)
   points.forEach(function(p) {
-    var dot = document.createElement('div');
-    dot.style.cssText = 'position:absolute; width:10px; height:10px; border-radius:50%; background:#9E1B32; border:2px solid #FAF9F6; transform:translate(-50%,-50%); pointer-events:none; z-index:4;';
-    dot.style.left = ((p.x / svgW) * 100) + '%';
-    dot.style.top = ((p.y / svgH) * 100) + '%';
-    chartContainer.appendChild(dot);
+    var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', p.x);
+    circle.setAttribute('cy', p.y);
+    circle.setAttribute('r', 5);
+    circle.setAttribute('fill', '#9E1B32');
+    circle.setAttribute('stroke', '#FAF9F6');
+    circle.setAttribute('stroke-width', '2');
+    circle.style.pointerEvents = 'none';
+    priceSvg.appendChild(circle);
   });
+  var chartContainer = priceSvg.parentElement;
 
   // Year labels
   priceData.forEach(function(d) {
@@ -4011,17 +4070,22 @@
     }
   });
 
-  // Hover interaction
+  // Hover interaction — SVG uses preserveAspectRatio="meet", so map via SVG CTM
   chartContainer.style.cursor = 'crosshair';
   function showPricePoint(clientX, rect) {
     var mx = clientX - rect.left;
-    var ratio = mx / rect.width;
-    var idx = Math.round(ratio * (points.length - 1));
+    var svgRect = priceSvg.getBoundingClientRect();
+    var scaleX = svgRect.width / svgW;
+    var scaleY = svgRect.height / svgH;
+    var offsetX = svgRect.left - rect.left;
+    var offsetY = svgRect.top - rect.top;
+    var localX = (mx - offsetX) / scaleX;
+    var idx = Math.round((localX / svgW) * (points.length - 1));
     if (idx < 0) idx = 0;
     if (idx >= points.length) idx = points.length - 1;
     var p = points[idx];
-    var dotX = (p.x / svgW) * rect.width;
-    var dotY = (p.y / svgH) * rect.height;
+    var dotX = offsetX + p.x * scaleX;
+    var dotY = offsetY + p.y * scaleY;
     priceDot.style.display = 'block';
     priceDot.style.left = dotX + 'px';
     priceDot.style.top = dotY + 'px';
@@ -4147,6 +4211,36 @@
               dot.style.transform = 'scale(1)';
             }, 50);
           });
+
+          // Stagger metric-card, team-card, thesis-card scale-in
+          var cards = entry.target.querySelectorAll('.metric-card:not(.sa-done), .team-card:not(.sa-done), .thesis-card:not(.sa-done), .esg-pillar:not(.sa-done)');
+          cards.forEach(function(card, ci) {
+            card.classList.add('sa-done', 'scroll-scale');
+            card.style.transitionDelay = (ci * 80) + 'ms';
+            setTimeout(function() { card.classList.add('in-view'); }, 30);
+          });
+
+          // Stagger bullet-list items fade-in
+          var bullets = entry.target.querySelectorAll('.bullet-list li:not(.sa-done)');
+          bullets.forEach(function(li, bi) {
+            li.classList.add('sa-done', 'scroll-fade');
+            li.style.transitionDelay = (bi * 60) + 'ms';
+            setTimeout(function() { li.classList.add('in-view'); }, 30);
+          });
+
+          // Blockquotes slide-in
+          var quotes = entry.target.querySelectorAll('blockquote:not(.sa-done)');
+          quotes.forEach(function(q) {
+            q.classList.add('sa-done', 'scroll-fade');
+            setTimeout(function() { q.classList.add('in-view'); }, 100);
+          });
+
+          // Data tables fade-in
+          var tables = entry.target.querySelectorAll('.data-table:not(.sa-done), .comparison-table:not(.sa-done), .board-table:not(.sa-done)');
+          tables.forEach(function(t) {
+            t.classList.add('sa-done', 'scroll-fade');
+            setTimeout(function() { t.classList.add('in-view'); }, 150);
+          });
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
@@ -4244,6 +4338,22 @@
   var askAmounts = document.querySelectorAll('.ask-amount');
   askAmounts.forEach(function(el) {
     if (/\d/.test(el.textContent)) {
+      buildCountup(el);
+    }
+  });
+
+  // Build count-up for ESG big numbers
+  var esgBigs = document.querySelectorAll('.esg-metric-big');
+  esgBigs.forEach(function(el) {
+    if (/\d/.test(el.textContent)) {
+      buildCountup(el);
+    }
+  });
+
+  // Build count-up for highlight-row last-td values in data tables
+  var highlightCells = document.querySelectorAll('.highlight-row td:last-child');
+  highlightCells.forEach(function(el) {
+    if (/\d/.test(el.textContent) && el.textContent.trim().length < 20) {
       buildCountup(el);
     }
   });
