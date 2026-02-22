@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /api/
-Disallow: /print
-
-Sitemap: https://craigmore.citracapital.ca/sitemap.xml
