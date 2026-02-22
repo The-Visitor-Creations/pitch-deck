@@ -1883,10 +1883,12 @@
   .esg-bar-fill {
     height: 100%;
     border-radius: 3px;
-    width: 0 !important;
-    transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: var(--bar-width);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  .visible .esg-bar-fill { width: var(--bar-width) !important; }
+  /* Animation driven by JS IntersectionObserver — sets inline transform: scaleX(1) */
   .esg-bar-labels {
     display: flex;
     justify-content: space-between;
@@ -1927,10 +1929,12 @@
     height: 100%;
     background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold));
     border-radius: 2px;
-    width: 0 !important;
-    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: var(--bar-width);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  .visible .tg-progress { width: var(--bar-width) !important; }
+  /* Animation driven by JS IntersectionObserver — sets inline transform: scaleX(1) */
   .tg-nodes {
     display: flex;
     justify-content: space-between;
@@ -2607,7 +2611,7 @@
     <p>Boet has developed and validated a proprietary advanced extraction process that delivers significant advantages over conventional methods &mdash; combining in-house technical innovation with proven third-party components for a low-risk, high-performance commercial solution.</p>
 
     <h4>Technology Advantages</h4>
-    <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:24px; box-shadow:0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);">
+    <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:24px; box-shadow:0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08); overflow-x:auto;">
     <table class="comparison-table" style="margin:0;">
       <thead>
         <tr><th style="color:#f2ede8; background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.1);">Feature</th><th style="color:#CDAA88; background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.1);">Boet Process</th><th style="color:#9a8e80; background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.1);">Conventional Methods</th></tr>
@@ -2624,7 +2628,7 @@
     </div>
 
     <h4>How It Works</h4>
-    <div class="metric-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="metric-grid">
       <div class="metric-card" style="border-top: 3px solid var(--accent-blue);">
         <div class="metric-card-label">Step 1</div>
         <h3 style="font-size:14px;">Extraction</h3>
@@ -4108,6 +4112,14 @@
           esgBars.forEach(function(bar, i) {
             bar.classList.add('bar-animated');
             bar.style.transitionDelay = (i * 200) + 'ms';
+            setTimeout(function() { bar.style.transform = 'scaleX(1)'; }, 50);
+          });
+
+          // Animate TG progress bar
+          var tgBars = entry.target.querySelectorAll('.tg-progress:not(.bar-animated)');
+          tgBars.forEach(function(bar) {
+            bar.classList.add('bar-animated');
+            setTimeout(function() { bar.style.transform = 'scaleX(1)'; }, 50);
           });
 
           // Stagger timeline phase card animations
