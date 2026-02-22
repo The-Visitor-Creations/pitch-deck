@@ -699,7 +699,7 @@
   }
   .ticker-badge {
     display: inline-flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     gap: 2px 0;
     margin-top: 16px;
@@ -707,12 +707,12 @@
     border: 1px solid rgba(255,255,255,0.5);
     border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(10px, 2.2vw, 13px);
+    font-size: clamp(9px, 2.2vw, 13px);
     color: #fff;
     letter-spacing: 1.5px;
-    max-width: 90vw;
+    max-width: 95vw;
     text-align: center;
-    word-break: break-word;
+    white-space: nowrap;
   }
 
   /* Stock tracker placeholder */
@@ -1233,6 +1233,7 @@
     text-align: center;
     gap: 16px;
     transition: border-color 0.2s;
+    position: relative;
   }
   .team-card .team-info {
     display: flex;
@@ -1241,8 +1242,10 @@
     flex: 1;
   }
   .team-card .team-linkedin {
-    margin-top: auto;
-    align-self: center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    margin-top: 0;
   }
   .team-card:hover { border-color: var(--accent-blue); }
   .team-photo {
@@ -1282,27 +1285,24 @@
   .team-linkedin {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    margin-top: 10px;
-    padding: 5px 14px;
+    justify-content: center;
+    padding: 6px;
     border-radius: 6px;
-    background: rgba(10, 102, 194, 0.12);
-    border: 1px solid rgba(10, 102, 194, 0.25);
-    color: #0a66c2;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 0;
     text-decoration: none;
     transition: background 0.2s, border-color 0.2s;
   }
   .team-linkedin:hover {
-    background: rgba(10, 102, 194, 0.22);
-    border-color: rgba(10, 102, 194, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
   }
   .team-linkedin svg {
-    width: 14px;
-    height: 14px;
-    fill: currentColor;
+    width: 16px;
+    height: 16px;
+    fill: #fff;
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -1323,7 +1323,11 @@
     border-radius: 10px;
     padding: 28px;
     border-top: 3px solid var(--accent-teal);
+    display: flex;
+    flex-direction: column;
   }
+  .esg-pillar .bullet-list { flex: 1; }
+  .esg-pillar .bullet-list li { padding: 6px 0 6px 18px; }
   .esg-pillar.social { border-top-color: var(--accent-blue); }
   .esg-pillar.governance { border-top-color: var(--accent-gold); }
   .esg-pillar h4 { margin-bottom: 16px; }
@@ -2318,7 +2322,7 @@
     .splash-logo .splash-sub { font-size: 8px; letter-spacing: 3px; }
     .splash-price-spacer { height: 24px; }
     .ask-amount { font-size: 28px; }
-    .ticker-badge { font-size: 11px; padding: 6px 14px; }
+    .ticker-badge { font-size: 9px; padding: 6px 10px; letter-spacing: 1px; }
     .stock-metrics { flex-direction: column; gap: 12px; }
     .board-table { font-size: 11px; }
     .board-table th, .board-table td { padding: 8px 8px; }
@@ -2490,6 +2494,101 @@
     .pie-layout > div { font-size: 10px; }
   }
 
+  /* ═══ STEP CARD HIGHLIGHT ON SELECT ═══ */
+  .step-card {
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .step-card.step-active {
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+    transform: translateY(-3px);
+  }
+
+  /* ═══ CATALYST BUTTONS ═══ */
+  .catalyst-btn {
+    display: block;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .catalyst-btn:hover, .catalyst-btn:active {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    border-color: var(--accent-gold);
+  }
+
+  /* ═══ PHONE COLOR ON MOBILE ═══ */
+  .contact-phone { color: inherit; }
+  @media (max-width: 900px) {
+    .contact-phone { color: var(--accent-blue); }
+  }
+
+  /* ═══ TIMELINE GRAPHIC — MORE DOT/BAR SPACING ═══ */
+  .tg-node { gap: 18px; }
+  .tg-node-dot { margin-bottom: 8px; }
+
+  /* ═══ TIMELINE GRAPHIC — VERTICAL ON MOBILE ═══ */
+  @media (max-width: 600px) {
+    .timeline-graphic { padding: 28px 20px 20px; }
+    .tg-track {
+      position: relative;
+      top: auto; left: auto; right: auto;
+      width: 4px;
+      height: auto;
+      margin: 0 auto 0 24px;
+    }
+    .tg-nodes {
+      flex-direction: column;
+      gap: 0;
+    }
+    .tg-node {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      gap: 16px;
+      padding: 14px 0;
+    }
+    .tg-node-dot { margin-bottom: 0; margin-left: -32px; }
+    .tg-node-year { margin-top: 0; font-size: 12px; min-width: 60px; }
+    .tg-node-label { max-width: none; font-size: 12px; }
+    .tg-legend { flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  }
+
+  /* ═══ PHASE CARDS — 2-COL STACK ═══ */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 28px 0;
+  }
+  @media (max-width: 1100px) {
+    .timeline { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .timeline { grid-template-columns: 1fr; }
+  }
+
+  /* ═══ PIE CHART LEGEND LAYOUT IMPROVEMENTS ═══ */
+  .pie-layout > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    line-height: 1.8;
+  }
+
+  /* ═══ ESG METRIC PANELS — SLIDE-UP ANIMATION ═══ */
+  .esg-metric-panel {
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  /* ═══ INVESTMENT THESIS CARD SCROLL ANIMATIONS ═══ */
+  .thesis-card {
+    transition: border-color 0.25s ease, transform 0.25s ease, opacity 0.5s ease;
+  }
+
+  /* ═══ STICKY FOOTER — ALWAYS VISIBLE AT BOTTOM ═══ */
+  .sticky-promo {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
   /* ═══ STAGGER SCROLL ANIMATIONS ═══ */
   /* Cards, team cards, thesis cards, bullet items, blockquotes, tables */
   .scroll-fade {
@@ -2537,8 +2636,8 @@
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <a href="https://www.boetmaterials.com" style="display:flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:14px; padding:8px 12px; border-radius:6px; background:rgba(158,27,50,0.08); border:1px solid rgba(158,27,50,0.15); transition:all 0.2s;" onmouseover="this.style.background='rgba(158,27,50,0.16)'" onmouseout="this.style.background='rgba(158,27,50,0.08)'">
-      <span style="font-size:16px; color:var(--accent-blue);">&#8962;</span>
-      <span style="font-size:12px; font-weight:700; color:var(--text-primary); letter-spacing:1px; text-transform:uppercase;">Home</span>
+      <span style="font-size:22px; color:var(--accent-blue); line-height:1; display:flex; align-items:center;">&#8962;</span>
+      <span style="font-size:12px; font-weight:700; color:var(--text-primary); letter-spacing:1px; text-transform:uppercase; line-height:1;">HOME</span>
     </a>
     <div class="sidebar-logo">Boet <span>Materials</span></div>
     <div class="sidebar-tickers">TSXV: <span>AUM</span></div>
@@ -2758,7 +2857,7 @@
 
     <!-- ═══ INTERACTIVE: Global Lithium Demand Forecast ═══ -->
     <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:28px; margin:28px 0;">
-      <h4 style="margin-bottom:4px; color:#FAF9F6;">Global Lithium Demand Forecast (kt LCE)</h4>
+      <h4 style="margin-bottom:4px; color:#FAF9F6; white-space:nowrap; font-size:clamp(10px, 3vw, 14px);">Global Lithium Demand Forecast (kt LCE)</h4>
       <p style="font-size:12px; color:#FAF9F6; opacity:0.6; margin-bottom:20px;">By end-use segment &mdash; IEA Stated Policies Scenario</p>
       <div id="demand-chart" style="display:flex; align-items:flex-end; gap:6px; height:240px; padding:0 4px; border-bottom:1px solid rgba(250,249,246,0.15); position:relative;">
         <!-- Y-axis labels -->
@@ -2780,7 +2879,7 @@
 
     <!-- ═══ INTERACTIVE: Lithium Carbonate Price History ═══ -->
     <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:28px; margin:28px 0;">
-      <h4 style="margin-bottom:4px; color:#FAF9F6;">Lithium Carbonate Price History (US$/t)</h4>
+      <h4 style="margin-bottom:4px; color:#FAF9F6; white-space:nowrap; font-size:clamp(10px, 3vw, 14px);">Lithium Carbonate Price History (US$/t)</h4>
       <p style="font-size:12px; color:#FAF9F6; opacity:0.6; margin-bottom:20px;">Battery-grade, annual average &mdash; 2018 to 2026 YTD</p>
       <div style="position:relative; aspect-ratio:800/280; min-height:120px; max-width:100%; margin-bottom:8px;">
         <svg id="price-line-chart" viewBox="0 0 800 240" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%; overflow:visible;">
@@ -2865,24 +2964,24 @@
     </table>
     </div>
 
-    <h4>How It Works</h4>
-    <div class="metric-grid">
-      <div class="metric-card" style="border-top: 3px solid var(--accent-blue);">
+    <h4 style="margin-top:36px;">How It Works</h4>
+    <div class="metric-grid how-it-works-grid">
+      <div class="metric-card step-card" style="border-top: 3px solid var(--accent-blue); cursor:pointer;" tabindex="0">
         <div class="metric-card-label">Step 1</div>
         <h3 style="font-size:14px;">Extraction</h3>
         <p style="font-size:12px; margin:0;">Proprietary sorbent-based technology selectively isolates target compounds</p>
       </div>
-      <div class="metric-card" style="border-top: 3px solid var(--accent-blue);">
+      <div class="metric-card step-card" style="border-top: 3px solid var(--accent-blue); cursor:pointer;" tabindex="0">
         <div class="metric-card-label">Step 2</div>
         <h3 style="font-size:14px;">Purification</h3>
         <p style="font-size:12px; margin:0;">Multi-stage purification delivers high-purity intermediate product</p>
       </div>
-      <div class="metric-card" style="border-top: 3px solid var(--accent-teal);">
+      <div class="metric-card step-card" style="border-top: 3px solid var(--accent-teal); cursor:pointer;" tabindex="0">
         <div class="metric-card-label">Step 3</div>
         <h3 style="font-size:14px;">Conversion</h3>
         <p style="font-size:12px; margin:0;">Final processing produces battery-grade or industrial-grade end product</p>
       </div>
-      <div class="metric-card" style="border-top: 3px solid var(--accent-teal);">
+      <div class="metric-card step-card" style="border-top: 3px solid var(--accent-teal); cursor:pointer;" tabindex="0">
         <div class="metric-card-label">Step 4</div>
         <h3 style="font-size:14px;">Recycling</h3>
         <p style="font-size:12px; margin:0;">Closed-loop system minimizes waste and water consumption</p>
@@ -3056,6 +3155,7 @@
           <li><strong>Local workforce</strong> &mdash; hiring &amp; training from surrounding communities</li>
           <li><strong>Indigenous partnership</strong> &mdash; ongoing dialogue and collaboration</li>
           <li><strong>Safety culture</strong> &mdash; zero-harm philosophy embedded from demo stage</li>
+          <li><strong>Economic benefits</strong> &mdash; local procurement &amp; community investment programs</li>
         </ul>
       </div>
       <div class="esg-pillar governance">
@@ -3065,6 +3165,7 @@
           <li><strong>ESG-linked compensation</strong> &mdash; management aligned with sustainability</li>
           <li><strong>Transparent disclosure</strong> &mdash; annual ESG reporting</li>
           <li><strong>Ethical supply chain</strong> &mdash; responsible sourcing standards</li>
+          <li><strong>Risk management</strong> &mdash; comprehensive compliance framework</li>
         </ul>
       </div>
     </div>
@@ -3467,7 +3568,7 @@
           <h3>Dr. Marcus Eliot, P.Geo., ICD.D</h3>
           <div class="team-title">Chief Executive Officer &amp; President</div>
           <p>Founder &amp; CEO. Over 20 years in resource development, mineral project advancement, and capital raising. Previously at Teck Resources. Ph.D. in Geoscience.</p>
-          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
         </div>
       </div>
       <div class="team-card">
@@ -3476,7 +3577,7 @@
           <h3>Catherine Hsu, CFA, CPA</h3>
           <div class="team-title">Chief Financial Officer</div>
           <p>15+ years in capital markets, corporate finance, and strategic planning in resource &amp; energy sectors. Previously at BMO Capital Markets.</p>
-          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
         </div>
       </div>
       <div class="team-card">
@@ -3485,7 +3586,7 @@
           <h3>Dr. Raj Venkatesh, P.Eng., Ph.D.</h3>
           <div class="team-title">Chief Technology Officer</div>
           <p>Leading authority in advanced extraction technology. 18+ years of R&amp;D and commercial-scale development. Multiple patents in selective extraction processes.</p>
-          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
         </div>
       </div>
       <div class="team-card">
@@ -3494,7 +3595,7 @@
           <h3>James Macleod, P.Eng.</h3>
           <div class="team-title">Chief Development Officer</div>
           <p>Veteran project development executive with 25+ years delivering large-scale resource and infrastructure projects on time and on budget.</p>
-          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
         </div>
       </div>
       <div class="team-card">
@@ -3503,7 +3604,7 @@
           <h3>Sarah Fontaine, LL.B.</h3>
           <div class="team-title">VP, Government &amp; Stakeholder Engagement</div>
           <p>Extensive career spanning law, regulatory affairs, and government relations within the energy and resources sector.</p>
-          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
         </div>
       </div>
       <div class="team-card">
@@ -3512,7 +3613,7 @@
           <h3>Nadia Kowalski, M.Sc.</h3>
           <div class="team-title">Chief Sustainability Officer</div>
           <p>12+ years leading environmental strategy and ESG compliance for extractive industries. Former Director of Sustainability at Glencore.</p>
-          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
         </div>
       </div>
     </div>
@@ -3656,27 +3757,27 @@
     </ul>
 
     <h4 style="margin-top:32px;">Upcoming Catalysts (12&ndash;18 Months)</h4>
-    <div class="metric-grid-5col">
-      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-teal);">
+    <div class="metric-grid-5col catalyst-grid">
+      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-teal); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">H1 2026</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Feasibility Study Results</p>
-      </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-teal);">
+      </a>
+      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-teal); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">H1 2026</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Full-Scale DLE Validation</p>
-      </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-blue);">
+      </a>
+      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-blue); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">H2 2026</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Off-Take LOI / Agreement</p>
-      </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-blue);">
+      </a>
+      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-blue); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">H2 2026</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Project Financing Term Sheet</p>
-      </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-gold);">
+      </a>
+      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-gold); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">2027</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Construction Decision</p>
-      </div>
+      </a>
     </div>
 
     <!-- Contact -->
@@ -3691,14 +3792,14 @@
         <br>
         <p>Suite 1400, 250 6th Avenue SW</p>
         <p>Calgary, Alberta T2P 3H7</p>
-        <p>Main Office: +1 (403) 555-0172</p>
+        <p>Main Office: <span class="contact-phone">+1 (403) 555-0172</span></p>
         <br>
         <p style="color:var(--accent-gold);">www.boetmaterials.com</p>
       </div>
       <div class="contact-cta">
         <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Ready to learn more?</p>
-        <a href="mailto:investor@boetmaterials.com" class="contact-cta-btn"><span class="btn-icon">&#9993;</span> Contact Us</a>
-        <p style="font-size:11px; color:var(--text-muted); margin-top:16px;">investor@boetmaterials.com<br>+1 (403) 555-0172</p>
+        <a href="mailto:investor@boetmaterials.com" class="contact-cta-btn"><span class="btn-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></span> Contact Us</a>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:16px;">investor@boetmaterials.com<br><span class="contact-phone">+1 (403) 555-0172</span></p>
       </div>
     </div>
   </div>
@@ -4012,8 +4113,13 @@
       upBar.style.height = upH + '%';
     }, 100 + i * 80);
 
-    // Hover tooltip
-    group.addEventListener('mouseenter', function() {
+    // Hover/touch tooltip
+    function showRevTip() {
+      // Remove all other tips
+      chartEl.querySelectorAll('.bar-tip').forEach(function(t) { t.remove(); });
+      chartEl.querySelectorAll('[style*="flex:1"]').forEach(function(g) {
+        g.querySelectorAll('div').forEach(function(b) { b.style.filter = ''; });
+      });
       baseBar.style.filter = 'brightness(1.3)';
       upBar.style.filter = 'brightness(1.3)';
       var tip = document.createElement('div');
@@ -4021,13 +4127,19 @@
       tip.style.cssText = 'position:absolute; top:-36px; left:50%; transform:translateX(-50%); background:#111; border:1px solid #333; border-radius:4px; padding:4px 10px; font-size:11px; color:#fff; white-space:nowrap; z-index:10; pointer-events:none;';
       tip.textContent = d.year + ': $' + d.base + 'M / $' + d.up + 'M';
       group.appendChild(tip);
-    });
+    }
+    group.addEventListener('mouseenter', showRevTip);
     group.addEventListener('mouseleave', function() {
       baseBar.style.filter = '';
       upBar.style.filter = '';
       var tip = group.querySelector('.bar-tip');
       if (tip) tip.remove();
     });
+    // Touch support for mobile — tap to show, stays visible
+    group.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      showRevTip();
+    }, { passive: false });
 
     var label = document.createElement('div');
     label.style.cssText = 'flex:1; text-align:center;';
@@ -4140,38 +4252,48 @@
   var segColors = ['#9E1B32','#184A63','#CDAA88','#7A4E2D'];
   var segNames = ['EV Batteries','Grid Storage (BESS)','Portable Electronics','Industrial & Other'];
 
+  var demandGroups = [];
   demandData.forEach(function(d, i) {
     var total = d.ev + d.bess + d.portable + d.industrial;
     var segs = [d.ev, d.bess, d.portable, d.industrial];
     var group = document.createElement('div');
     group.style.cssText = 'flex:1; display:flex; flex-direction:column; justify-content:flex-end; height:100%; position:relative; cursor:pointer;';
+    group.setAttribute('data-idx', i);
 
     segs.forEach(function(val, si) {
       var seg = document.createElement('div');
       var h = (val / demandMax) * 100;
-      seg.style.cssText = 'width:100%; background:' + segColors[si] + '; transition:all 0.4s; height:0; min-height:' + (val > 0 ? '2px' : '0') + ';';
+      seg.style.cssText = 'width:100%; background:' + segColors[si] + '; transition:height 0.4s ease, opacity 0.3s ease; height:' + h + '%; min-height:' + (val > 0 ? '2px' : '0') + '; opacity:0.7;';
       if (si === 0) seg.style.borderRadius = '3px 3px 0 0';
       group.appendChild(seg);
-      setTimeout(function() { seg.style.height = h + '%'; }, 150 + i * 60);
     });
 
-    group.addEventListener('mouseenter', function() {
-      group.style.filter = 'brightness(1.2)';
+    function selectBar() {
+      // Dim all bars, highlight only selected
+      demandGroups.forEach(function(g) {
+        var isActive = g === group;
+        Array.from(g.children).forEach(function(seg) { seg.style.opacity = isActive ? '1' : '0.45'; });
+        g.style.filter = isActive ? 'brightness(1.15)' : '';
+      });
       demandTooltip.textContent = d.year + ': Total ' + total.toLocaleString() + ' kt LCE — EV: ' + d.ev + ' | BESS: ' + d.bess + ' | Portable: ' + d.portable + ' | Industrial: ' + d.industrial;
-    });
+    }
+
+    group.addEventListener('mouseenter', selectBar);
     group.addEventListener('mouseleave', function() {
-      group.style.filter = '';
+      // Reset all bars to default
+      demandGroups.forEach(function(g) {
+        g.style.filter = '';
+        Array.from(g.children).forEach(function(seg) { seg.style.opacity = '0.7'; });
+      });
       demandTooltip.innerHTML = '&nbsp;';
     });
-    // Touch support for mobile
+    // Touch support for mobile — selected bar stays highlighted
     group.addEventListener('touchstart', function(e) {
       e.preventDefault();
-      // Reset all bars
-      demandChartEl.querySelectorAll('[style*="flex:1"]').forEach(function(g) { g.style.filter = ''; });
-      group.style.filter = 'brightness(1.2)';
-      demandTooltip.textContent = d.year + ': Total ' + total.toLocaleString() + ' kt LCE — EV: ' + d.ev + ' | BESS: ' + d.bess + ' | Portable: ' + d.portable + ' | Industrial: ' + d.industrial;
+      selectBar();
     }, { passive: false });
     demandChartEl.appendChild(group);
+    demandGroups.push(group);
 
     var lbl = document.createElement('div');
     lbl.style.cssText = 'flex:1; text-align:center;';
@@ -4326,43 +4448,37 @@
       priceLabel.style.left = (dotX - 130) + 'px';
     }
   }
+  var priceIsTouchActive = false;
   chartContainer.addEventListener('mousemove', function(e) {
-    showPricePoint(e.clientX, chartContainer.getBoundingClientRect());
+    if (!priceIsTouchActive) showPricePoint(e.clientX, chartContainer.getBoundingClientRect());
   });
   chartContainer.addEventListener('mouseleave', function() {
-    priceDot.style.display = 'none';
-    priceLabel.style.display = 'none';
+    if (!priceIsTouchActive) {
+      priceDot.style.display = 'none';
+      priceLabel.style.display = 'none';
+    }
   });
-  // Touch support for mobile
+  // Touch support — value stays visible until different dot selected
   chartContainer.addEventListener('touchstart', function(e) {
     e.preventDefault();
+    priceIsTouchActive = true;
     showPricePoint(e.touches[0].clientX, chartContainer.getBoundingClientRect());
   }, { passive: false });
   chartContainer.addEventListener('touchmove', function(e) {
     e.preventDefault();
     showPricePoint(e.touches[0].clientX, chartContainer.getBoundingClientRect());
   }, { passive: false });
-  chartContainer.addEventListener('touchend', function() {
-    priceDot.style.display = 'none';
-    priceLabel.style.display = 'none';
+  // Don't hide on touchend — value stays until user taps elsewhere
+  document.addEventListener('touchstart', function(e) {
+    if (!chartContainer.contains(e.target)) {
+      priceIsTouchActive = false;
+      priceDot.style.display = 'none';
+      priceLabel.style.display = 'none';
+    }
   });
 
-  /* ═══ STICKY PROMO FOOTER — hide when real footer visible ═══ */
-  var stickyPromo = document.getElementById('sticky-promo');
-  var mainFooter = document.getElementById('main-footer');
-  if (stickyPromo && mainFooter) {
-    function checkFooterVisibility() {
-      var footerRect = mainFooter.getBoundingClientRect();
-      var windowH = window.innerHeight;
-      if (footerRect.top < windowH) {
-        stickyPromo.classList.add('hidden');
-      } else {
-        stickyPromo.classList.remove('hidden');
-      }
-    }
-    window.addEventListener('scroll', checkFooterVisibility, { passive: true });
-    checkFooterVisibility();
-  }
+  /* ═══ STICKY PROMO FOOTER — always visible at the bottom ═══ */
+  /* The promo footer stays visible at all scroll positions */
 
   /* ═══ IMAGE GALLERY SELECTOR ═══ */
   (function() {
@@ -4401,6 +4517,16 @@
       switchTo(nextIdx);
     }, 5000);
   })();
+
+  /* ═══ STEP CARD CLICK-TO-HIGHLIGHT ═══ */
+  var stepCards = document.querySelectorAll('.step-card');
+  stepCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      var wasActive = card.classList.contains('step-active');
+      stepCards.forEach(function(c) { c.classList.remove('step-active'); });
+      if (!wasActive) card.classList.add('step-active');
+    });
+  });
 
   /* ═══ PDF DOWNLOAD ═══ */
   document.getElementById('download-pdf-btn').addEventListener('click', function(e) {
@@ -4487,13 +4613,33 @@
             }, 50);
           });
 
-          // Stagger metric-card, team-card, thesis-card, financial-kpi-card scale-in
-          var cards = entry.target.querySelectorAll('.metric-card:not(.sa-done), .team-card:not(.sa-done), .thesis-card:not(.sa-done), .esg-pillar:not(.sa-done), .financial-kpi-card:not(.sa-done)');
+          // Stagger metric-card, team-card, financial-kpi-card scale-in
+          var cards = entry.target.querySelectorAll('.metric-card:not(.sa-done), .team-card:not(.sa-done), .esg-pillar:not(.sa-done), .financial-kpi-card:not(.sa-done)');
           cards.forEach(function(card, ci) {
             card.classList.add('sa-done', 'scroll-scale');
             card.style.transitionDelay = (ci * 80) + 'ms';
             setTimeout(function() { card.classList.add('in-view'); }, 30);
           });
+
+          // Thesis cards — pop up in rows (3-col desktop, 2-col tablet, 1-col mobile)
+          var thesisCards = entry.target.querySelectorAll('.thesis-card:not(.sa-done)');
+          if (thesisCards.length > 0) {
+            var cols = 3;
+            if (window.innerWidth <= 700) cols = 1;
+            else if (window.innerWidth <= 1100) cols = 2;
+            thesisCards.forEach(function(tc, ti) {
+              tc.classList.add('sa-done');
+              var row = Math.floor(ti / cols);
+              tc.style.opacity = '0';
+              tc.style.transform = 'translateY(30px)';
+              tc.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+              tc.style.transitionDelay = (row * 250) + 'ms';
+              setTimeout(function() {
+                tc.style.opacity = '1';
+                tc.style.transform = 'translateY(0)';
+              }, 50);
+            });
+          }
 
           // Stagger bullet-list items fade-in
           var bullets = entry.target.querySelectorAll('.bullet-list li:not(.sa-done)');
