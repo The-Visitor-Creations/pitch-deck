@@ -490,6 +490,11 @@
   .slide-white .metric-card-label { color: #666666; }
   .slide-white .metric-card-value { color: #111111; }
   .slide-white .metric-card-value.accent { color: #9E1B32; }
+  .slide-white .financial-kpi-card { background: #f5f5f5; border-color: #e0e0e0; }
+  .slide-white .financial-kpi-card:hover { border-color: #9E1B32; }
+  .slide-white .financial-kpi-label { color: #666666; }
+  .slide-white .financial-kpi-value { color: #111111; }
+  .slide-white .financial-kpi-value.accent { color: #9E1B32; }
   .slide-white .data-table { border-color: #e0e0e0; }
   .slide-white .data-table th { background: #f5f5f5; color: #184A63; border-color: #e0e0e0; }
   .slide-white .data-table td { color: #333; border-color: #e8e8e8; }
@@ -908,6 +913,68 @@
   }
 
   /* ═══════════════════════════════════════════════ */
+  /* FINANCIAL KPI HERO GRID                         */
+  /* ═══════════════════════════════════════════════ */
+  .financial-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .financial-kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .financial-kpi-card:hover {
+    border-color: var(--accent-teal);
+    transform: translateY(-2px);
+  }
+  .financial-kpi-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    line-height: 1.3;
+  }
+  .financial-kpi-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(16px, 2.2vw, 22px);
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .financial-kpi-value.accent { color: var(--accent-gold); }
+  .financial-kpi-value .countup-number {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 1100px) {
+    .financial-kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    .financial-kpi-value { font-size: clamp(16px, 3vw, 22px); }
+  }
+  @media (max-width: 700px) {
+    .financial-kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .financial-kpi-card { padding: 14px 12px; }
+    .financial-kpi-value { font-size: 18px; }
+  }
+  @media (max-width: 375px) {
+    .financial-kpi-grid { grid-template-columns: 1fr; }
+    .financial-kpi-value { font-size: 20px; }
+  }
+
+  /* ═══════════════════════════════════════════════ */
   /* BULLET LISTS                                    */
   /* ═══════════════════════════════════════════════ */
   .bullet-list {
@@ -1201,6 +1268,31 @@
     line-height: 1.6;
     color: var(--text-secondary);
     margin: 0;
+  }
+  .team-linkedin {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 5px 14px;
+    border-radius: 6px;
+    background: rgba(10, 102, 194, 0.12);
+    border: 1px solid rgba(10, 102, 194, 0.25);
+    color: #0a66c2;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .team-linkedin:hover {
+    background: rgba(10, 102, 194, 0.22);
+    border-color: rgba(10, 102, 194, 0.5);
+  }
+  .team-linkedin svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -1928,7 +2020,7 @@
   }
   .tg-track {
     position: absolute;
-    top: 56px;
+    top: 58px;
     left: 48px;
     right: 48px;
     height: 4px;
@@ -1955,7 +2047,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 14px;
     flex: 1;
     text-align: center;
   }
@@ -1970,6 +2062,7 @@
     z-index: 3;
     flex-shrink: 0;
     aspect-ratio: 1;
+    margin-bottom: 4px;
   }
   .tg-node.completed .tg-node-dot {
     background: var(--accent-teal);
@@ -1994,6 +2087,7 @@
     font-weight: 700;
     letter-spacing: 1px;
     color: var(--text-muted);
+    margin-top: 2px;
   }
   .tg-node.completed .tg-node-year { color: var(--accent-teal); }
   .tg-node.active .tg-node-year { color: var(--accent-gold); }
@@ -2033,11 +2127,27 @@
   @media (max-width: 600px) {
     .timeline-graphic { padding: 28px 16px 20px; }
     .tg-track { left: 24px; right: 24px; }
+    .tg-node { gap: 8px; }
     .tg-node-label { font-size: 9px; max-width: 60px; }
     .tg-node-year { font-size: 9px; }
-    .tg-node-dot { width: 12px; height: 12px; }
+    .tg-node-dot { width: 12px; height: 12px; margin-bottom: 2px; }
     .tg-legend { gap: 14px; }
     .tg-legend-item { font-size: 9px; }
+  }
+  /* Timeline phase cards responsive */
+  @media (max-width: 900px) {
+    .timeline-phase { padding: 0 14px 16px; }
+    .timeline-title { font-size: 15px; }
+    .timeline-items li { font-size: 12px; padding: 4px 0 4px 14px; }
+    .timeline-dot { width: 14px; height: 14px; margin-top: 22px; margin-bottom: 12px; }
+  }
+  @media (max-width: 600px) {
+    .timeline-phase { padding: 0 12px 14px; }
+    .timeline-year { font-size: 12px; letter-spacing: 1.5px; }
+    .timeline-title { font-size: 14px; margin: 6px 0; }
+    .timeline-items li { font-size: 12px; line-height: 1.5; padding: 3px 0 3px 14px; }
+    .timeline-dot { width: 14px; height: 14px; margin-top: 18px; margin-bottom: 10px; }
+    .timeline-badge { font-size: 9px; padding: 2px 8px; }
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -2290,13 +2400,27 @@
     align-items: center;
     gap: 24px;
   }
+  .pie-layout svg {
+    flex-shrink: 0;
+    width: 180px;
+    height: 180px;
+  }
+  @media (max-width: 900px) {
+    .pie-layout { gap: 16px; }
+    .pie-layout svg { width: 150px; height: 150px; }
+  }
   @media (max-width: 600px) {
     .pie-layout {
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
-    .pie-layout svg { width: 150px; height: 150px; }
+    .pie-layout svg { width: 140px; height: 140px; }
+    .pie-layout > div { font-size: 11px; line-height: 2; text-align: center; }
+  }
+  @media (max-width: 375px) {
+    .pie-layout svg { width: 120px; height: 120px; }
+    .pie-layout > div { font-size: 10px; }
   }
 
   /* ═══ STAGGER SCROLL ANIMATIONS ═══ */
@@ -2591,7 +2715,7 @@
     <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:28px; margin:28px 0;">
       <h4 style="margin-bottom:4px; color:#FAF9F6;">Lithium Carbonate Price History (US$/t)</h4>
       <p style="font-size:12px; color:#FAF9F6; opacity:0.6; margin-bottom:20px;">Battery-grade, annual average &mdash; 2018 to 2026 YTD</p>
-      <div style="position:relative; aspect-ratio:800/280; min-height:180px; margin-bottom:8px;">
+      <div style="position:relative; aspect-ratio:800/280; min-height:120px; max-width:100%; margin-bottom:8px;">
         <svg id="price-line-chart" viewBox="0 0 800 240" preserveAspectRatio="xMidYMid meet" style="width:100%; height:100%; overflow:visible;">
           <!-- Grid lines + line drawn by JS -->
         </svg>
@@ -2789,6 +2913,7 @@
     <p style="font-size:11px; color:var(--text-muted); margin-bottom:28px; font-style:italic;">Site map overview of the flagship project area and surrounding infrastructure</p>
 
     <h4 style="margin-top:40px;">Consolidated Resource Summary</h4>
+    <div style="overflow-x:auto;">
     <table class="data-table">
       <thead>
         <tr><th>District</th><th>Reserves (P&amp;P)</th><th>Measured</th><th>Indicated</th><th>M&amp;I Total</th><th>Inferred</th></tr>
@@ -2799,6 +2924,7 @@
         <tr class="highlight-row"><td>Total</td><td>9.74 Mt</td><td>6.10 Mt</td><td>10.10 Mt</td><td>16.20 Mt</td><td>3.15 Mt</td></tr>
       </tbody>
     </table>
+    </div>
 
     <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color);">
       <img src="photo-industrial-3.jpg" alt="Regional overview" style="width:100%; max-height:300px; object-fit:cover; display:block;">
@@ -3071,26 +3197,26 @@
     <p>The Company&rsquo;s Pre-Feasibility Study confirms compelling project economics with strong margins, an attractive return profile, and a rapid payback period.</p>
 
     <!-- Financial KPI Hero Metrics -->
-    <div class="metric-grid-5col" style="margin-bottom:32px;">
-      <div class="metric-card" style="text-align:center; border-top: 3px solid #9E1B32;">
-        <div class="metric-card-label">After-Tax NPV&#8328;</div>
-        <div class="metric-card-value accent">US$4.8 B</div>
+    <div class="financial-kpi-grid" style="margin-bottom:32px;">
+      <div class="financial-kpi-card" style="border-top: 3px solid #9E1B32;">
+        <div class="financial-kpi-label">After-Tax NPV&#8328;</div>
+        <div class="financial-kpi-value accent">US$4.8 B</div>
       </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid #184A63;">
-        <div class="metric-card-label">After-Tax IRR</div>
-        <div class="metric-card-value accent">28.4%</div>
+      <div class="financial-kpi-card" style="border-top: 3px solid #184A63;">
+        <div class="financial-kpi-label">After-Tax IRR</div>
+        <div class="financial-kpi-value accent">28.4%</div>
       </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid #9E1B32;">
-        <div class="metric-card-label">Avg. Annual EBITDA</div>
-        <div class="metric-card-value">US$585 M</div>
+      <div class="financial-kpi-card" style="border-top: 3px solid #9E1B32;">
+        <div class="financial-kpi-label">Avg. Annual EBITDA</div>
+        <div class="financial-kpi-value">US$585 M</div>
       </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid #184A63;">
-        <div class="metric-card-label">Payback Period</div>
-        <div class="metric-card-value">3.8 Years</div>
+      <div class="financial-kpi-card" style="border-top: 3px solid #184A63;">
+        <div class="financial-kpi-label">Payback Period</div>
+        <div class="financial-kpi-value">3.8 Years</div>
       </div>
-      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-gold);">
-        <div class="metric-card-label">CAPEX</div>
-        <div class="metric-card-value">US$1,240 M</div>
+      <div class="financial-kpi-card" style="border-top: 3px solid var(--accent-gold);">
+        <div class="financial-kpi-label">CAPEX</div>
+        <div class="financial-kpi-value">US$1,240 M</div>
       </div>
     </div>
 
@@ -3115,7 +3241,7 @@
     </table>
 
     <!-- ═══ INTERACTIVE REVENUE GROWTH CHART ═══ -->
-    <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; margin:28px 0; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
+    <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; margin:28px 0; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6); overflow-x:auto;">
       <h4 style="margin-bottom:20px; color:#184A63;">Projected Revenue Growth (US$ M)</h4>
       <div id="revenue-chart" style="display:flex; align-items:flex-end; gap:8px; height:220px; padding:0 4px; border-bottom:1px solid rgba(18,16,14,0.1); position:relative;">
         <!-- Bars injected by JS -->
@@ -3256,6 +3382,7 @@
           <h3>Dr. Marcus Eliot, P.Geo., ICD.D</h3>
           <div class="team-title">Chief Executive Officer &amp; President</div>
           <p>Founder &amp; CEO. Over 20 years in resource development, mineral project advancement, and capital raising. Previously at Teck Resources. Ph.D. in Geoscience.</p>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
         </div>
       </div>
       <div class="team-card">
@@ -3264,6 +3391,7 @@
           <h3>Catherine Hsu, CFA, CPA</h3>
           <div class="team-title">Chief Financial Officer</div>
           <p>15+ years in capital markets, corporate finance, and strategic planning in resource &amp; energy sectors. Previously at BMO Capital Markets.</p>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
         </div>
       </div>
       <div class="team-card">
@@ -3272,6 +3400,7 @@
           <h3>Dr. Raj Venkatesh, P.Eng., Ph.D.</h3>
           <div class="team-title">Chief Technology Officer</div>
           <p>Leading authority in advanced extraction technology. 18+ years of R&amp;D and commercial-scale development. Multiple patents in selective extraction processes.</p>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
         </div>
       </div>
       <div class="team-card">
@@ -3280,6 +3409,7 @@
           <h3>James Macleod, P.Eng.</h3>
           <div class="team-title">Chief Development Officer</div>
           <p>Veteran project development executive with 25+ years delivering large-scale resource and infrastructure projects on time and on budget.</p>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
         </div>
       </div>
       <div class="team-card">
@@ -3288,6 +3418,7 @@
           <h3>Sarah Fontaine, LL.B.</h3>
           <div class="team-title">VP, Government &amp; Stakeholder Engagement</div>
           <p>Extensive career spanning law, regulatory affairs, and government relations within the energy and resources sector.</p>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
         </div>
       </div>
       <div class="team-card">
@@ -3296,6 +3427,7 @@
           <h3>Nadia Kowalski, M.Sc.</h3>
           <div class="team-title">Chief Sustainability Officer</div>
           <p>12+ years leading environmental strategy and ESG compliance for extractive industries. Former Director of Sustainability at Glencore.</p>
+          <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="team-linkedin"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
         </div>
       </div>
     </div>
@@ -3998,10 +4130,11 @@
     priceSvg.appendChild(txt);
   });
 
-  // Build path + area
+  // Build path + area — add left padding so first dot clears Y-axis labels
+  var chartPadL = 40;
   var points = [];
   priceData.forEach(function(d, i) {
-    var x = (i / (priceData.length - 1)) * svgW;
+    var x = chartPadL + (i / (priceData.length - 1)) * (svgW - chartPadL);
     var y = svgH - (d.price / priceMax) * svgH;
     points.push({ x: x, y: y, data: d });
   });
@@ -4070,22 +4203,33 @@
     }
   });
 
-  // Hover interaction — SVG uses preserveAspectRatio="meet", so map via SVG CTM
+  // Hover interaction — use SVG Screen CTM for precise coordinate mapping
   chartContainer.style.cursor = 'crosshair';
+  priceDot.style.transition = 'left 0.15s ease-out, top 0.15s ease-out';
+  priceLabel.style.transition = 'left 0.15s ease-out, top 0.15s ease-out, opacity 0.15s ease-out';
   function showPricePoint(clientX, rect) {
-    var mx = clientX - rect.left;
-    var svgRect = priceSvg.getBoundingClientRect();
-    var scaleX = svgRect.width / svgW;
-    var scaleY = svgRect.height / svgH;
-    var offsetX = svgRect.left - rect.left;
-    var offsetY = svgRect.top - rect.top;
-    var localX = (mx - offsetX) / scaleX;
-    var idx = Math.round((localX / svgW) * (points.length - 1));
+    var ctm = priceSvg.getScreenCTM();
+    if (!ctm) return;
+    // Convert client mouse X to SVG user-space X
+    var svgPt = priceSvg.createSVGPoint();
+    svgPt.x = clientX;
+    svgPt.y = 0;
+    var svgCoord = svgPt.matrixTransform(ctm.inverse());
+    // Map SVG x to nearest data point (data starts at chartPadL)
+    var dataX = svgCoord.x - chartPadL;
+    var dataRange = svgW - chartPadL;
+    var ratio = dataX / dataRange;
+    var idx = Math.round(ratio * (points.length - 1));
     if (idx < 0) idx = 0;
     if (idx >= points.length) idx = points.length - 1;
     var p = points[idx];
-    var dotX = offsetX + p.x * scaleX;
-    var dotY = offsetY + p.y * scaleY;
+    // Convert data point SVG coords back to container-relative screen coords
+    var dotSvgPt = priceSvg.createSVGPoint();
+    dotSvgPt.x = p.x;
+    dotSvgPt.y = p.y;
+    var screenPt = dotSvgPt.matrixTransform(ctm);
+    var dotX = screenPt.x - rect.left;
+    var dotY = screenPt.y - rect.top;
     priceDot.style.display = 'block';
     priceDot.style.left = dotX + 'px';
     priceDot.style.top = dotY + 'px';
@@ -4171,11 +4315,25 @@
             });
           });
 
-          // Stagger ESG bar fill animations (200ms apart)
+          // Stagger ESG metric panels slide-up animation
+          var esgPanels = entry.target.querySelectorAll('.esg-metric-panel:not(.sa-done)');
+          esgPanels.forEach(function(panel, pi) {
+            panel.classList.add('sa-done');
+            panel.style.opacity = '0';
+            panel.style.transform = 'translateY(30px)';
+            panel.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            panel.style.transitionDelay = (pi * 150) + 'ms';
+            setTimeout(function() {
+              panel.style.opacity = '1';
+              panel.style.transform = 'translateY(0)';
+            }, 50);
+          });
+
+          // Stagger ESG bar fill animations (200ms apart, delayed after panel slide-up)
           var esgBars = entry.target.querySelectorAll('.esg-bar-fill:not(.bar-animated)');
           esgBars.forEach(function(bar, i) {
             bar.classList.add('bar-animated');
-            bar.style.transitionDelay = (i * 200) + 'ms';
+            bar.style.transitionDelay = (400 + i * 200) + 'ms';
             setTimeout(function() { bar.style.transform = 'scaleX(1)'; }, 50);
           });
 
@@ -4212,8 +4370,8 @@
             }, 50);
           });
 
-          // Stagger metric-card, team-card, thesis-card scale-in
-          var cards = entry.target.querySelectorAll('.metric-card:not(.sa-done), .team-card:not(.sa-done), .thesis-card:not(.sa-done), .esg-pillar:not(.sa-done)');
+          // Stagger metric-card, team-card, thesis-card, financial-kpi-card scale-in
+          var cards = entry.target.querySelectorAll('.metric-card:not(.sa-done), .team-card:not(.sa-done), .thesis-card:not(.sa-done), .esg-pillar:not(.sa-done), .financial-kpi-card:not(.sa-done)');
           cards.forEach(function(card, ci) {
             card.classList.add('sa-done', 'scroll-scale');
             card.style.transitionDelay = (ci * 80) + 'ms';
@@ -4334,6 +4492,14 @@
     }
   });
 
+  // Build count-up for financial KPI hero values
+  var financialKpiValues = document.querySelectorAll('.financial-kpi-value');
+  financialKpiValues.forEach(function(el) {
+    if (/\d/.test(el.textContent)) {
+      buildCountup(el);
+    }
+  });
+
   // Build count-up for the ask-amount element
   var askAmounts = document.querySelectorAll('.ask-amount');
   askAmounts.forEach(function(el) {
@@ -4355,6 +4521,23 @@
   highlightCells.forEach(function(el) {
     if (/\d/.test(el.textContent) && el.textContent.trim().length < 20) {
       buildCountup(el);
+    }
+  });
+
+  // Build count-up for Peer Comparison Matrix numeric cells
+  document.querySelectorAll('.comparison-table tbody td').forEach(function(td) {
+    var txt = td.textContent.trim();
+    // Only apply to cells with numeric data (skip company names, jurisdiction, stage, ESG text)
+    if (/^\$?[\d.,]+\s*(%|Mt|B)?$/.test(txt)) {
+      buildCountup(td);
+    }
+  });
+
+  // Build count-up for Pre-Feasibility Study table numeric values (all value cells)
+  document.querySelectorAll('.data-table tbody td:last-child').forEach(function(td) {
+    var txt = td.textContent.trim();
+    if (/\d/.test(txt) && txt.length < 20 && !td.querySelector('.countup-number')) {
+      buildCountup(td);
     }
   });
 
