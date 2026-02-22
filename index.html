@@ -3887,6 +3887,14 @@
       group.style.filter = '';
       demandTooltip.innerHTML = '&nbsp;';
     });
+    // Touch support for mobile
+    group.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      // Reset all bars
+      demandChartEl.querySelectorAll('[style*="flex:1"]').forEach(function(g) { g.style.filter = ''; });
+      group.style.filter = 'brightness(1.2)';
+      demandTooltip.textContent = d.year + ': Total ' + total.toLocaleString() + ' kt LCE — EV: ' + d.ev + ' | BESS: ' + d.bess + ' | Portable: ' + d.portable + ' | Industrial: ' + d.industrial;
+    }, { passive: false });
     demandChartEl.appendChild(group);
 
     var lbl = document.createElement('div');
@@ -3973,13 +3981,14 @@
   line.setAttribute('stroke-linejoin', 'round');
   priceSvg.appendChild(line);
 
-  // Data point dots
+  // Data point dots — rendered as HTML elements to avoid SVG stretching
+  var chartContainer = priceSvg.parentElement;
   points.forEach(function(p) {
-    var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
-    c.setAttribute('r', '4'); c.setAttribute('fill', '#9E1B32');
-    c.setAttribute('stroke', '#FAF9F6'); c.setAttribute('stroke-width', '2');
-    priceSvg.appendChild(c);
+    var dot = document.createElement('div');
+    dot.style.cssText = 'position:absolute; width:10px; height:10px; border-radius:50%; background:#9E1B32; border:2px solid #FAF9F6; transform:translate(-50%,-50%); pointer-events:none; z-index:4;';
+    dot.style.left = ((p.x / svgW) * 100) + '%';
+    dot.style.top = ((p.y / svgH) * 100) + '%';
+    chartContainer.appendChild(dot);
   });
 
   // Year labels
@@ -3999,11 +4008,9 @@
   });
 
   // Hover interaction
-  var chartContainer = priceSvg.parentElement;
   chartContainer.style.cursor = 'crosshair';
-  chartContainer.addEventListener('mousemove', function(e) {
-    var rect = chartContainer.getBoundingClientRect();
-    var mx = e.clientX - rect.left;
+  function showPricePoint(clientX, rect) {
+    var mx = clientX - rect.left;
     var ratio = mx / rect.width;
     var idx = Math.round(ratio * (points.length - 1));
     if (idx < 0) idx = 0;
@@ -4021,8 +4028,24 @@
     if (dotX + 150 > rect.width) {
       priceLabel.style.left = (dotX - 130) + 'px';
     }
+  }
+  chartContainer.addEventListener('mousemove', function(e) {
+    showPricePoint(e.clientX, chartContainer.getBoundingClientRect());
   });
   chartContainer.addEventListener('mouseleave', function() {
+    priceDot.style.display = 'none';
+    priceLabel.style.display = 'none';
+  });
+  // Touch support for mobile
+  chartContainer.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    showPricePoint(e.touches[0].clientX, chartContainer.getBoundingClientRect());
+  }, { passive: false });
+  chartContainer.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    showPricePoint(e.touches[0].clientX, chartContainer.getBoundingClientRect());
+  }, { passive: false });
+  chartContainer.addEventListener('touchend', function() {
     priceDot.style.display = 'none';
     priceLabel.style.display = 'none';
   });
