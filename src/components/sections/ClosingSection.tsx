@@ -16,38 +16,38 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
   const active = closingScenarios[activeIndex];
 
   return (
-    <SectionShell id="closing" index={7} dark>
+    <SectionShell id="closing" index={7}>
       <div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5, ease: [0, 0, 0.2, 1] }}
         >
-          <span className="block text-caption font-mono uppercase tracking-widest text-white/40 mb-4">
+          <span className="block text-micro font-mono uppercase tracking-[0.12em] text-brand-charcoal/30 mb-4">
             Investment Opportunity
           </span>
-          <h2 className="text-display-sm sm:text-display-md md:text-display-lg font-display font-bold tracking-tight text-white mb-6">
-            Let&apos;s Build Together
+          <h2 className="text-display-sm sm:text-display-md md:text-display-lg font-display font-bold tracking-tight text-brand-charcoal mb-6">
+            Invest in Gold
           </h2>
         </motion.div>
 
         {/* ── Scenario Toggle ── */}
-        <div className="flex flex-wrap items-center gap-1 mb-6 bg-white/10 rounded-full p-1 w-fit max-w-full">
+        <div className="flex flex-wrap items-center gap-1 mb-6 bg-brand-charcoal/10 rounded-full p-1 w-fit max-w-full">
           {closingScenarios.map((scenario, i) => (
             <button
               key={scenario.key}
               onClick={() => setActiveIndex(i)}
               className={`relative px-3 md:px-5 py-2 rounded-full text-body-sm font-medium transition-colors duration-300 ${
                 activeIndex === i
-                  ? "text-ink"
-                  : "text-white/60 hover:text-white/80"
+                  ? "text-white"
+                  : "text-brand-charcoal/40 hover:text-brand-charcoal/70"
               }`}
             >
               {activeIndex === i && (
                 <motion.div
                   layoutId="closing-scenario-bg"
-                  className="absolute inset-0 bg-white rounded-full"
+                  className="absolute inset-0 bg-brand-charcoal rounded-full"
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
@@ -56,11 +56,11 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
           ))}
         </div>
 
-        <p className="text-body-lg text-white/60 max-w-2xl mb-10">
-          Citra Capital is raising{" "}
-          <span className="text-white font-semibold">{active.capitalAsk}</span>{" "}
-          in equity to acquire and develop Craigmore Drive —{" "}
-          <span className="text-white/80">{active.label}</span>.
+        <p className="text-body-lg text-brand-charcoal/60 max-w-2xl mb-10">
+          Aurelia Gold Corp (TSX: AUR) is raising{" "}
+          <span className="text-brand-charcoal font-semibold">{active.capitalAsk}</span>{" "}
+          to advance the Whitefish Lake Gold Project —{" "}
+          <span className="text-brand-charcoal/80">{active.label}</span> scenario.
         </p>
 
         {/* ── Scenario Content ── */}
@@ -75,15 +75,15 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* ── Column 1: Capital Ask ── */}
               <div className="space-y-4">
-                <h4 className="text-heading-md font-display font-semibold text-white">
+                <h4 className="text-heading-md font-display font-semibold text-brand-charcoal">
                   Capital Ask
                 </h4>
                 <div className="space-y-3">
                   <div>
-                    <span className="text-display-sm font-display font-bold text-white">
+                    <span className="text-display-sm font-display font-bold text-brand-charcoal">
                       <CountUp value={active.capitalAsk} duration={2000} delay={300} />
                     </span>
-                    <span className="block text-body-sm text-white/40 mt-1">
+                    <span className="block text-body-sm text-brand-charcoal/30 mt-1">
                       Minimum:{" "}
                       <CountUp
                         value={active.minimumInvestment}
@@ -92,27 +92,27 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
                       />
                     </span>
                   </div>
-                  <div className="h-px bg-white/10" />
+                  <div className="h-px bg-brand-charcoal/15" />
                   <div className="flex justify-between items-baseline">
-                    <span className="text-body-sm text-white/50">Structure</span>
-                    <span className="text-body-sm text-white/80 text-right">
+                    <span className="text-body-sm text-brand-charcoal/40">Structure</span>
+                    <span className="text-body-sm text-brand-charcoal/70 text-right">
                       {active.structure}
                     </span>
                   </div>
                   <div className="flex justify-between items-baseline">
-                    <span className="text-body-sm text-white/50">Target Close</span>
-                    <span className="text-body-sm text-white/80">
+                    <span className="text-body-sm text-brand-charcoal/40">Target Close</span>
+                    <span className="text-body-sm text-brand-charcoal/70">
                       {active.targetClose}
                     </span>
                   </div>
                   <div className="flex justify-between items-baseline">
-                    <span className="text-body-sm text-white/50">Equity Offered</span>
-                    <span className="text-body-sm text-white/80 text-right">
+                    <span className="text-body-sm text-brand-charcoal/40">Equity Offered</span>
+                    <span className="text-body-sm text-brand-charcoal/70 text-right">
                       {active.equityOffered}
                     </span>
                   </div>
-                  <div className="h-px bg-white/10" />
-                  <p className="text-body-sm text-white/60 leading-relaxed">
+                  <div className="h-px bg-brand-charcoal/15" />
+                  <p className="text-body-sm text-brand-charcoal/60 leading-relaxed">
                     {active.investorTerms}
                   </p>
                 </div>
@@ -120,8 +120,8 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
                 {/* Contact Us button */}
                 <div className="mt-10">
                   <a
-                    href="mailto:sam@citracapital.ca?subject=Craigmore%20Drive%20Investment%20Inquiry"
-                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full border-2 border-white text-white font-display font-semibold text-body-sm hover:bg-white hover:text-ink transition-all duration-300"
+                    href="mailto:investors@aureliagold.com?subject=Whitefish%20Lake%20Investment%20Inquiry"
+                    className="inline-flex items-center gap-2 px-8 py-3 border-2 border-brand-charcoal text-brand-charcoal font-display font-semibold text-body-sm hover:bg-brand-charcoal hover:text-white transition-all duration-300"
                   >
                     Contact Us
                     <svg
@@ -143,7 +143,7 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
 
               {/* ── Column 2: Use of Funds ── */}
               <div className="space-y-4">
-                <h4 className="text-heading-md font-display font-semibold text-white">
+                <h4 className="text-heading-md font-display font-semibold text-brand-charcoal">
                   Use of Funds
                 </h4>
                 <div className="space-y-3">
@@ -152,10 +152,10 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
                       key={item.label}
                       className="flex justify-between items-baseline gap-4"
                     >
-                      <span className="text-body-sm text-white/50">
+                      <span className="text-body-sm text-brand-charcoal/40">
                         {item.label}
                       </span>
-                      <span className="text-body-sm text-white/80 font-medium tabular-nums whitespace-nowrap">
+                      <span className="text-body-sm text-brand-charcoal/70 font-medium tabular-nums whitespace-nowrap">
                         <CountUp
                           value={item.amount}
                           duration={1500}
@@ -169,16 +169,16 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
 
               {/* ── Column 3: Timeline ── */}
               <div className="space-y-4">
-                <h4 className="text-heading-md font-display font-semibold text-white">
+                <h4 className="text-heading-md font-display font-semibold text-brand-charcoal">
                   Key Dates
                 </h4>
                 <div className="space-y-3">
                   {active.timeline.map((item) => (
                     <div key={item.event} className="flex items-start gap-3">
-                      <span className="text-body-sm font-mono text-white min-w-[100px] flex-shrink-0">
+                      <span className="text-body-sm font-mono text-brand-charcoal min-w-[100px] flex-shrink-0">
                         {item.date}
                       </span>
-                      <span className="text-body-sm text-white/60">
+                      <span className="text-body-sm text-brand-charcoal/60">
                         {item.event}
                       </span>
                     </div>
@@ -195,51 +195,51 @@ export default function ClosingSection({ onNavigate }: ClosingSectionProps) {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="mt-16 pt-8 border-t border-white/10"
+          className="mt-16 pt-8 border-t border-brand-charcoal/15"
         >
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h4 className="text-heading-md font-display font-semibold text-white mb-1">
+              <h4 className="text-heading-md font-display font-bold text-brand-charcoal mb-1">
                 {closing.contact.name}
               </h4>
-              <p className="text-body-sm text-white/50">
+              <p className="text-body-sm text-brand-charcoal/40">
                 {closing.contact.title}
               </p>
             </div>
             <div className="flex flex-col md:items-end gap-1">
               <a
                 href={`mailto:${closing.contact.email}`}
-                className="text-body-sm text-white/60 hover:text-white transition-colors"
+                className="text-body-sm text-brand-charcoal/40 hover:text-brand-charcoal transition-colors"
               >
                 {closing.contact.email}
               </a>
               <a
                 href={`tel:${closing.contact.phone.replace(/[^+\d]/g, "")}`}
-                className="text-body-sm text-white/60 hover:text-white transition-colors"
+                className="text-body-sm text-brand-charcoal/40 hover:text-brand-charcoal transition-colors"
               >
                 {closing.contact.phone}
               </a>
             </div>
           </div>
 
-          <p className="text-caption text-white/50 mt-8 max-w-3xl">
+          <p className="text-caption text-brand-charcoal/25 mt-8 max-w-3xl">
             {closing.disclaimer}
           </p>
         </motion.div>
 
-        {/* Nav with light text overrides */}
-        <div className="[&_button]:text-white/40 [&_button:hover]:text-white/70 [&_div]:bg-white/10 [&_.bg-ink]:bg-white">
+        {/* Nav with dark text overrides for mustard bg */}
+        <div className="[&_button]:text-brand-charcoal/40 [&_button:hover]:text-brand-charcoal/70 [&_div]:bg-brand-charcoal/10">
           <SectionNav currentIndex={7} onNavigate={onNavigate} />
         </div>
 
         {/* Credit line */}
-        <p className="text-center text-caption text-white/50 mt-12">
+        <p className="text-center text-caption text-brand-charcoal/30 mt-12">
           Do you want a pitch deck like this? Contact{" "}
           <a
             href="https://thevisitor.ca/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/70 font-semibold uppercase tracking-wide underline hover:text-white transition-colors"
+            className="text-brand-charcoal/50 font-semibold uppercase tracking-wide underline hover:text-brand-charcoal transition-colors"
           >
             THE VISITOR
           </a>

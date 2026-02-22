@@ -7,15 +7,15 @@ import { useInView } from "framer-motion";
  * Parses a formatted stat string and extracts the numeric portion, prefix, and suffix.
  *
  * Examples:
- *   "$5,000,000"  → { prefix: "$", number: 5000000, suffix: "", decimals: 0, formatted: "5,000,000" }
- *   "24.1%"       → { prefix: "",  number: 24.1,    suffix: "%", decimals: 1, formatted: "24.1" }
- *   "1.9x"        → { prefix: "",  number: 1.9,     suffix: "x", decimals: 1, formatted: "1.9" }
- *   "$6.3M"       → { prefix: "$", number: 6.3,     suffix: "M", decimals: 1, formatted: "6.3" }
- *   "12,000"      → { prefix: "",  number: 12000,   suffix: "", decimals: 0, formatted: "12,000" }
- *   "85%+"        → { prefix: "",  number: 85,      suffix: "%+", decimals: 0, formatted: "85" }
- *   "2.4km"       → { prefix: "",  number: 2.4,     suffix: "km", decimals: 1, formatted: "2.4" }
- *   "22%+"        → { prefix: "",  number: 22,      suffix: "%+", decimals: 0, formatted: "22" }
- *   "30-36 months" → null (range, not a single number — display as-is)
+ *   "$5,000,000"  -> { prefix: "$", number: 5000000, suffix: "", decimals: 0, formatted: "5,000,000" }
+ *   "24.1%"       -> { prefix: "",  number: 24.1,    suffix: "%", decimals: 1, formatted: "24.1" }
+ *   "1.9x"        -> { prefix: "",  number: 1.9,     suffix: "x", decimals: 1, formatted: "1.9" }
+ *   "$6.3M"       -> { prefix: "$", number: 6.3,     suffix: "M", decimals: 1, formatted: "6.3" }
+ *   "12,000"      -> { prefix: "",  number: 12000,   suffix: "", decimals: 0, formatted: "12,000" }
+ *   "85%+"        -> { prefix: "",  number: 85,      suffix: "%+", decimals: 0, formatted: "85" }
+ *   "2.4km"       -> { prefix: "",  number: 2.4,     suffix: "km", decimals: 1, formatted: "2.4" }
+ *   "22%+"        -> { prefix: "",  number: 22,      suffix: "%+", decimals: 0, formatted: "22" }
+ *   "30-36 months" -> null (range, not a single number -- display as-is)
  */
 function parseStat(raw: string): {
   prefix: string;
@@ -82,7 +82,7 @@ interface CountUpProps {
 
 export default function CountUp({
   value,
-  duration = 1800,
+  duration = 1200,
   delay = 0,
   className = "",
 }: CountUpProps) {

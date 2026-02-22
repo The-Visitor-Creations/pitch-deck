@@ -4,6 +4,7 @@ import { useState } from "react";
 import SectionShell from "@/components/SectionShell";
 import SectionNav from "@/components/SectionNav";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import StockChart from "@/components/StockChart";
 import { opportunity } from "@/data/deck";
 import { motion } from "framer-motion";
 
@@ -40,11 +41,11 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
     <SectionShell id="opportunity" index={1}>
       <div>
         {/* Header */}
-        <span className="section-label">The Opportunity</span>
-        <h2 className="text-display-sm sm:text-display-md font-display font-bold tracking-tight text-ink mb-3 max-w-3xl">
+        <span className="text-micro font-mono uppercase tracking-[0.12em] text-brand-charcoal/40 mb-4 block">The Opportunity</span>
+        <h2 className="text-display-sm sm:text-display-md font-display font-bold tracking-tight text-brand-charcoal mb-3 max-w-3xl">
           {opportunity.headline}
         </h2>
-        <p className="text-body-lg text-ink-light max-w-2xl mb-12">
+        <p className="text-body-lg text-brand-charcoal/60 max-w-2xl mb-12">
           {opportunity.subtitle}
         </p>
 
@@ -56,23 +57,23 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-card p-6 shadow-card space-y-5"
+            className="bg-brand-charcoal/8 border border-brand-charcoal/15 p-6 space-y-5"
           >
-            <h3 className="text-heading-md font-display font-semibold text-ink">
-              The Build at a Glance
+            <h3 className="text-heading-md font-display font-semibold text-brand-charcoal">
+              Project at a Glance
             </h3>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { label: "Total Units", value: opportunity.buildOverview.totalUnits },
+                { label: "Resource", value: opportunity.buildOverview.totalUnits },
                 { label: "Scenarios", value: opportunity.buildOverview.composition },
-                { label: "Site", value: opportunity.buildOverview.acreage },
+                { label: "Land Package", value: opportunity.buildOverview.acreage },
                 { label: "Timeline", value: opportunity.buildOverview.timeline },
               ].map((item) => (
                 <div key={item.label}>
-                  <span className="text-caption font-mono text-ink-muted uppercase tracking-wide">
+                  <span className="text-caption font-mono text-brand-charcoal/50 uppercase tracking-wide">
                     {item.label}
                   </span>
-                  <p className="text-body-sm font-medium text-ink mt-0.5">
+                  <p className="text-body-sm font-medium text-brand-charcoal mt-0.5">
                     {item.value}
                   </p>
                 </div>
@@ -88,7 +89,7 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <ImagePlaceholder
-              label="Subdivision Render"
+              label="Project Overview"
               aspect="16/10"
               src={opportunity.buildOverview.renderImage}
             />
@@ -103,17 +104,17 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-3 relative rounded-card overflow-hidden shadow-card"
+            className="lg:col-span-3 relative overflow-hidden border border-brand-charcoal/15"
             onMouseLeave={() => setMapHover(false)}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={opportunity.mapImage}
-              alt="Map of Halifax showing Craigmore Drive location"
+              alt="Map showing Whitefish Lake project location in Abitibi Greenstone Belt"
               className="w-full h-full object-cover"
               style={{ aspectRatio: "3/4" }}
             />
-            {/* Subtle blue glow around the blue square property outline */}
+            {/* Subtle glow around the property outline */}
             <div
               className="absolute pointer-events-none"
               style={{
@@ -122,20 +123,19 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
                 width: "11%",
                 height: "6%",
                 transform: "translate(-50%, -50%)",
-                boxShadow: "0 0 20px 8px rgba(59,130,246,0.3), 0 0 40px 16px rgba(59,130,246,0.12)",
-                borderRadius: "3px",
-                border: "1.5px solid rgba(59,130,246,0.35)",
+                boxShadow: "0 0 20px 8px rgba(26,26,26,0.3), 0 0 40px 16px rgba(26,26,26,0.12)",
+                border: "1.5px solid rgba(26,26,26,0.35)",
                 animation: "pulse-glow 3s ease-in-out infinite",
               }}
             />
-            {/* Clickable hotspot — over the blue square */}
+            {/* Clickable hotspot — over the property */}
             <div
               className="absolute cursor-pointer z-10"
               style={{ top: "34%", left: "32%", width: "14%", height: "10%" }}
               onMouseEnter={() => setMapHover(true)}
               onClick={() => setMapHover((prev) => !prev)}
             />
-            {/* "Craigmore Drive" popup — appears on hover/click */}
+            {/* Popup — appears on hover/click */}
             <motion.div
               className="absolute z-20 pointer-events-none"
               style={{ top: "27%", left: "31%", transformOrigin: "bottom center" }}
@@ -143,9 +143,9 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
               animate={{ opacity: mapHover ? 1 : 0, y: mapHover ? 0 : 6, scale: mapHover ? 1 : 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="bg-white/95 backdrop-blur-sm rounded-lg px-4 py-3 shadow-lg border border-ink/5 pointer-events-auto">
-                <span className="text-body-sm font-display font-semibold text-ink block">Craigmore Drive</span>
-                <span className="text-caption text-ink-muted block">R-3 zoning — 38 units as-of-right</span>
+              <div className="bg-brand-charcoal/95 backdrop-blur-sm px-4 py-3 border border-brand-charcoal/20 pointer-events-auto">
+                <span className="text-body-sm font-display font-semibold text-white block">Whitefish Lake Project</span>
+                <span className="text-caption text-white/60 block">12,400 ha — 1.4M oz Au (M&I)</span>
               </div>
             </motion.div>
           </motion.div>
@@ -159,14 +159,14 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="flex items-start gap-3 bg-white rounded-card p-4 shadow-card hover:shadow-card-hover transition-shadow"
+                className="flex items-start gap-3 bg-brand-charcoal/8 border border-brand-charcoal/10 p-4"
               >
-                <div className="w-9 h-9 rounded-full bg-surface-cool flex items-center justify-center flex-shrink-0 text-accent">
+                <div className="w-9 h-9 bg-brand-charcoal/10 flex items-center justify-center flex-shrink-0 text-brand-charcoal/60">
                   {icons[stat.icon] || icons.downtown}
                 </div>
                 <div>
-                  <span className="text-body-sm font-medium text-ink">{stat.label}</span>
-                  <span className="block text-caption text-ink-muted">{stat.detail}</span>
+                  <span className="text-body-sm font-medium text-brand-charcoal">{stat.label}</span>
+                  <span className="block text-caption text-brand-charcoal/50">{stat.detail}</span>
                 </div>
               </motion.div>
             ))}
@@ -182,23 +182,23 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-white rounded-card p-6 shadow-card"
+              className="bg-brand-charcoal/6 border border-brand-charcoal/10 p-6"
             >
               <div className="space-y-1 mb-4">
-                <span className="block text-display-sm font-display font-bold tracking-tight text-ink">
+                <span className="block text-display-sm font-display font-bold tracking-tight text-brand-charcoal">
                   {item.stat}
                 </span>
-                <span className="block text-body-sm font-medium text-ink-muted">
+                <span className="block text-body-sm font-medium text-brand-charcoal/50">
                   {item.statLabel}
                 </span>
               </div>
-              <div className="pt-4 border-t border-ink/5">
-                <h4 className="text-heading-md font-display font-semibold text-ink mb-2">
+              <div className="border-t border-brand-charcoal/20 pt-4">
+                <h4 className="text-heading-md font-display font-semibold text-brand-charcoal mb-2">
                   {item.title}
                 </h4>
-                <p className="text-body-sm text-ink-light">{item.description}</p>
+                <p className="text-body-sm text-brand-charcoal/60">{item.description}</p>
                 {item.source && (
-                  <span className="block text-caption text-ink-muted mt-2 italic">
+                  <span className="block text-caption text-brand-charcoal/40 mt-2 italic">
                     Source: {item.source}
                   </span>
                 )}
@@ -207,9 +207,14 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
           ))}
         </div>
 
+        {/* Stock Chart */}
+        <div className="mb-12">
+          <StockChart height={240} />
+        </div>
+
         {/* Demand drivers */}
         <div>
-          <h3 className="text-heading-lg font-display font-semibold text-ink mb-4">
+          <h3 className="text-heading-lg font-display font-semibold text-brand-charcoal mb-4">
             Demand Drivers
           </h3>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -220,10 +225,10 @@ export default function OpportunitySection({ onNavigate }: OpportunitySectionPro
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="flex items-start gap-3 text-body-md text-ink-light"
+                className="flex items-start gap-3 text-body-md text-brand-charcoal/60"
               >
-                <span className="w-5 h-5 rounded-full bg-surface-cool flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-caption text-accent font-bold">{i + 1}</span>
+                <span className="w-5 h-5 bg-brand-charcoal/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-caption text-brand-charcoal font-bold">{i + 1}</span>
                 </span>
                 {driver}
               </motion.li>

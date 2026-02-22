@@ -13,11 +13,11 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
   return (
     <SectionShell id="zoning" index={3}>
       <div>
-        <span className="section-label">Zoning &amp; Surroundings</span>
-        <h2 className="text-display-sm sm:text-display-md font-display font-bold tracking-tight text-ink mb-3 max-w-3xl">
+        <span className="text-micro font-mono uppercase tracking-[0.12em] text-brand-charcoal/40 mb-4 block">Permits &amp; Regulatory</span>
+        <h2 className="text-display-sm sm:text-display-md font-display font-bold tracking-tight text-brand-charcoal mb-3 max-w-3xl">
           {zoning.headline}
         </h2>
-        <p className="text-body-lg text-ink-light max-w-2xl mb-12">
+        <p className="text-body-lg text-brand-charcoal/50 max-w-2xl mb-12">
           {zoning.subtitle}
         </p>
 
@@ -29,18 +29,18 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-card p-6 shadow-card"
+            className="bg-brand-charcoal/8 border border-brand-charcoal/12 p-6"
           >
-            <h3 className="text-heading-md font-display font-semibold text-ink mb-4">
-              Zoning Entitlements
+            <h3 className="text-heading-md font-display font-semibold text-brand-charcoal mb-4">
+              Permits & Tenure
             </h3>
             <div className="space-y-3">
               {zoning.entitlements.map((item) => (
                 <div key={item.label} className="flex justify-between items-baseline gap-4">
-                  <span className="text-body-sm text-ink-muted flex-shrink-0">
+                  <span className="text-body-sm text-brand-charcoal/50 flex-shrink-0">
                     {item.label}
                   </span>
-                  <span className="text-body-sm text-ink text-right font-medium">
+                  <span className="text-body-sm text-brand-charcoal text-right font-medium">
                     {item.value}
                   </span>
                 </div>
@@ -48,17 +48,17 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
             </div>
 
             {/* Highlight box */}
-            <div className="mt-6 p-4 rounded-lg bg-surface-cool border border-accent/10">
+            <div className="mt-6 p-4 bg-brand-charcoal/10 border border-brand-charcoal/20">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent">
+                <div className="w-10 h-10 bg-brand-charcoal/10 flex items-center justify-center flex-shrink-0">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-charcoal">
                     <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
                     <polyline points="22 4 12 14.01 9 11.01"/>
                   </svg>
                 </div>
                 <div>
-                  <span className="text-body-sm font-semibold text-ink block">As-of-Right — No Rezoning Required</span>
-                  <span className="text-caption text-ink-muted">38 units permitted under current zoning, eliminating 12–18 months of approval risk</span>
+                  <span className="text-body-sm font-semibold text-brand-charcoal block">Exploration Permits Active</span>
+                  <span className="text-caption text-brand-charcoal/50">All permits in place for continued drilling; mine EA process initiated</span>
                 </div>
               </div>
             </div>
@@ -70,16 +70,16 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="relative rounded-card overflow-hidden shadow-card"
+            className="relative overflow-hidden border border-brand-charcoal/12"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={zoning.mapImage}
-              alt="Zoning map showing Craigmore Drive and surroundings"
+              alt="Map showing Whitefish Lake project claims and surrounding mining district"
               className="w-full h-full object-cover"
               style={{ aspectRatio: "3/4" }}
             />
-            {/* Blue glow overlay matching property outline */}
+            {/* Glow overlay matching property outline */}
             <div
               className="absolute pointer-events-none"
               style={{
@@ -88,9 +88,8 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
                 width: "11%",
                 height: "6%",
                 transform: "translate(-50%, -50%)",
-                boxShadow: "0 0 20px 8px rgba(59,130,246,0.3), 0 0 40px 16px rgba(59,130,246,0.12)",
-                borderRadius: "3px",
-                border: "1.5px solid rgba(59,130,246,0.35)",
+                boxShadow: "0 0 20px 8px rgba(26,26,26,0.3), 0 0 40px 16px rgba(26,26,26,0.12)",
+                border: "1.5px solid rgba(26,26,26,0.35)",
                 animation: "pulse-glow 3s ease-in-out infinite",
               }}
             />
@@ -99,8 +98,8 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
 
         {/* Zoning Advantages */}
         <div className="mb-14">
-          <h3 className="text-heading-lg font-display font-semibold text-ink mb-4">
-            Zoning Advantages
+          <h3 className="text-heading-lg font-display font-semibold text-brand-charcoal mb-4">
+            Regulatory Advantages
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {zoning.advantages.map((advantage, i) => (
@@ -110,10 +109,10 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="flex items-start gap-3 text-body-md text-ink-light"
+                className="flex items-start gap-3 text-body-md text-brand-charcoal/60"
               >
-                <span className="w-5 h-5 rounded-full bg-surface-cool flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-accent">
+                <span className="w-5 h-5 bg-brand-charcoal/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-brand-charcoal">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </span>
@@ -125,8 +124,8 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
 
         {/* Surroundings */}
         <div>
-          <h3 className="text-heading-lg font-display font-semibold text-ink mb-4">
-            Neighbourhood Surroundings
+          <h3 className="text-heading-lg font-display font-semibold text-brand-charcoal mb-4">
+            Mining District Context
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {zoning.surroundings.map((item, i) => (
@@ -136,10 +135,10 @@ export default function ZoningSurroundingsSection({ onNavigate }: ZoningSurround
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="flex items-start gap-3 bg-white rounded-card p-4 shadow-card"
+                className="flex items-start gap-3 bg-brand-charcoal/5 border border-brand-charcoal/8 p-4"
               >
-                <span className="w-2 h-2 rounded-full bg-accent flex-shrink-0 mt-2" />
-                <span className="text-body-sm text-ink-light">{item}</span>
+                <span className="w-2 h-2 bg-brand-charcoal flex-shrink-0 mt-2" />
+                <span className="text-body-sm text-brand-charcoal/60">{item}</span>
               </motion.div>
             ))}
           </div>

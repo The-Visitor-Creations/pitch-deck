@@ -13,14 +13,15 @@ export default function HomeCard({ home, dark = false }: HomeCardProps) {
   const txt = dark ? "text-white" : "text-ink";
   const txtLight = dark ? "text-white/70" : "text-ink-light";
   const txtMuted = dark ? "text-white/50" : "text-ink-muted";
-  const txtAccent = dark ? "text-white/60" : "text-accent";
   const border = dark ? "border-white/10" : "border-ink/10";
 
   return (
     <div className="space-y-6 sm:space-y-8 lg:space-y-10">
       {/* Header */}
       <div>
-        <span className={`section-label ${dark ? "!text-white/40" : ""}`}>{home.name}</span>
+        <span className={`text-micro font-mono uppercase tracking-[0.12em] ${dark ? "text-white/40" : "text-ink-muted"}`}>
+          {home.name}
+        </span>
         <h2 className={`text-heading-lg sm:text-display-sm md:text-display-md font-display font-bold tracking-tight ${txt} mb-1 sm:mb-2`}>
           {home.name}
         </h2>
@@ -36,7 +37,7 @@ export default function HomeCard({ home, dark = false }: HomeCardProps) {
           transition={{ duration: 0.6 }}
         >
           <ImagePlaceholder
-            label="Exterior Render"
+            label="Mine Concept"
             aspect={home.floorPlanImage ? "16/10" : "21/9"}
             src={home.exteriorImage}
           />
@@ -49,7 +50,7 @@ export default function HomeCard({ home, dark = false }: HomeCardProps) {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <ImagePlaceholder
-              label="Floor Plan"
+              label="Mine Layout"
               aspect="16/10"
               src={home.floorPlanImage}
             />
@@ -59,10 +60,10 @@ export default function HomeCard({ home, dark = false }: HomeCardProps) {
 
       {/* Specs + Details */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {/* Key Specs */}
+        {/* Key Parameters */}
         <div className="space-y-3 sm:space-y-4">
-          <h4 className={`text-heading-md font-display font-semibold ${txt}`}>
-            Key Specs
+          <h4 className={`text-micro font-mono uppercase tracking-[0.12em] ${txt}`}>
+            Key Parameters
           </h4>
           <div className="space-y-2 sm:space-y-3">
             {home.specs.map((spec) => (
@@ -73,32 +74,32 @@ export default function HomeCard({ home, dark = false }: HomeCardProps) {
             ))}
           </div>
           <div className={`pt-3 sm:pt-4 border-t ${border}`}>
-            <span className={`text-caption font-mono ${txtMuted}`}>Price Band</span>
-            <span className={`block text-heading-md sm:text-heading-lg font-display font-bold ${txt} mt-1`}>
+            <span className={`text-micro font-mono uppercase tracking-[0.12em] ${txtMuted}`}>All-In Sustaining Cost</span>
+            <span className={`block text-display-md font-display font-bold ${txt} mt-1`}>
               {home.priceBand}
             </span>
           </div>
         </div>
 
-        {/* Features */}
+        {/* Highlights */}
         <div className="space-y-3 sm:space-y-4">
-          <h4 className={`text-heading-md font-display font-semibold ${txt}`}>
-            Features
+          <h4 className={`text-micro font-mono uppercase tracking-[0.12em] ${txt}`}>
+            Highlights
           </h4>
           <ul className="space-y-2">
             {home.features.map((f) => (
               <li key={f} className={`flex items-start gap-2 text-body-sm ${txtLight}`}>
-                <span className={`${txtAccent} mt-0.5 flex-shrink-0`}>&#8226;</span>
+                <span className={`${txtMuted} mt-0.5 flex-shrink-0`}>&mdash;</span>
                 {f}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Target Buyer */}
+        {/* Target Investor */}
         <div className="sm:col-span-2 lg:col-span-1 space-y-3 sm:space-y-4">
-          <h4 className={`text-heading-md font-display font-semibold ${txt}`}>
-            Target Buyer
+          <h4 className={`text-micro font-mono uppercase tracking-[0.12em] ${txt}`}>
+            Target Investor
           </h4>
           <p className={`text-body-sm sm:text-body-md ${txtLight} leading-relaxed`}>
             {home.targetBuyer}

@@ -111,7 +111,7 @@ export async function GET() {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition":
-          'attachment; filename="Craigmore Drive Investor Deck.pdf"',
+          'attachment; filename="Aurelia Gold Corp Investor Deck.pdf"',
         "Cache-Control": "no-store",
       },
     });

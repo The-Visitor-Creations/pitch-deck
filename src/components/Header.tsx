@@ -3,13 +3,14 @@
 import { motion } from "framer-motion";
 import { sections } from "@/data/deck";
 import { useState, useCallback } from "react";
+import StockTicker from "@/components/StockTicker";
 
 interface HeaderProps {
   onNavigate: (index: number) => void;
   showGrid: boolean;
 }
 
-const PDF_FILENAME = "Craigmore Drive Investor Deck.pdf";
+const PDF_FILENAME = "Aurelia Gold Corp Investor Deck.pdf";
 
 function isMobileDevice(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -29,12 +30,9 @@ export default function Header({ onNavigate, showGrid }: HeaderProps) {
       const url = URL.createObjectURL(blob);
 
       if (isMobileDevice()) {
-        // Mobile: open PDF in browser viewer (enables native Share/Save)
         window.open(url, "_blank");
-        // Delay revoke so the new tab has time to load the blob
         setTimeout(() => URL.revokeObjectURL(url), 60000);
       } else {
-        // Desktop: trigger file download
         const a = document.createElement("a");
         a.href = url;
         a.download = PDF_FILENAME;
@@ -56,20 +54,22 @@ export default function Header({ onNavigate, showGrid }: HeaderProps) {
   const financialsIndex = sections.findIndex((s) => s.id === "financials");
 
   return (
-    <header className="fixed top-0 right-0 left-0 lg:left-[240px] h-14 bg-white/90 backdrop-blur-sm border-b border-ink/5 z-30 flex items-center justify-between px-4 sm:px-6 pl-16 lg:pl-6 no-print">
+    <header className="fixed top-0 right-0 left-0 lg:left-[240px] h-14 bg-brand-charcoal/95 backdrop-blur-sm border-b border-white/10 z-30 flex items-center justify-between px-4 sm:px-6 pl-16 lg:pl-6 no-print">
       <div className="flex items-center gap-4">
         {!showGrid && (
           <>
+            <StockTicker />
+            <span className="w-px h-3 bg-white/15 hidden lg:block" />
             <button
               onClick={() => onNavigate(zoningIndex)}
-              className="text-body-sm text-ink-muted hover:text-ink transition-colors hidden md:block"
+              className="text-micro font-mono uppercase tracking-[0.12em] text-white/40 hover:text-white/70 transition-colors hidden lg:block"
             >
-              Jump to Zoning
+              Jump to Permits
             </button>
-            <span className="text-ink/10 hidden md:block">|</span>
+            <span className="text-white/10 hidden lg:block">|</span>
             <button
               onClick={() => onNavigate(financialsIndex)}
-              className="text-body-sm text-ink-muted hover:text-ink transition-colors hidden md:block"
+              className="text-micro font-mono uppercase tracking-[0.12em] text-white/40 hover:text-white/70 transition-colors hidden lg:block"
             >
               Jump to Financials
             </button>
@@ -82,7 +82,7 @@ export default function Header({ onNavigate, showGrid }: HeaderProps) {
         disabled={downloading}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        className="flex items-center gap-2 bg-ink text-white px-4 py-2.5 sm:py-2 rounded-lg text-body-sm font-medium hover:bg-ink-light transition-colors disabled:opacity-50 min-h-[44px] sm:min-h-0"
+        className="flex items-center gap-2 bg-brand-mustard text-brand-charcoal px-4 py-2.5 sm:py-2 text-body-sm font-bold hover:bg-brand-mustard/90 transition-colors disabled:opacity-50 min-h-[44px] sm:min-h-0"
       >
         {downloading ? (
           <motion.svg

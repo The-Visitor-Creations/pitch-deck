@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
@@ -37,7 +37,8 @@
   }
 
   .section-label {
-    @apply text-caption font-mono uppercase tracking-widest text-ink-muted mb-4;
+    @apply text-micro font-mono uppercase tracking-[0.12em] mb-4 block;
+    opacity: 0.5;
   }
 
   .stat-number {
@@ -49,11 +50,11 @@
   }
 
   .card-base {
-    @apply bg-surface rounded-card p-6 shadow-card transition-all duration-300 ease-smooth;
+    @apply bg-transparent border border-ink/10 p-6 transition-all duration-300;
   }
 
   .card-interactive {
-    @apply card-base hover:shadow-card-hover hover:-translate-y-0.5 cursor-pointer;
+    @apply card-base hover:border-ink/20 cursor-pointer;
   }
 }
 
@@ -61,44 +62,99 @@
   .text-balance {
     text-wrap: balance;
   }
-
-  .snap-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-  }
 }
 
-/* Scroll container — smooth free-scroll */
-.scroll-snap-container {
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: calc(100vh - 3.5rem);
-  height: calc(100dvh - 3.5rem); /* Account for header height (pt-14 = 3.5rem) */
+/* Smooth scroll for the whole page */
+html {
   scroll-behavior: smooth;
-  overscroll-behavior-y: contain;
 }
 
-/* GPU-accelerate section transitions */
-.snap-section {
-  transform: translateZ(0);
+/* Offset anchored sections so they clear the fixed header */
+[data-section-shell] {
+  scroll-margin-top: 3.5rem;
 }
 
-/* Custom scrollbar */
-.scroll-snap-container::-webkit-scrollbar {
-  width: 4px;
+/* Grain texture overlay */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
 }
 
-.scroll-snap-container::-webkit-scrollbar-track {
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: -200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: grain 0.5s steps(1) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  30% { transform: translate(3%, -15%); }
+  50% { transform: translate(12%, 9%); }
+  70% { transform: translate(9%, 4%); }
+  90% { transform: translate(-1%, 7%); }
+}
+
+/* Dotted grid background */
+.dotted-grid {
+  background-image: radial-gradient(circle, currentColor 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  opacity: 0.04;
+}
+
+/* Corner markers for data panels */
+.corner-markers {
+  position: relative;
+}
+
+.corner-markers::before,
+.corner-markers::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: currentColor;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.corner-markers::before {
+  top: 0;
+  left: 0;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.corner-markers::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+/* Custom scrollbar — thin, adapts to context */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.scroll-snap-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
+*::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 3px;
 }
 
-.scroll-snap-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5);
 }
 
 /* Pulse animation for map glow */

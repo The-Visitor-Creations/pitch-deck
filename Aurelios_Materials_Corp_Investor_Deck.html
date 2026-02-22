@@ -1,0 +1,3221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurelios Materials Corp. — Corporate Presentation | February 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg-primary: #12100e;
+    --bg-secondary: #1c1916;
+    --bg-card: #241f1b;
+    --bg-card-alt: #2c2520;
+    --accent-blue: #9E1B32;
+    --accent-teal: #184A63;
+    --accent-gold: #CDAA88;
+    --accent-red: #7A2E2E;
+    --toffee: #7A4E2D;
+    --tawny: #6F2C3F;
+    --syrah: #7A2E2E;
+    --amberlight: #CDAA88;
+    --text-primary: #f2ede8;
+    --text-secondary: #9a8e80;
+    --text-muted: #6b5f52;
+    --border-color: #302a24;
+    --border-accent: rgba(158, 27, 50, 0.2);
+    --gradient-blue: linear-gradient(135deg, #9E1B32, #7A2E2E);
+    --gradient-teal: linear-gradient(135deg, #184A63, #6F2C3F);
+    --gradient-dark: linear-gradient(180deg, #12100e 0%, #1c1916 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    /* scroll-snap removed for clean continuous scroll */
+  }
+
+  body {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* TOP BAR                                         */
+  /* ═══════════════════════════════════════════════ */
+  .top-bar {
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    z-index: 1000;
+    background: rgba(18, 16, 14, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 52px;
+  }
+  .nav-logo {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .nav-logo span { color: var(--accent-blue); }
+
+  .top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-stock-tracker {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+  .nav-stock-tracker .tracker-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    border: 1px dashed rgba(158, 27, 50, 0.3);
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(158, 27, 50, 0.05);
+    white-space: nowrap;
+  }
+  .nav-stock-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .nav-stock-metric .sm-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+  .nav-stock-metric .sm-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  .nav-jump-links {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .nav-jump-links a {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    text-decoration: none;
+    padding: 5px 12px;
+    border: 1px solid rgba(158, 27, 50, 0.3);
+    border-radius: 4px;
+    background: rgba(158, 27, 50, 0.08);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .nav-jump-links a:hover {
+    background: rgba(158, 27, 50, 0.2);
+    border-color: rgba(158, 27, 50, 0.5);
+    color: #fff;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* LEFT SIDEBAR — Always Open                     */
+  /* ═══════════════════════════════════════════════ */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    background: #0f0d0b;
+    border-right: 1px solid var(--border-color);
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .sidebar-header {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+  .sidebar-logo span { color: var(--accent-blue); }
+  .sidebar-tickers {
+    margin-top: 8px;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+  .sidebar-tickers span { color: var(--accent-gold); }
+
+  .sidebar-nav {
+    padding: 12px 0;
+    flex: 1;
+  }
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.15s ease;
+    border-left: 3px solid transparent;
+    line-height: 1.3;
+  }
+  .sidebar-nav a:hover {
+    background: rgba(158, 27, 50, 0.06);
+    color: var(--text-primary);
+    border-left-color: rgba(158, 27, 50, 0.4);
+  }
+  .sidebar-nav a.active {
+    background: rgba(158, 27, 50, 0.1);
+    color: var(--text-primary);
+    font-weight: 700;
+    border-left-color: var(--accent-blue);
+  }
+  /* Dot indicator on active item (Craigmore style) */
+  .sidebar-nav a::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    margin-left: auto;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .sidebar-nav a.active::after {
+    width: 7px;
+    height: 7px;
+  }
+  .sidebar-nav a .sn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+  .sidebar-nav a.active .sn {
+    color: var(--accent-blue);
+    opacity: 1;
+  }
+  .sidebar-nav .nav-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 8px 18px;
+  }
+
+  .sidebar-footer {
+    padding: 14px 18px;
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+  }
+  .sidebar-footer .key-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .sidebar-footer .key-hint kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    background: var(--bg-card);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+  /* Progress bar (Craigmore style) */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+  .progress-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border-color);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent-blue);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 7.14%;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* SECTION TRANSITION BAR (Craigmore style)       */
+  /* ═══════════════════════════════════════════════ */
+  .section-transition {
+    margin-left: 240px;
+    background: #1c1916;
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    padding: 14px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-transition a {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    min-width: 160px;
+  }
+  .section-transition a:hover { color: var(--text-primary); }
+  .section-transition a:last-child { justify-content: flex-end; }
+  .section-transition .dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+  .section-transition .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    opacity: 0.3;
+    transition: all 0.2s;
+  }
+  .section-transition .dot.active {
+    width: 20px;
+    border-radius: 3px;
+    background: var(--accent-blue);
+    opacity: 1;
+  }
+
+  /* Download PDF button */
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: var(--accent-blue);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .download-btn:hover {
+    background: #7A2E2E;
+    transform: translateY(-1px);
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* ARROW NAV CONTROLS                              */
+  /* ═══════════════════════════════════════════════ */
+  .slide-nav-arrows {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    display: flex;
+    gap: 8px;
+    z-index: 900;
+  }
+  .slide-nav-arrows button {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: rgba(18, 16, 14, 0.9);
+    backdrop-filter: blur(12px);
+    color: var(--text-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .slide-nav-arrows button:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    background: rgba(158, 27, 50, 0.1);
+  }
+  .slide-counter {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* SLIDE SECTIONS                                  */
+  /* ═══════════════════════════════════════════════ */
+  .slide {
+    min-height: 100vh;
+    margin-left: 240px;
+    padding: 80px 60px 80px;
+    position: relative;
+    /* scroll-snap-align removed for clean continuous scroll */
+    border-bottom: 1px solid var(--border-color);
+  }
+  @media (max-width: 900px) {
+    .slide { padding: 80px 24px 60px; margin-left: 0; }
+  }
+  .slide-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Alternating slide backgrounds */
+  .slide-dark { background: #12100e; }
+  .slide-darker { background: #14120f; }
+  .slide-darkest { background: #0f0d0b; }
+  .slide-warm { background: linear-gradient(180deg, #181410 0%, #12100e 100%); }
+  .slide-cool { background: linear-gradient(180deg, #10141a 0%, #12100e 100%); }
+  .slide-accent {
+    background: linear-gradient(135deg, #9E1B32 0%, #7A2E2E 60%, #6F2C3F 100%);
+  }
+  .slide-accent h2, .slide-accent h3, .slide-accent h4,
+  .slide-accent .metric-card-value, .slide-accent .metric-card-label,
+  .slide-accent blockquote { color: #fff; }
+  .slide-accent p, .slide-accent li, .slide-accent .bullet-list li { color: rgba(255,255,255,0.85); }
+  .slide-accent .slide-tag { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25); color: #fff; }
+  .slide-accent .section-divider { background: rgba(255,255,255,0.4); }
+  .slide-accent .metric-card { background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.12); }
+  .slide-accent blockquote { background: rgba(0,0,0,0.15); border-left-color: rgba(255,255,255,0.5); }
+  .slide-accent .bullet-list li::before { background: #fff; }
+  .slide-accent .bullet-list li strong { color: #fff; }
+  .slide-accent .data-table th { background: rgba(0,0,0,0.2); color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.1); }
+  .slide-accent .data-table td { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.1); }
+  .slide-accent .data-table td:first-child { color: #fff; }
+  .slide-accent .data-table tr:hover td { background: rgba(0,0,0,0.15); }
+  .slide-accent .data-table .highlight-row td { background: rgba(255,255,255,0.1) !important; color: #fff !important; }
+
+  /* White-background financial slides */
+  .slide-white {
+    background: #ffffff;
+    color: #333333;
+  }
+  .slide-white h2, .slide-white h3 { color: #111111; }
+  .slide-white h4 { color: #184A63; }
+  .slide-white p, .slide-white li, .slide-white td, .slide-white th, .slide-white blockquote, .slide-white span, .slide-white div { color: #333333; }
+  .slide-white strong { color: #111; }
+  .slide-white .slide-tag { background: rgba(158, 27, 50, 0.08); border-color: rgba(158, 27, 50, 0.2); color: #9E1B32; }
+  .slide-white .section-divider { background: #9E1B32; }
+  .slide-white .metric-card { background: #f5f5f5; border-color: #e0e0e0; }
+  .slide-white .metric-card:hover { border-color: #9E1B32; }
+  .slide-white .metric-card-label { color: #666666; }
+  .slide-white .metric-card-value { color: #111111; }
+  .slide-white .metric-card-value.accent { color: #9E1B32; }
+  .slide-white .data-table { border-color: #e0e0e0; }
+  .slide-white .data-table th { background: #f5f5f5; color: #184A63; border-color: #e0e0e0; }
+  .slide-white .data-table td { color: #333; border-color: #e8e8e8; }
+  .slide-white .data-table td:first-child { color: #111; }
+  .slide-white .data-table tr:hover td { background: #fafafa; }
+  .slide-white .highlight-row td { background: rgba(158, 27, 50, 0.06) !important; color: #9E1B32 !important; font-weight: 700; }
+  .slide-white .bullet-list li { color: #444; }
+  .slide-white .bullet-list li::before { background: #9E1B32; }
+  .slide-white .bullet-list li strong { color: #111; }
+  .slide-white .bullet-list.teal li::before { background: #184A63; }
+  .slide-white blockquote { background: #f8f8f8; border-left-color: #184A63; color: #444; }
+  .slide-white .two-col > div { border-radius: 10px; padding: 28px; }
+  .slide-white .placeholder { background: #f0f0f0; border-color: #ddd; color: #999; }
+  .slide-white .comparison-table th { background: #f5f5f5; color: #184A63; border-color: #e0e0e0; }
+  .slide-white .comparison-table td { color: #333; border-color: #e8e8e8; }
+  .slide-white .comparison-table .aum-row td { background: rgba(158, 27, 50, 0.06); color: #111; }
+  .slide-white .contact-block h3 { color: #9E1B32; }
+  .slide-white .contact-block p { color: #333; }
+  .slide-white .ask-amount { color: #9E1B32; }
+  .slide-white .ask-label { color: #666; }
+  .slide-white .timeline-year { color: #184A63; }
+  .slide-white .timeline-title { color: #111; }
+  .slide-white .timeline-items li { color: #444; }
+  .slide-white .board-table th { background: #f5f5f5; color: #184A63; border-color: #e0e0e0; }
+  .slide-white .board-table td { color: #333; border-color: #e8e8e8; }
+  .slide-white .board-table td:first-child { color: #111; }
+
+  .slide-accent-dark {
+    background: linear-gradient(180deg, #1a100c 0%, #12100e 100%);
+    border-left: 4px solid #9E1B32;
+  }
+
+  /* Red background slide (Management Team) */
+  .slide-red {
+    background: linear-gradient(135deg, #9E1B32 0%, #7A2E2E 50%, #6F2C3F 100%);
+  }
+  .slide-red h2, .slide-red h3, .slide-red h4 { color: #fff; }
+  .slide-red p, .slide-red li { color: rgba(255,255,255,0.85); }
+  .slide-red .slide-tag { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); color: #fff; }
+  .slide-red .section-divider { background: rgba(255,255,255,0.4); }
+  .slide-red .team-card {
+    background: rgba(0,0,0,0.2);
+    border-color: rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+  }
+  .slide-red .team-card:hover { border-color: rgba(255,255,255,0.3); }
+  .slide-red .team-photo {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+  }
+  .slide-red .team-info h3 { color: #fff; }
+  .slide-red .team-info .team-title { color: var(--accent-gold); }
+  .slide-red .team-info p { color: rgba(255,255,255,0.75); }
+  .slide-red .board-table th { background: rgba(0,0,0,0.2); color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1); }
+  .slide-red .board-table td { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.1); }
+  .slide-red .board-table td:first-child { color: #fff; }
+  .slide-red blockquote { background: rgba(0,0,0,0.15); border-left-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.9); }
+
+  /* Slide number tag */
+  .slide-tag {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    background: rgba(158, 27, 50, 0.1);
+    border: 1px solid rgba(158, 27, 50, 0.2);
+    padding: 4px 14px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Outfit', sans-serif;
+  }
+  h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-gold);
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    max-width: 700px;
+    margin-bottom: 40px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    max-width: 800px;
+    margin-bottom: 20px;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* TITLE SLIDE                                     */
+  /* ═══════════════════════════════════════════════ */
+  .title-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 0 !important;
+    position: relative;
+    overflow: hidden;
+    background: #0f0d0b;
+  }
+
+  /* Full-bleed hero background image */
+  .title-slide .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('photo-industrial-1.jpg');
+    background-size: cover;
+    background-position: center;
+    /* Desaturate, cool tones, lift shadows, soften contrast */
+    filter: saturate(0.35) brightness(1.15) contrast(0.82) sepia(0.08);
+    z-index: 0;
+  }
+
+  /* Large soft gradient overlay from left — creates negative space for text */
+  .title-slide .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(to right, rgba(14,14,14,0.97) 0%, rgba(14,14,14,0.92) 28%, rgba(14,14,14,0.72) 48%, rgba(14,14,14,0.3) 68%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Cool-tone tint layer */
+  .title-slide .hero-tint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(160, 190, 220, 0.06);
+    mix-blend-mode: overlay;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Title content sits on top of everything */
+  .title-slide .slide-inner {
+    position: relative;
+    z-index: 10;
+    padding: 80px 60px;
+    max-width: 700px;
+  }
+  .tagline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 400;
+    color: var(--accent-gold);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .date-line {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 24px;
+    letter-spacing: 1px;
+  }
+  .ticker-badge {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+  }
+
+  /* Stock tracker placeholder */
+  .stock-tracker {
+    width: 100%;
+    border: 1px dashed var(--accent-blue);
+    border-radius: 8px;
+    padding: 20px 28px;
+    margin-bottom: 48px;
+    background: rgba(158, 27, 50, 0.04);
+    position: relative;
+    z-index: 1;
+  }
+  .stock-tracker-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 14px;
+  }
+  .stock-metrics {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .stock-metric {
+    display: flex;
+    flex-direction: column;
+  }
+  .stock-metric-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .stock-metric-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .stock-embed-note {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* PLACEHOLDER BLOCKS                              */
+  /* ═══════════════════════════════════════════════ */
+  .placeholder {
+    border: 1px dashed var(--accent-blue);
+    border-radius: 8px;
+    padding: 32px;
+    margin: 28px 0;
+    background: rgba(158, 27, 50, 0.03);
+    text-align: center;
+    color: var(--accent-blue);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .placeholder.tall { min-height: 220px; }
+  .placeholder.wide { min-height: 160px; }
+  .placeholder-icon {
+    font-size: 28px;
+    margin-bottom: 4px;
+    opacity: 0.6;
+  }
+  .placeholder-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+    max-width: 500px;
+    letter-spacing: 0;
+  }
+
+  /* Image placeholder variant */
+  .placeholder-image {
+    border-color: var(--accent-gold);
+    background: rgba(205, 170, 136, 0.06);
+    color: var(--accent-gold);
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* TABLES                                          */
+  /* ═══════════════════════════════════════════════ */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    background: rgba(158, 27, 50, 0.06);
+    border-bottom: 2px solid var(--border-color);
+  }
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+  .data-table tr:hover td {
+    background: rgba(158, 27, 50, 0.03);
+  }
+  .data-table td:first-child {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .data-table td strong {
+    color: var(--text-primary);
+  }
+  .data-table .highlight-row td {
+    color: var(--text-primary);
+    font-weight: 700;
+    background: rgba(158, 27, 50, 0.06);
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* METRIC CARDS                                    */
+  /* ═══════════════════════════════════════════════ */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 28px 0;
+  }
+  @media (max-width: 1100px) {
+    .metric-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .metric-grid { grid-template-columns: 1fr; }
+  }
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+  .metric-card:hover { border-color: var(--accent-blue); }
+  .metric-card-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .metric-card-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+  .metric-card-value.accent { color: var(--accent-gold); }
+
+  /* ═══════════════════════════════════════════════ */
+  /* BULLET LISTS                                    */
+  /* ═══════════════════════════════════════════════ */
+  .bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 28px;
+  }
+  .bullet-list li {
+    position: relative;
+    padding: 8px 0 8px 24px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .bullet-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--accent-blue);
+  }
+  .bullet-list li strong { color: var(--text-primary); }
+
+  .bullet-list.teal li::before { background: var(--accent-teal); }
+  .bullet-list.gold li::before { background: var(--accent-gold); }
+
+  /* ═══════════════════════════════════════════════ */
+  /* BLOCKQUOTE                                      */
+  /* ═══════════════════════════════════════════════ */
+  blockquote {
+    border-left: 3px solid var(--accent-gold);
+    padding: 16px 24px;
+    margin: 28px 0;
+    background: rgba(205, 170, 136, 0.06);
+    border-radius: 0 8px 8px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-style: italic;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* TWO-COL LAYOUT                                  */
+  /* ═══════════════════════════════════════════════ */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 28px 0;
+  }
+  @media (max-width: 800px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* SECTION DIVIDER                                 */
+  /* ═══════════════════════════════════════════════ */
+  .section-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-blue);
+    border-radius: 2px;
+    margin: 24px 0;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* TIMELINE                                        */
+  /* ═══════════════════════════════════════════════ */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin: 32px 0;
+    position: relative;
+  }
+  @media (max-width: 900px) {
+    .timeline { grid-template-columns: 1fr 1fr; }
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 38px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border-color);
+  }
+  .timeline-phase {
+    padding: 0 16px;
+    position: relative;
+  }
+  .timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    border: 3px solid var(--bg-primary);
+    position: relative;
+    z-index: 2;
+    margin-bottom: 20px;
+    margin-top: 32px;
+  }
+  .timeline-phase.completed .timeline-dot { background: var(--accent-teal); }
+  .timeline-phase.active .timeline-dot {
+    background: var(--accent-gold);
+    box-shadow: 0 0 12px rgba(205, 170, 136, 0.5);
+  }
+  .timeline-year {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+  }
+  .timeline-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 8px 0;
+  }
+  .timeline-items {
+    list-style: none;
+    padding: 0;
+  }
+  .timeline-items li {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 4px 0;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .timeline-items li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+    font-size: 10px;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* COMPARISON TABLE                                */
+  /* ═══════════════════════════════════════════════ */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 13px;
+  }
+  .comparison-table th {
+    padding: 12px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--border-color);
+    text-align: left;
+  }
+  .comparison-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+  .comparison-table .aum-row {
+    background: rgba(158, 27, 50, 0.06);
+  }
+  .comparison-table .aum-row td {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* TEAM CARDS                                      */
+  /* ═══════════════════════════════════════════════ */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 28px 0;
+  }
+  @media (max-width: 1100px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .team-grid { grid-template-columns: 1fr; }
+  }
+  .team-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    transition: border-color 0.2s;
+  }
+  .team-card:hover { border-color: var(--accent-blue); }
+  .team-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--bg-card-alt);
+    border: 2px dashed var(--accent-blue);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .team-info h3 {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+  .team-info .team-title {
+    font-size: 12px;
+    color: var(--accent-gold);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .team-info p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* ESG PILLARS                                     */
+  /* ═══════════════════════════════════════════════ */
+  .esg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 28px 0;
+  }
+  @media (max-width: 900px) {
+    .esg-grid { grid-template-columns: 1fr; }
+  }
+  .esg-pillar {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 28px;
+    border-top: 3px solid var(--accent-teal);
+  }
+  .esg-pillar.social { border-top-color: var(--accent-blue); }
+  .esg-pillar.governance { border-top-color: var(--accent-gold); }
+  .esg-pillar h4 { margin-bottom: 16px; }
+
+  /* ═══════════════════════════════════════════════ */
+  /* INVESTMENT THESIS PILLARS                       */
+  /* ═══════════════════════════════════════════════ */
+  .thesis-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 28px 0;
+  }
+  @media (max-width: 1100px) {
+    .thesis-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .thesis-grid { grid-template-columns: 1fr; }
+  }
+  .thesis-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 24px;
+    border-left: 3px solid var(--accent-blue);
+  }
+  .slide-accent .thesis-card {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 3px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(8px);
+  }
+  .slide-accent .thesis-card:hover { border-color: rgba(255,255,255,0.25); }
+  .slide-accent .thesis-card h3 { color: #fff; }
+  .slide-accent .numbered-header .num {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.25);
+    color: #fff;
+  }
+  .thesis-card h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  .thesis-card .bullet-list li { font-size: 13px; }
+
+  /* ═══════════════════════════════════════════════ */
+  /* RETURN POTENTIAL — Liquid glass box              */
+  /* ═══════════════════════════════════════════════ */
+  .return-potential-glass {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 36px 40px;
+    margin-top: 36px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  /* Photo background inside the glass box */
+  .rp-photo-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('investment-thesis-photo.png');
+    background-size: cover;
+    background-position: center 40%;
+    filter: saturate(0.35) brightness(0.85) contrast(0.9);
+    z-index: 0;
+  }
+  .rp-photo-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(12,10,8,0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1;
+  }
+  .return-potential-glass h4,
+  .return-potential-glass table,
+  .return-potential-glass blockquote {
+    position: relative;
+    z-index: 2;
+  }
+  .return-potential-glass h4 {
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .return-potential-glass .data-table th {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.75);
+    border-color: rgba(255,255,255,0.1);
+  }
+  .return-potential-glass .data-table td {
+    color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.08);
+  }
+  .return-potential-glass .data-table td:first-child {
+    color: #fff;
+  }
+  .return-potential-glass .data-table tr:hover td {
+    background: rgba(255,255,255,0.06);
+  }
+  .return-potential-glass .data-table .highlight-row td {
+    background: rgba(255,255,255,0.12) !important;
+    color: #fff !important;
+  }
+  .return-potential-glass blockquote {
+    background: rgba(255,255,255,0.06);
+    border-left-color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 0;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* ASK / CTA                                       */
+  /* ═══════════════════════════════════════════════ */
+  .ask-amount {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 900;
+    color: var(--accent-gold);
+    margin: 16px 0 8px;
+  }
+  .ask-label {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* DISCLAIMER                                      */
+  /* ═══════════════════════════════════════════════ */
+  .disclaimer-section {
+    min-height: auto;
+    margin-left: 240px;
+    padding: 40px 60px;
+    background: #0f0d0b;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .disclaimer-text {
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 900px;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* CONTACT / FOOTER                                */
+  /* ═══════════════════════════════════════════════ */
+  .contact-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: stretch;
+    margin-top: 40px;
+  }
+  @media (max-width: 800px) {
+    .contact-row { grid-template-columns: 1fr; }
+  }
+  .contact-block {
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    flex: 1;
+    min-width: 280px;
+  }
+  .contact-block h3 { color: var(--accent-gold); margin-bottom: 12px; }
+  .contact-block p { font-size: 13px; margin-bottom: 4px; }
+  .contact-cta {
+    flex: 0 0 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+  }
+  .contact-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, #9E1B32, #7A2E2E);
+    border: none;
+    border-radius: 8px;
+    padding: 16px 36px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(158, 27, 50, 0.3);
+  }
+  .contact-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(158, 27, 50, 0.45);
+    background: linear-gradient(135deg, #b52240, #9E1B32);
+  }
+
+  .footer {
+    text-align: center;
+    margin-left: 240px;
+    padding: 40px 60px;
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* STICKY PROMO FOOTER                             */
+  /* ═══════════════════════════════════════════════ */
+  .sticky-promo {
+    position: fixed;
+    bottom: 0;
+    left: 240px;
+    right: 0;
+    z-index: 800;
+    background: rgba(18, 16, 14, 0.92);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border-color);
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    color: var(--text-secondary);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .sticky-promo.hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+  .sticky-promo a {
+    color: var(--accent-gold);
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .sticky-promo a:hover {
+    color: #e0c9a8;
+    text-decoration: underline;
+  }
+  @media (max-width: 900px) {
+    .sticky-promo { left: 0; font-size: 12px; padding: 10px 20px; }
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* BOARD TABLE                                     */
+  /* ═══════════════════════════════════════════════ */
+  .board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  .board-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--border-color);
+  }
+  .board-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+  .board-table td:first-child { color: var(--text-primary); font-weight: 600; }
+
+  /* Utility */
+  .mt-0 { margin-top: 0; }
+  .mb-0 { margin-bottom: 0; }
+  .mb-sm { margin-bottom: 12px; }
+  .mb-md { margin-bottom: 24px; }
+  .mb-lg { margin-bottom: 40px; }
+  .text-accent { color: var(--accent-blue); }
+  .text-teal { color: var(--accent-gold); }
+  .text-gold { color: var(--accent-gold); }
+  .fw-800 { font-weight: 800; }
+
+  /* Numbered section header */
+  .numbered-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .numbered-header .num {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(158, 27, 50, 0.1);
+    border: 1px solid rgba(158, 27, 50, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent-blue);
+    flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* LOAD-IN SPLASH ANIMATION                       */
+  /* ═══════════════════════════════════════════════ */
+  .splash-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 99999;
+    background: #0f0d0b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 32vh;
+    pointer-events: all;
+    opacity: 1;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .splash-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Logo — appears first */
+  .splash-logo {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: splash-logo-in 0.6s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    text-align: center;
+  }
+  @keyframes splash-logo-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .splash-logo .splash-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  .splash-logo .splash-name span {
+    color: var(--accent-blue);
+  }
+  /* "Investor Presentation" — appears second */
+  .splash-logo .splash-sub {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 5px;
+    opacity: 0;
+    animation: splash-fade-in 0.5s 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  /* Spacer between logo block and price block */
+  .splash-price-spacer {
+    height: 36px;
+  }
+
+  /* Exchange label — appears with price */
+  .splash-exchange-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    opacity: 0;
+  }
+
+  /* Odometer price container */
+  .splash-odometer {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    overflow: hidden;
+  }
+
+  /* Each digit column */
+  .splash-digit-col {
+    display: inline-block;
+    height: 1.15em;
+    overflow: hidden;
+    position: relative;
+  }
+  .splash-digit-strip {
+    display: flex;
+    flex-direction: column;
+    transition: transform 1.1s cubic-bezier(0.33, 0, 0.2, 1);
+  }
+  .splash-digit-strip span {
+    display: block;
+    height: 1.15em;
+    line-height: 1.15em;
+    text-align: center;
+  }
+  /* Static characters ($, .) */
+  .splash-digit-static {
+    display: inline-block;
+    height: 1.15em;
+    line-height: 1.15em;
+  }
+
+  /* Change badge */
+  .splash-change {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+    opacity: 0;
+    transition: opacity 0.4s ease, color 0.4s ease;
+  }
+  .splash-change.visible {
+    opacity: 1;
+    color: #22c55e;
+  }
+
+  @keyframes splash-fade-in {
+    to { opacity: 1; }
+  }
+
+  /* Prevent scroll while splash is visible */
+  body.splash-active {
+    overflow: hidden;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* CSS GRID SYSTEM                                 */
+  /* ═══════════════════════════════════════════════ */
+  .grid { display: grid; gap: 24px; margin: 28px 0; }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-6 { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 1100px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-6 { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 800px) {
+    .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* GLOBAL GRID ALIGNMENT                          */
+  /* ═══════════════════════════════════════════════ */
+  .slide-inner > * {
+    max-width: 100%;
+  }
+  /* Ensure all grid containers share consistent 24px gap and full width */
+  .metric-grid,
+  .two-col,
+  .team-grid,
+  .thesis-grid,
+  .esg-grid,
+  .timeline {
+    width: 100%;
+    gap: 24px;
+  }
+  /* Ensure all grid children align to the same baseline */
+  .metric-grid > *,
+  .two-col > *,
+  .team-grid > *,
+  .thesis-grid > *,
+  .esg-grid > * {
+    min-width: 0; /* prevent grid blowout */
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* SLIDE-LIGHT — Warm off-white (Executive Summary) */
+  /* ═══════════════════════════════════════════════ */
+  .slide-light {
+    background: #f7f2ec;
+  }
+  .slide-light h2, .slide-light h3 { color: #1a1512; }
+  .slide-light h4 { color: #7A4E2D; }
+  .slide-light p, .slide-light li { color: #4a3f35; }
+  .slide-light .slide-tag { background: rgba(158, 27, 50, 0.08); border-color: rgba(158, 27, 50, 0.18); color: #9E1B32; }
+  .slide-light .section-divider { background: linear-gradient(135deg, #9E1B32, #7A2E2E); }
+  .slide-light .metric-card { background: #fff; border-color: #e0d6cc; }
+  .slide-light .metric-card:hover { border-color: #9E1B32; }
+  .slide-light .metric-card-label { color: #7a6e62; }
+  .slide-light .metric-card-value { color: #1a1512; }
+  .slide-light .metric-card-value.accent { color: #9E1B32; }
+  .slide-light .bullet-list li { color: #4a3f35; }
+  .slide-light .bullet-list li::before { background: #184A63; }
+  .slide-light .bullet-list li strong { color: #1a1512; }
+  .slide-light .bullet-list.teal li::before { background: #184A63; }
+  .slide-light blockquote { background: rgba(122, 78, 45, 0.06); border-left-color: #7A4E2D; color: #4a3f35; }
+
+  /* ═══════════════════════════════════════════════ */
+  /* SLIDE-HERO — Photo background slides            */
+  /* ═══════════════════════════════════════════════ */
+  .slide-hero {
+    position: relative;
+    overflow: hidden;
+  }
+  .slide-hero .hero-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.3) brightness(1.1) contrast(0.85) sepia(0.1);
+    z-index: 0;
+  }
+  .slide-hero .hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(180deg, rgba(18,16,14,0.92) 0%, rgba(18,16,14,0.7) 40%, rgba(18,16,14,0.85) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .slide-hero .hero-tint {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(158, 27, 50, 0.04);
+    mix-blend-mode: overlay;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .slide-hero .slide-inner {
+    position: relative;
+    z-index: 10;
+  }
+</style>
+</head>
+<body class="splash-active">
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- LOAD-IN SPLASH OVERLAY                              -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="splash-overlay" id="splash-overlay">
+  <div class="splash-logo">
+    <div class="splash-name">Aurelios <span>Materials</span></div>
+    <div class="splash-sub">Investor Presentation</div>
+  </div>
+  <div class="splash-price-spacer"></div>
+  <div class="splash-exchange-label" id="splash-exchange">TSXV: AUM</div>
+  <div class="splash-odometer" id="splash-odometer">
+    <!-- Built by JS -->
+  </div>
+  <div class="splash-change" id="splash-change">+0.18 (+5.56%)</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- LEFT SIDEBAR — Always Open                          -->
+<!-- ═══════════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="https://www.aurelioscorp.com" style="display:flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:14px; padding:8px 12px; border-radius:6px; background:rgba(158,27,50,0.08); border:1px solid rgba(158,27,50,0.15); transition:all 0.2s;" onmouseover="this.style.background='rgba(158,27,50,0.16)'" onmouseout="this.style.background='rgba(158,27,50,0.08)'">
+      <span style="font-size:16px; color:var(--accent-blue);">&#8962;</span>
+      <span style="font-size:12px; font-weight:700; color:var(--text-primary); letter-spacing:1px; text-transform:uppercase;">Home</span>
+    </a>
+    <div class="sidebar-logo">Aurelios <span>Materials</span></div>
+    <div class="sidebar-tickers">TSXV: <span>AUM</span></div>
+  </div>
+  <nav class="sidebar-nav" id="sidebar-nav">
+    <a href="#slide-1" data-slide="1"><span class="sn">01</span> Title</a>
+    <a href="#slide-2" data-slide="2"><span class="sn">02</span> Executive Summary</a>
+    <a href="#slide-3" data-slide="3"><span class="sn">03</span> Macro Opportunity</a>
+    <a href="#slide-4" data-slide="4"><span class="sn">04</span> The Problem</a>
+    <a href="#slide-5" data-slide="5"><span class="sn">05</span> Solution / Technology</a>
+    <a href="#slide-6" data-slide="6"><span class="sn">06</span> Competitive Landscape</a>
+    <a href="#slide-7" data-slide="7"><span class="sn">07</span> Asset Portfolio</a>
+    <div class="nav-divider"></div>
+    <a href="#slide-8" data-slide="8"><span class="sn">08</span> ESG &amp; Sustainability</a>
+    <a href="#slide-9" data-slide="9"><span class="sn">09</span> Development Roadmap</a>
+    <a href="#slide-10" data-slide="10"><span class="sn">10</span> Financials</a>
+    <a href="#slide-11" data-slide="11"><span class="sn">11</span> Capital Structure</a>
+    <div class="nav-divider"></div>
+    <a href="#slide-12" data-slide="12"><span class="sn">12</span> Management Team</a>
+    <a href="#slide-13" data-slide="13"><span class="sn">13</span> Investment Thesis</a>
+    <a href="#slide-14" data-slide="14"><span class="sn">14</span> The Ask</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="progress-wrap">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="progress-count">1/14</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- TOP BAR — Stock Tracker + Jump Links                -->
+<!-- ═══════════════════════════════════════════════════ -->
+<header class="top-bar">
+  <div style="display:flex; align-items:center; gap:24px;">
+    <div class="nav-logo">Aurelios <span>Materials</span></div>
+    <div style="display:flex; align-items:center; gap:16px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-secondary);">
+      <span>TSXV: <strong style="color:var(--accent-blue);">AUM</strong></span>
+      <span style="color:var(--border-color);">|</span>
+      <span>TSX: <strong style="color:var(--text-primary);">$3.42</strong></span>
+      <span style="color:var(--border-color);">|</span>
+      <span>CSE: <strong style="color:var(--text-primary);">$3.38</strong></span>
+    </div>
+  </div>
+  <div class="top-bar-right">
+    <div class="nav-jump-links">
+      <a href="#slide-10">&#9656; Financials</a>
+    </div>
+    <a href="#" class="download-btn" id="download-pdf-btn">&#8615; Download PDF</a>
+  </div>
+</header>
+
+<!-- Arrow Navigation Controls -->
+<div class="slide-nav-arrows" id="slide-arrows">
+  <button id="prev-slide" title="Previous Slide (Up Arrow)">&#9650;</button>
+  <div class="slide-counter"><span id="current-slide-num">1</span> / 14</div>
+  <button id="next-slide" title="Next Slide (Down Arrow)">&#9660;</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — TITLE                                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide title-slide slide-darkest" id="slide-1">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-tint"></div>
+  <div class="slide-inner">
+
+    <div class="tagline">Pioneering the Future of Advanced Materials</div>
+    <h1>AURELIOS<br>MATERIALS CORP.</h1>
+    <div class="section-divider"></div>
+    <p class="subtitle mb-0">Corporate Presentation &nbsp;|&nbsp; February 2026</p>
+    <div class="ticker-badge">TSXV: AUM &nbsp;&nbsp;|&nbsp;&nbsp; OTCQX: AURMF &nbsp;&nbsp;|&nbsp;&nbsp; FSE: 9AUM</div>
+    <p style="margin-top:24px; font-size:13px; color:var(--text-muted);">www.aurelioscorp.com</p>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DISCLAIMER                                          -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="disclaimer-section">
+  <div class="slide-inner">
+    <h4 style="color:var(--text-muted); margin-bottom:16px;">Disclaimer &amp; Forward-Looking Statements</h4>
+    <div class="disclaimer-text">
+      <p>This presentation has been prepared by management of Aurelios Materials Corp. (&ldquo;Aurelios&rdquo;, &ldquo;AUM&rdquo;, or the &ldquo;Company&rdquo;) and does not constitute a recommendation to buy or sell securities of the Company. Investors should consult qualified investment advisors prior to making investment decisions.</p>
+      <p>This presentation contains forward-looking statements and forward-looking information within the meaning of applicable securities laws. Forward-looking statements are subject to known and unknown risks, uncertainties, and other factors that may cause actual results to differ materially from those expressed or implied. Readers should not place undue reliance on forward-looking statements. The Company undertakes no obligation to update any forward-looking statements except as required by applicable securities laws.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — EXECUTIVE SUMMARY                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-light" id="slide-2">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 02</div>
+    <h2>Executive Summary</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios Materials Corp. is a publicly traded advanced materials company positioned to become a premier North American producer of high-purity critical materials. The Company is advancing a portfolio of strategically located assets through a de-risked, phased development pathway toward near-term commercial production.</p>
+
+    <h4>Key Metrics at a Glance</h4>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-card-label">Production Target (Ph. 1)</div>
+        <div class="metric-card-value accent">20,000 t/yr</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">Total Resource (M&amp;I)</div>
+        <div class="metric-card-value">16.2 Mt</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">After-Tax NPV</div>
+        <div class="metric-card-value accent">US$4.8 B</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">After-Tax IRR</div>
+        <div class="metric-card-value">28%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">Operating Cost</div>
+        <div class="metric-card-value">US$4,230/t</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">Reserve Life</div>
+        <div class="metric-card-value accent">50+ Years</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">Gov't Grants Secured</div>
+        <div class="metric-card-value">$37 M</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-label">Cash &amp; Available Capital</div>
+        <div class="metric-card-value">$51 M</div>
+      </div>
+    </div>
+
+    <h4>Core Positioning</h4>
+    <ul class="bullet-list teal">
+      <li>Experienced, execution-focused management team with deep industry expertise</li>
+      <li>Significant resource base ranking among the largest globally in its category</li>
+      <li>Strategic North American location with established infrastructure and regulatory clarity</li>
+      <li>Robust project economics validated by independent Pre-Feasibility Study</li>
+      <li>Strong government backing with over $37 million in grants secured to date</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — MACRO OPPORTUNITY                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-hero slide-warm" id="slide-3">
+  <div class="hero-bg" style="background-image:url('photo-industrial-2.jpg');"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-tint"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 03</div>
+    <h2>Macro Opportunity</h2>
+    <div class="section-divider"></div>
+    <p>The global advanced materials market is entering a period of sustained structural growth. Electrification, energy storage deployment, and supply chain reshoring are accelerating demand across every major consuming region.</p>
+
+    <div class="two-col">
+      <div>
+        <h4>Demand Growth Drivers</h4>
+        <ul class="bullet-list">
+          <li>Accelerating EV adoption globally &mdash; projected penetration reaching <strong>40%+</strong> of new vehicle sales by 2030</li>
+          <li>Grid-scale BESS expanding at <strong>&gt;35% CAGR</strong> through 2035</li>
+          <li>Government mandates across U.S., Canada, and EU requiring domestic critical minerals sourcing</li>
+          <li>Defense and aerospace sectors increasing strategic reserve requirements</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Supply-Side Constraints</h4>
+        <ul class="bullet-list gold">
+          <li>Long development lead times &mdash; average <strong>7 to 12 years</strong> from discovery to production</li>
+          <li>Significant capital intensity creating barriers to new supply</li>
+          <li>Geopolitical concentration of existing production in high-risk jurisdictions</li>
+          <li>Permitting complexity and ESG scrutiny slowing conventional timelines</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ═══ INTERACTIVE: Global Lithium Demand Forecast ═══ -->
+    <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:28px; margin:28px 0;">
+      <h4 style="margin-bottom:4px; color:#FAF9F6;">Global Lithium Demand Forecast (kt LCE)</h4>
+      <p style="font-size:12px; color:#FAF9F6; opacity:0.6; margin-bottom:20px;">By end-use segment &mdash; IEA Stated Policies Scenario</p>
+      <div id="demand-chart" style="display:flex; align-items:flex-end; gap:6px; height:240px; padding:0 4px; border-bottom:1px solid rgba(250,249,246,0.15); position:relative;">
+        <!-- Y-axis labels -->
+        <div style="position:absolute; left:-4px; top:0; font-size:9px; color:#FAF9F6; opacity:0.5;">4,000</div>
+        <div style="position:absolute; left:-4px; top:25%; font-size:9px; color:#FAF9F6; opacity:0.5;">3,000</div>
+        <div style="position:absolute; left:-4px; top:50%; font-size:9px; color:#FAF9F6; opacity:0.5;">2,000</div>
+        <div style="position:absolute; left:-4px; top:75%; font-size:9px; color:#FAF9F6; opacity:0.5;">1,000</div>
+      </div>
+      <div id="demand-labels" style="display:flex; gap:6px; padding:8px 4px 0; font-size:10px; color:#FAF9F6; opacity:0.5; letter-spacing:0.5px;"></div>
+      <div style="display:flex; gap:14px; margin-top:16px; font-size:11px; flex-wrap:wrap;">
+        <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#9E1B32;display:inline-block;"></span> <span style="color:#FAF9F6; opacity:0.8;">EV Batteries</span></span>
+        <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#184A63;display:inline-block;"></span> <span style="color:#FAF9F6; opacity:0.8;">Grid Storage (BESS)</span></span>
+        <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#CDAA88;display:inline-block;"></span> <span style="color:#FAF9F6; opacity:0.8;">Portable Electronics</span></span>
+        <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#7A4E2D;display:inline-block;"></span> <span style="color:#FAF9F6; opacity:0.8;">Industrial &amp; Other</span></span>
+      </div>
+      <div id="demand-tooltip" style="font-size:12px; color:#FAF9F6; margin-top:10px; min-height:18px; font-weight:600;">&nbsp;</div>
+      <p style="font-size:9px; color:#FAF9F6; opacity:0.4; margin:10px 0 0; font-style:italic;">Source: IEA Global Critical Minerals Outlook 2025; Albemarle; Benchmark Mineral Intelligence</p>
+    </div>
+
+    <!-- ═══ INTERACTIVE: Lithium Carbonate Price History ═══ -->
+    <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:28px; margin:28px 0;">
+      <h4 style="margin-bottom:4px; color:#FAF9F6;">Lithium Carbonate Price History (US$/t)</h4>
+      <p style="font-size:12px; color:#FAF9F6; opacity:0.6; margin-bottom:20px;">Battery-grade, annual average &mdash; 2018 to 2026 YTD</p>
+      <div style="position:relative; height:240px; margin-bottom:8px;">
+        <svg id="price-line-chart" viewBox="0 0 800 240" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;">
+          <!-- Grid lines + line drawn by JS -->
+        </svg>
+        <div id="price-hover-dot" style="position:absolute; width:12px; height:12px; border-radius:50%; background:#9E1B32; border:2px solid #FAF9F6; display:none; pointer-events:none; transform:translate(-50%,-50%); z-index:5; box-shadow:0 0 10px rgba(158,27,50,0.5);"></div>
+        <div id="price-hover-label" style="position:absolute; background:rgba(18,16,14,0.95); border:1px solid rgba(250,249,246,0.2); border-radius:6px; padding:6px 12px; font-size:12px; color:#FAF9F6; display:none; pointer-events:none; z-index:6; white-space:nowrap; font-family:'JetBrains Mono',monospace;"></div>
+        <!-- Invisible hover rects for each data point -->
+        <div id="price-hover-zones" style="position:absolute; top:0; left:0; width:100%; height:100; display:flex;"></div>
+      </div>
+      <div id="price-labels" style="display:flex; justify-content:space-between; font-size:10px; color:#FAF9F6; opacity:0.5; padding:0 4px;"></div>
+      <div id="price-annotations" style="margin-top:12px; display:flex; gap:16px; flex-wrap:wrap; font-size:11px; color:#FAF9F6; opacity:0.8;"></div>
+      <p style="font-size:9px; color:#FAF9F6; opacity:0.4; margin:12px 0 0; font-style:italic;">Source: USGS Mineral Commodity Summaries 2025; Benchmark Mineral Intelligence; Trading Economics</p>
+    </div>
+
+    <blockquote>North American demand is forecast to outpace supply by a widening margin through 2040, creating a structural need for domestically sourced, responsibly produced advanced materials.</blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — THE PROBLEM                               -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-accent" id="slide-4">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 04</div>
+    <h2>The Problem</h2>
+    <div class="section-divider"></div>
+    <p>North America is heavily dependent on imported critical materials from geopolitically concentrated sources. This dependency creates systemic vulnerability across EV, energy storage, defense, and advanced manufacturing supply chains.</p>
+
+    <div class="two-col">
+      <div>
+        <h4>The Core Problem</h4>
+        <ul class="bullet-list">
+          <li><strong>Over 80% of global production</strong> is concentrated in three countries, creating supply chain fragility</li>
+          <li><strong>No significant domestic production</strong> currently exists in North America at commercial scale</li>
+          <li><strong>Lead times for new projects</strong> exceed 7 years on average, lagging far behind accelerating demand</li>
+          <li><strong>Conventional extraction methods</strong> are capital-intensive, environmentally disruptive, and slow to deploy</li>
+        </ul>
+      </div>
+      <div>
+        <h4>The Consequences</h4>
+        <ul class="bullet-list gold">
+          <li>Automotive OEMs face raw material bottleneck risk for battery gigafactory commitments</li>
+          <li>Government reshoring mandates (IRA, CMIF, EU CRMA) cannot be met without new domestic supply</li>
+          <li>Strategic industries remain exposed to single-source failure modes</li>
+          <li>Price volatility persists due to concentrated supply and opaque market structures</li>
+        </ul>
+      </div>
+    </div>
+
+    <blockquote>The market needs new, reliable, North American sources of critical materials &mdash; and it needs them now.</blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — SOLUTION / TECHNOLOGY                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-hero slide-cool" id="slide-5">
+  <div class="hero-bg" style="background-image:url('photo-industrial-3.jpg');"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-tint"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 05</div>
+    <h2>The Solution / Technology</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios has developed and validated a proprietary advanced extraction process that delivers significant advantages over conventional methods &mdash; combining in-house technical innovation with proven third-party components for a low-risk, high-performance commercial solution.</p>
+
+    <h4>Technology Advantages</h4>
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Feature</th><th>Aurelios Process</th><th>Conventional Methods</th></tr>
+      </thead>
+      <tbody>
+        <tr class="aum-row"><td>Surface Footprint</td><td>&lt;10% of traditional</td><td>Large, disruptive</td></tr>
+        <tr><td>Recovery Rate</td><td style="color:var(--accent-gold); font-weight:700;">&gt;95%</td><td>40&ndash;60%</td></tr>
+        <tr class="aum-row"><td>Processing Time</td><td>Hours</td><td>Months to years</td></tr>
+        <tr><td>Water Usage</td><td style="color:var(--accent-gold); font-weight:700;">Closed-loop recycling</td><td>Water intensive</td></tr>
+        <tr class="aum-row"><td>Infrastructure</td><td>Self-contained</td><td>Extensive secondary required</td></tr>
+        <tr><td>End Product</td><td style="color:var(--accent-gold); font-weight:700;">Battery-grade, market-ready</td><td>Requires offsite refining</td></tr>
+      </tbody>
+    </table>
+
+    <h4>How It Works</h4>
+    <div class="metric-grid" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="metric-card" style="border-top: 3px solid var(--accent-blue);">
+        <div class="metric-card-label">Step 1</div>
+        <h3 style="font-size:14px;">Extraction</h3>
+        <p style="font-size:12px; margin:0;">Proprietary sorbent-based technology selectively isolates target compounds</p>
+      </div>
+      <div class="metric-card" style="border-top: 3px solid var(--accent-blue);">
+        <div class="metric-card-label">Step 2</div>
+        <h3 style="font-size:14px;">Purification</h3>
+        <p style="font-size:12px; margin:0;">Multi-stage purification delivers high-purity intermediate product</p>
+      </div>
+      <div class="metric-card" style="border-top: 3px solid var(--accent-teal);">
+        <div class="metric-card-label">Step 3</div>
+        <h3 style="font-size:14px;">Conversion</h3>
+        <p style="font-size:12px; margin:0;">Final processing produces battery-grade or industrial-grade end product</p>
+      </div>
+      <div class="metric-card" style="border-top: 3px solid var(--accent-teal);">
+        <div class="metric-card-label">Step 4</div>
+        <h3 style="font-size:14px;">Recycling</h3>
+        <p style="font-size:12px; margin:0;">Closed-loop system minimizes waste and water consumption</p>
+      </div>
+    </div>
+
+    <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color);">
+      <img src="photo-industrial-2.jpg" alt="Technology and process" style="width:100%; max-height:360px; object-fit:cover; display:block;">
+    </div>
+    <p style="font-size:11px; color:var(--text-muted); margin-top:8px; font-style:italic;">Advanced extraction technology and processing infrastructure</p>
+
+    <h4>Over a Decade of Development</h4>
+    <ul class="bullet-list teal">
+      <li>Proprietary process refined through <strong>10+ years</strong> of laboratory and pilot-scale development</li>
+      <li>Demonstration facility <strong>commissioned and operational</strong> &mdash; produced specification-grade product</li>
+      <li>Ongoing optimization through rigorous testing of commercially available components</li>
+      <li>Technical team holds deep domain expertise with backgrounds from leading resource companies</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 6 — COMPETITIVE LANDSCAPE                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-darker" id="slide-6">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 06</div>
+    <h2>Competitive Landscape</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios stands apart from its peer group on key dimensions including resource scale, project economics, jurisdictional quality, development stage, and environmental profile.</p>
+
+    <div class="placeholder wide">
+      <div class="placeholder-icon">&#9638;</div>
+      TABLE: Competitor Comparison Matrix
+    </div>
+
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Company</th><th>Resource (M&amp;I)</th><th>Opex (US$/t)</th><th>NPV (US$ B)</th><th>Jurisdiction</th><th>Stage</th><th>ESG</th></tr>
+      </thead>
+      <tbody>
+        <tr class="aum-row"><td>AURELIOS MATERIALS</td><td>16.2 Mt</td><td>$4,230</td><td>$4.8</td><td>Canada (Alberta)</td><td>Demo / FS</td><td>Best-in-Class</td></tr>
+        <tr><td>Nexion Resources</td><td>11.4 Mt</td><td>$5,810</td><td>$2.1</td><td>Argentina</td><td>PFS</td><td>Moderate</td></tr>
+        <tr><td>Pinnacle Lithium</td><td>8.7 Mt</td><td>$6,420</td><td>$1.6</td><td>Chile</td><td>DFS</td><td>Below Avg</td></tr>
+        <tr><td>Boreal Minerals</td><td>6.2 Mt</td><td>$7,150</td><td>$0.9</td><td>Canada (ON)</td><td>PEA</td><td>Good</td></tr>
+        <tr><td>Suncrest Mining</td><td>9.8 Mt</td><td>$5,340</td><td>$1.8</td><td>Australia</td><td>FS</td><td>Moderate</td></tr>
+        <tr><td>Voltaic Metals</td><td>4.1 Mt</td><td>$8,200</td><td>$0.5</td><td>USA (Nevada)</td><td>PEA</td><td>Good</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Key Differentiators vs. Peers</h4>
+    <ul class="bullet-list teal">
+      <li><strong>Largest single-asset resource</strong> in its category in North America</li>
+      <li><strong>First-third cost position</strong> on the global cash cost curve</li>
+      <li><strong>Tier-1 jurisdiction</strong> with transparent, pro-business regulatory framework</li>
+      <li><strong>Proprietary technology</strong> validated at demonstration scale &mdash; not conceptual</li>
+      <li><strong>Phased development plan</strong> that reduces capital at risk and accelerates time to revenue</li>
+      <li><strong>Multi-decade reserve life</strong> (50+ years) provides long-duration investor visibility</li>
+    </ul>
+
+    <blockquote>Aurelios combines scale, cost advantage, and jurisdictional quality in a way that few peers can match.</blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 7 — ASSET PORTFOLIO                           -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-warm" id="slide-7">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 07</div>
+    <h2>Asset Portfolio / Projects</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios holds a portfolio of strategically located assets anchored by its flagship development project. The total resource endowment ranks among the largest globally, providing a multi-decade production foundation.</p>
+
+    <h4>Flagship Project: Clearwater Basin</h4>
+    <table class="data-table">
+      <tbody>
+        <tr><td>Location</td><td>Alberta, Canada</td></tr>
+        <tr><td>Stage</td><td>Pre-Feasibility / Demonstration</td></tr>
+        <tr><td>Resource (M&amp;I)</td><td>16.2 million tonnes</td></tr>
+        <tr><td>Reserves (P&amp;P)</td><td>9.74 million tonnes</td></tr>
+        <tr><td>Phase 1 Capacity</td><td>20,000 tonnes/year</td></tr>
+        <tr><td>Full Build-Out</td><td>40,000 tonnes/year</td></tr>
+        <tr><td>Reserve Life</td><td>50+ years</td></tr>
+        <tr class="highlight-row"><td>After-Tax NPV</td><td>US$4.8 billion</td></tr>
+        <tr class="highlight-row"><td>After-Tax IRR</td><td>28%</td></tr>
+        <tr><td>Operating Cost</td><td>US$4,230/tonne</td></tr>
+      </tbody>
+    </table>
+
+    <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color); margin-bottom:8px;">
+      <img src="sitemap.png" alt="Project Site Map" style="width:100%; max-height:440px; object-fit:cover; display:block;">
+    </div>
+    <p style="font-size:11px; color:var(--text-muted); margin-bottom:28px; font-style:italic;">Site map overview of the flagship project area and surrounding infrastructure</p>
+
+    <h4 style="margin-top:40px;">Consolidated Resource Summary</h4>
+    <table class="data-table">
+      <thead>
+        <tr><th>District</th><th>Reserves (P&amp;P)</th><th>Measured</th><th>Indicated</th><th>M&amp;I Total</th><th>Inferred</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Clearwater Basin</td><td>9.74 Mt</td><td>5.18 Mt</td><td>8.64 Mt</td><td>13.82 Mt</td><td>&mdash;</td></tr>
+        <tr><td>Athabasca North</td><td>&mdash;</td><td>0.92 Mt</td><td>1.46 Mt</td><td>2.38 Mt</td><td>3.15 Mt</td></tr>
+        <tr class="highlight-row"><td>Total</td><td>9.74 Mt</td><td>6.10 Mt</td><td>10.10 Mt</td><td>16.20 Mt</td><td>3.15 Mt</td></tr>
+      </tbody>
+    </table>
+
+    <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color);">
+      <img src="photo-industrial-3.jpg" alt="Regional overview" style="width:100%; max-height:300px; object-fit:cover; display:block;">
+    </div>
+
+    <blockquote>The Company&rsquo;s resource base supports multi-decade operations with clear expansion pathways across the district.</blockquote>
+  </div>
+</section>
+
+<!-- Section Transition -->
+<div class="section-transition">
+  <a href="#slide-7">&#8249; Asset Portfolio</a>
+  <div class="dots">
+    <span class="dot" data-dot="0"></span><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span><span class="dot active" data-dot="7"></span><span class="dot" data-dot="8"></span><span class="dot" data-dot="9"></span><span class="dot" data-dot="10"></span><span class="dot" data-dot="11"></span><span class="dot" data-dot="12"></span><span class="dot" data-dot="13"></span>
+  </div>
+  <a href="#slide-8">ESG &amp; Sustainability &#8250;</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 8 — ESG & SUSTAINABILITY                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-dark" id="slide-8">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 08</div>
+    <h2>ESG &amp; Sustainability</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios is committed to industry-leading environmental, social, and governance practices. The Company&rsquo;s advanced extraction technology inherently delivers a superior environmental profile relative to conventional methods.</p>
+
+    <div class="esg-grid">
+      <div class="esg-pillar">
+        <h4 style="color:var(--accent-gold);">Environmental</h4>
+        <ul class="bullet-list teal">
+          <li><strong>Minimal surface footprint</strong> &mdash; &lt;10% of traditional extraction</li>
+          <li><strong>Closed-loop water system</strong> &mdash; zero net freshwater consumption</li>
+          <li><strong>Low carbon intensity</strong> &mdash; co-gen &amp; carbon capture planned</li>
+          <li><strong>No tailings</strong> &mdash; zero long-term waste storage liabilities</li>
+          <li><strong>Full site reclamation</strong> &mdash; complete land restoration</li>
+        </ul>
+      </div>
+      <div class="esg-pillar social">
+        <h4 style="color:var(--accent-blue);">Social</h4>
+        <ul class="bullet-list">
+          <li><strong>Community engagement</strong> &mdash; formal consultation programs active</li>
+          <li><strong>Local workforce</strong> &mdash; hiring &amp; training from surrounding communities</li>
+          <li><strong>Indigenous partnership</strong> &mdash; ongoing dialogue and collaboration</li>
+          <li><strong>Safety culture</strong> &mdash; zero-harm philosophy embedded from demo stage</li>
+        </ul>
+      </div>
+      <div class="esg-pillar governance">
+        <h4 style="color:var(--accent-gold);">Governance</h4>
+        <ul class="bullet-list gold">
+          <li><strong>Independent board majority</strong> &mdash; deep industry oversight</li>
+          <li><strong>ESG-linked compensation</strong> &mdash; management aligned with sustainability</li>
+          <li><strong>Transparent disclosure</strong> &mdash; annual ESG reporting</li>
+          <li><strong>Ethical supply chain</strong> &mdash; responsible sourcing standards</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="placeholder tall">
+      <div class="placeholder-icon">&#9636;</div>
+      CHART: ESG Performance Metrics<br>
+      <span class="placeholder-sub">Multi-panel visualization: Water intensity, CO2 emissions, land disturbance, community investment. Aurelios vs. Industry benchmark comparison.</span>
+    </div>
+
+    <blockquote>Aurelios is building a project that meets the highest environmental and social standards demanded by institutional investors and off-take partners.</blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 9 — DEVELOPMENT ROADMAP                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-hero slide-accent-dark" id="slide-9">
+  <div class="hero-bg" style="background-image:url('photo-industrial-1.jpg');"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-tint"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 09</div>
+    <h2>Development Roadmap</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios is executing a disciplined, phased development plan designed to systematically de-risk the project while advancing toward commercial operations.</p>
+
+    <div class="placeholder wide">
+      <div class="placeholder-icon">&#9644;</div>
+      TIMELINE GRAPHIC: Development Milestones
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-phase completed">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Project Definition</div>
+        <ul class="timeline-items">
+          <li>Pre-Feasibility Study completed</li>
+          <li>Lab-pilot prototype validated</li>
+          <li>Resource estimate completed</li>
+        </ul>
+      </div>
+      <div class="timeline-phase completed">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">De-Risking</div>
+        <ul class="timeline-items">
+          <li>Demo facility commissioned</li>
+          <li>Battery-grade product produced</li>
+          <li>Drilling campaign completed</li>
+          <li>Key permits secured</li>
+          <li>~$42 million raised</li>
+        </ul>
+      </div>
+      <div class="timeline-phase active">
+        <div class="timeline-year">2026</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Commercialization</div>
+        <ul class="timeline-items">
+          <li>Feasibility Study completion</li>
+          <li>Commercial permit submissions</li>
+          <li>Strategic partner &amp; off-take</li>
+          <li>Project financing secured</li>
+          <li>FEED initiated</li>
+        </ul>
+      </div>
+      <div class="timeline-phase">
+        <div class="timeline-year">2027 &mdash; 2029+</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Production</div>
+        <ul class="timeline-items">
+          <li>Long-lead equipment procurement</li>
+          <li>Drilling &amp; pipeline construction</li>
+          <li>Facility construction &amp; commissioning</li>
+          <li>Phase 1 commercial ops (20,000 t/yr)</li>
+          <li>Phase 2 expansion to full capacity</li>
+        </ul>
+      </div>
+    </div>
+
+    <blockquote>Every milestone is designed to reduce risk, validate economics, and advance the project toward bankable, financeable status.</blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 10 — FINANCIAL OVERVIEW                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-white" id="slide-10">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 10</div>
+    <h2>Financial Overview</h2>
+    <div class="section-divider"></div>
+    <p>The Company&rsquo;s Pre-Feasibility Study confirms compelling project economics with strong margins, an attractive return profile, and a rapid payback period.</p>
+
+    <h4>Pre-Feasibility Study &mdash; Key Economics</h4>
+    <table class="data-table">
+      <thead>
+        <tr><th>Metric</th><th>Units</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Initial Production Capacity</td><td>Tonnes/year</td><td>20,000</td></tr>
+        <tr><td>Avg. Production (LOM)</td><td>Tonnes/year</td><td>32,000</td></tr>
+        <tr><td>Total Initial Capital (CAPEX)</td><td>M US$</td><td>1,240</td></tr>
+        <tr><td>Total Sustaining Capital</td><td>M US$</td><td>2,180</td></tr>
+        <tr><td>Annual Operating Cost</td><td>M US$</td><td>135</td></tr>
+        <tr><td>Operating Cost (OPEX)</td><td>US$/tonne</td><td>4,230</td></tr>
+        <tr><td>Product Price Assumption</td><td>US$/tonne</td><td>22,500</td></tr>
+        <tr><td>Avg. Annual EBITDA</td><td>M US$</td><td>585</td></tr>
+        <tr class="highlight-row"><td>IRR (after-tax)</td><td>%</td><td>28.4</td></tr>
+        <tr class="highlight-row"><td>NPV&#8328; (after-tax)</td><td>M US$</td><td>4,820</td></tr>
+        <tr><td>Payback Period</td><td>Years</td><td>3.8</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ═══ INTERACTIVE REVENUE GROWTH CHART ═══ -->
+    <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; margin:28px 0; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
+      <h4 style="margin-bottom:20px; color:#184A63;">Projected Revenue Growth (US$ M)</h4>
+      <div id="revenue-chart" style="display:flex; align-items:flex-end; gap:8px; height:220px; padding:0 4px; border-bottom:1px solid rgba(18,16,14,0.1); position:relative;">
+        <!-- Bars injected by JS -->
+      </div>
+      <div id="revenue-labels" style="display:flex; gap:8px; padding:8px 4px 0; font-size:10px; color:#888; letter-spacing:0.5px;">
+      </div>
+      <div style="display:flex; gap:16px; margin-top:16px; font-size:11px;">
+        <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#9E1B32;display:inline-block;"></span> <span style="color:#444;">Base Case</span></span>
+        <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#184A63;display:inline-block;"></span> <span style="color:#444;">Upside Case</span></span>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- ═══ INTERACTIVE COST STRUCTURE PIE CHART ═══ -->
+      <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
+        <h4 style="margin-bottom:16px; color:#184A63;">Cost Structure Breakdown</h4>
+        <div style="display:flex; align-items:center; gap:24px;">
+          <svg id="cost-pie" viewBox="0 0 200 200" width="180" height="180" style="flex-shrink:0;">
+            <!-- Pie slices injected by JS -->
+          </svg>
+          <div id="cost-legend" style="font-size:12px; line-height:2.2; color:#333;">
+          </div>
+        </div>
+        <div id="cost-tooltip" style="font-size:12px; color:#111; margin-top:12px; min-height:18px; font-weight:600;">&nbsp;</div>
+      </div>
+
+      <!-- ═══ INTERACTIVE LIABILITIES PIE CHART ═══ -->
+      <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
+        <h4 style="margin-bottom:16px; color:#184A63;">Liabilities Breakdown</h4>
+        <div style="display:flex; align-items:center; gap:24px;">
+          <svg id="liab-pie" viewBox="0 0 200 200" width="180" height="180" style="flex-shrink:0;">
+          </svg>
+          <div id="liab-legend" style="font-size:12px; line-height:2.2; color:#333;">
+          </div>
+        </div>
+        <div id="liab-tooltip" style="font-size:12px; color:#111; margin-top:12px; font-weight:600;">&nbsp;</div>
+      </div>
+    </div>
+
+    <h4>Economic Highlights</h4>
+    <ul class="bullet-list teal">
+      <li><strong>First-third cost position</strong> on global cash cost curve &mdash; resilient across commodity cycles</li>
+      <li><strong>4-year payback period</strong> on initial capital investment</li>
+      <li><strong>50+ year reserve life</strong> provides long-duration cash flow visibility</li>
+      <li><strong>Phased CAPEX profile</strong> reduces front-end capital exposure and enables self-funded expansion</li>
+      <li><strong>30% ITC eligibility</strong> on qualifying capital expenditures provides significant cost offset</li>
+    </ul>
+
+    <blockquote>Project economics are robust across a wide range of commodity price assumptions, underscoring the quality of the underlying asset.</blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 11 — CAPITAL STRUCTURE                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-white" id="slide-11">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 11</div>
+    <h2>Capital Structure</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios maintains a disciplined capital structure with no debt, a well-funded treasury, and growing institutional participation.</p>
+
+    <div class="two-col">
+      <div>
+        <h4>Capital Markets Summary</h4>
+        <table class="data-table">
+          <tbody>
+            <tr><td>Share Price</td><td>$3.42</td></tr>
+            <tr><td>52-Week Range</td><td>$1.85 &ndash; $4.12</td></tr>
+            <tr><td>Market Capitalization</td><td>$482 million</td></tr>
+            <tr><td>Common Shares Outstanding</td><td>141 million</td></tr>
+            <tr><td>Fully Diluted Shares</td><td>158 million</td></tr>
+            <tr><td>Options &amp; Warrants</td><td>17.2 million</td></tr>
+            <tr class="highlight-row"><td>Debt</td><td>Nil</td></tr>
+            <tr><td>Working Capital</td><td>$28 million</td></tr>
+            <tr><td>Insider Ownership</td><td>8.6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h4>Capital Summary</h4>
+        <table class="data-table">
+          <tbody>
+            <tr><td>Common Shares</td><td>141.0 M</td></tr>
+            <tr><td>Options</td><td>9.4 M</td></tr>
+            <tr><td>Warrants</td><td>7.8 M</td></tr>
+            <tr><td>Fully Diluted</td><td>158.2 M</td></tr>
+            <tr><td>Debt</td><td>Nil</td></tr>
+            <tr><td>Cash &amp; Equivalents</td><td>$28.0 M</td></tr>
+            <tr><td>Grants Available</td><td>$22.8 M</td></tr>
+            <tr class="highlight-row"><td>Total Available Capital</td><td>$50.8 M</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4 style="margin-top:32px;">Government Funding Secured</h4>
+    <table class="data-table">
+      <thead>
+        <tr><th>Source</th><th>Amount</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>NRCan Critical Minerals Fund</td><td>$8.5 million</td><td>Awarded</td></tr>
+        <tr><td>SIF &mdash; Net Zero Accelerator</td><td>$20 million</td><td>Awarded</td></tr>
+        <tr><td>Alberta Innovates &mdash; AITF</td><td>$8.5 million</td><td>Awarded</td></tr>
+        <tr><td>Clean Tech Manufacturing ITC</td><td>Up to 30% of qualifying capex</td><td>Eligible</td></tr>
+        <tr class="highlight-row"><td>Total Grants Awarded</td><td>$37.0 million</td><td></td></tr>
+        <tr><td>Grants Deployed to Date</td><td>$14.2 million</td><td></td></tr>
+        <tr class="highlight-row"><td>Grants Remaining Available</td><td>$22.8 million</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section Transition -->
+<div class="section-transition">
+  <a href="#slide-11">&#8249; Capital Structure</a>
+  <div class="dots">
+    <span class="dot" data-dot="0"></span><span class="dot" data-dot="1"></span><span class="dot" data-dot="2"></span><span class="dot" data-dot="3"></span><span class="dot" data-dot="4"></span><span class="dot" data-dot="5"></span><span class="dot" data-dot="6"></span><span class="dot" data-dot="7"></span><span class="dot" data-dot="8"></span><span class="dot" data-dot="9"></span><span class="dot" data-dot="10"></span><span class="dot active" data-dot="11"></span><span class="dot" data-dot="12"></span><span class="dot" data-dot="13"></span>
+  </div>
+  <a href="#slide-12">Management Team &#8250;</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 12 — MANAGEMENT TEAM                          -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-red" id="slide-12">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 12</div>
+    <h2>Management Team</h2>
+    <div class="section-divider"></div>
+    <p>Aurelios is led by a seasoned management team with deep expertise spanning resource development, advanced materials processing, capital markets, and large-scale project execution.</p>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo">IMAGE<br>CEO</div>
+        <div class="team-info">
+          <h3>Dr. Marcus Eliot, P.Geo., ICD.D</h3>
+          <div class="team-title">Chief Executive Officer &amp; President</div>
+          <p>Founder &amp; CEO. Over 20 years in resource development, mineral project advancement, and capital raising. Previously at Teck Resources. Ph.D. in Geoscience.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">IMAGE<br>CFO</div>
+        <div class="team-info">
+          <h3>Catherine Hsu, CFA, CPA</h3>
+          <div class="team-title">Chief Financial Officer</div>
+          <p>15+ years in capital markets, corporate finance, and strategic planning in resource &amp; energy sectors. Previously at BMO Capital Markets.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">IMAGE<br>CTO</div>
+        <div class="team-info">
+          <h3>Dr. Raj Venkatesh, P.Eng., Ph.D.</h3>
+          <div class="team-title">Chief Technology Officer</div>
+          <p>Leading authority in advanced extraction technology. 18+ years of R&amp;D and commercial-scale development. Multiple patents in selective extraction processes.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">IMAGE<br>CDO</div>
+        <div class="team-info">
+          <h3>James Macleod, P.Eng.</h3>
+          <div class="team-title">Chief Development Officer</div>
+          <p>Veteran project development executive with 25+ years delivering large-scale resource and infrastructure projects on time and on budget.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">IMAGE<br>VP</div>
+        <div class="team-info">
+          <h3>Sarah Fontaine, LL.B.</h3>
+          <div class="team-title">VP, Government &amp; Stakeholder Engagement</div>
+          <p>Extensive career spanning law, regulatory affairs, and government relations within the energy and resources sector.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">IMAGE<br>CSO</div>
+        <div class="team-info">
+          <h3>Nadia Kowalski, M.Sc.</h3>
+          <div class="team-title">Chief Sustainability Officer</div>
+          <p>12+ years leading environmental strategy and ESG compliance for extractive industries. Former Director of Sustainability at Glencore.</p>
+        </div>
+      </div>
+    </div>
+
+    <h4 style="margin-top:40px;">Board of Directors</h4>
+    <table class="board-table">
+      <thead>
+        <tr><th>Director</th><th>Role</th><th>Background</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Richard Farnsworth, ICD.D</td><td>Chair of the Board</td><td>Former SVP, Suncor Energy; 30+ years in resource sector governance</td></tr>
+        <tr><td>Dr. Amara Osei, P.Eng.</td><td>Lead Independent Director</td><td>Former VP Engineering, Albemarle Corporation; extraction technology expert</td></tr>
+        <tr><td>Linda Chen, CPA, CA</td><td>Chair, Audit Committee</td><td>Managing Partner, Deloitte (retired); public company audit specialist</td></tr>
+        <tr><td>David Carruthers, MBA</td><td>Chair, Compensation &amp; HR</td><td>Former CEO, Northland Power; capital markets and ESG leadership</td></tr>
+        <tr><td>Marie-Claire Pelletier, LL.B.</td><td>Chair, Governance Committee</td><td>Senior Partner, Stikeman Elliott; securities and regulatory counsel</td></tr>
+      </tbody>
+    </table>
+
+    <blockquote>Decades of combined expertise across advanced materials, resource development, operations, regulatory affairs, and capital markets.</blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 13 — INVESTMENT THESIS                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-accent" id="slide-13">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 13</div>
+
+    <h2>Investment Thesis</h2>
+    <div class="section-divider"></div>
+    <p>Why Aurelios Materials Corp.</p>
+
+    <div class="thesis-grid">
+      <div class="thesis-card">
+        <div class="numbered-header"><span class="num">1</span><h3>World-Class Asset in a Tier-1 Jurisdiction</h3></div>
+        <ul class="bullet-list" style="margin-top:0;">
+          <li>One of the largest single-asset deposits globally</li>
+          <li>Canada &mdash; low political risk, established regulatory framework</li>
+          <li>Proven resource reducing geological uncertainty</li>
+        </ul>
+      </div>
+      <div class="thesis-card">
+        <div class="numbered-header"><span class="num">2</span><h3>Proprietary Technology, De-Risked at Scale</h3></div>
+        <ul class="bullet-list" style="margin-top:0;">
+          <li>10+ years of in-house R&amp;D validated at demo scale</li>
+          <li>Produced specification-grade product &mdash; not conceptual</li>
+          <li>Superior environmental profile enables faster permitting</li>
+        </ul>
+      </div>
+      <div class="thesis-card">
+        <div class="numbered-header"><span class="num">3</span><h3>Compelling Project Economics</h3></div>
+        <ul class="bullet-list" style="margin-top:0;">
+          <li>After-tax NPV of US$4.8 billion with 28% IRR</li>
+          <li>First-third position on global cost curve</li>
+          <li>50+ year reserve life &middot; 4-year payback</li>
+        </ul>
+      </div>
+      <div class="thesis-card">
+        <div class="numbered-header"><span class="num">4</span><h3>Multiple Near-Term Catalysts</h3></div>
+        <ul class="bullet-list" style="margin-top:0;">
+          <li>Feasibility Study &amp; demo validation (2026)</li>
+          <li>Strategic off-take agreement(s) (2026)</li>
+          <li>Construction decision (2027)</li>
+        </ul>
+      </div>
+      <div class="thesis-card">
+        <div class="numbered-header"><span class="num">5</span><h3>Government Support &amp; Policy Tailwinds</h3></div>
+        <ul class="bullet-list" style="margin-top:0;">
+          <li>Over $37 million in grants secured</li>
+          <li>Up to 30% refundable ITC on qualifying capex</li>
+          <li>Aligned with critical minerals reshoring mandates</li>
+        </ul>
+      </div>
+      <div class="thesis-card">
+        <div class="numbered-header"><span class="num">6</span><h3>Experienced Team With a Track Record</h3></div>
+        <ul class="bullet-list" style="margin-top:0;">
+          <li>Consistently met or exceeded milestones</li>
+          <li>Deep in-house technical &amp; capital markets expertise</li>
+          <li>Board with decades of relevant industry experience</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="return-potential-glass">
+      <div class="rp-photo-bg"></div>
+      <div class="rp-photo-overlay"></div>
+      <h4>Return Potential</h4>
+      <table class="data-table">
+        <thead>
+          <tr><th>Scenario</th><th>Implied Valuation</th><th>Upside from Current</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Current Market Cap</td><td>$482 million</td><td>&mdash;</td></tr>
+          <tr><td>0.5x NPV&#8328; (after-tax)</td><td>$2.4 billion</td><td>5.0x</td></tr>
+          <tr class="highlight-row"><td>1.0x NPV&#8328; (after-tax)</td><td>$4.8 billion</td><td>10.0x</td></tr>
+          <tr><td>Peer Comparable EV/Resource</td><td>$1.9 billion</td><td>3.9x</td></tr>
+        </tbody>
+      </table>
+      <blockquote>Aurelios represents a rare combination of scale, quality, cost position, and near-term catalysts in a market with structural supply shortages.</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 14 — THE ASK                                  -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="slide slide-warm" id="slide-14">
+  <div class="slide-inner">
+    <div class="slide-tag">Slide 14</div>
+    <h2>The Ask</h2>
+    <div class="section-divider"></div>
+
+    <div class="ask-label">Capital Raise</div>
+    <div class="ask-amount">$50 Million</div>
+    <p>To fund the next critical phase of development and position the Company for a construction decision.</p>
+
+    <h4 style="margin-top:32px;">Use of Proceeds</h4>
+    <table class="data-table">
+      <thead>
+        <tr><th>Allocation</th><th>Amount</th><th>% of Total</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Feasibility Study &amp; FEED</td><td>$14.0 million</td><td>28%</td></tr>
+        <tr><td>Demo Facility &mdash; Phases 2 &amp; 3</td><td>$12.5 million</td><td>25%</td></tr>
+        <tr><td>Drilling &amp; Reservoir Testing</td><td>$8.0 million</td><td>16%</td></tr>
+        <tr><td>Permitting &amp; Environmental</td><td>$4.5 million</td><td>9%</td></tr>
+        <tr><td>Partnerships &amp; Off-Take Development</td><td>$3.5 million</td><td>7%</td></tr>
+        <tr><td>Working Capital &amp; G&amp;A</td><td>$7.5 million</td><td>15%</td></tr>
+        <tr class="highlight-row"><td>Total</td><td>$50 million</td><td>100%</td></tr>
+      </tbody>
+    </table>
+
+    <h4 style="margin-top:32px;">What This Capital Unlocks</h4>
+    <ul class="bullet-list teal">
+      <li><strong>Feasibility Study</strong> &mdash; Bankable-level economics enabling project financing</li>
+      <li><strong>Full-Scale Demonstration</strong> &mdash; Validation data for off-take partners and lenders</li>
+      <li><strong>Commercial Permits</strong> &mdash; Regulatory approvals enabling construction start</li>
+      <li><strong>Off-Take Agreements</strong> &mdash; Product commitments de-risking revenue and financing</li>
+      <li><strong>Project Financing Readiness</strong> &mdash; Positioning for non-dilutive debt and strategic capital</li>
+    </ul>
+
+    <h4 style="margin-top:32px;">Upcoming Catalysts (12&ndash;18 Months)</h4>
+    <div class="metric-grid" style="grid-template-columns: repeat(5, 1fr);">
+      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-teal);">
+        <div class="metric-card-label">H1 2026</div>
+        <p style="font-size:12px; margin:0; color:var(--text-primary);">Feasibility Study Results</p>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-teal);">
+        <div class="metric-card-label">H1 2026</div>
+        <p style="font-size:12px; margin:0; color:var(--text-primary);">Full-Scale DLE Validation</p>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-blue);">
+        <div class="metric-card-label">H2 2026</div>
+        <p style="font-size:12px; margin:0; color:var(--text-primary);">Off-Take LOI / Agreement</p>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-blue);">
+        <div class="metric-card-label">H2 2026</div>
+        <p style="font-size:12px; margin:0; color:var(--text-primary);">Project Financing Term Sheet</p>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-gold);">
+        <div class="metric-card-label">2027</div>
+        <p style="font-size:12px; margin:0; color:var(--text-primary);">Construction Decision</p>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-row">
+      <div class="contact-block">
+        <h3>Aurelios Materials Corp.</h3>
+        <p style="color:var(--text-primary); font-weight:600; font-size:12px; letter-spacing:1px;">TSXV: AUM &nbsp;|&nbsp; OTCQX: AURMF &nbsp;|&nbsp; FSE: 9AUM</p>
+        <br>
+        <p style="color:var(--text-primary);">Jordan Whitfield</p>
+        <p>Director, Capital Markets</p>
+        <p>investor@aurelioscorp.com</p>
+        <br>
+        <p>Suite 1400, 250 6th Avenue SW</p>
+        <p>Calgary, Alberta T2P 3H7</p>
+        <p>Main Office: +1 (403) 555-0172</p>
+        <br>
+        <p style="color:var(--accent-gold);">www.aurelioscorp.com</p>
+      </div>
+      <div class="contact-cta">
+        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Ready to learn more?</p>
+        <a href="mailto:investor@aurelioscorp.com" class="contact-cta-btn">&#9993; Contact Us</a>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:16px;">investor@aurelioscorp.com<br>+1 (403) 555-0172</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- STICKY PROMO FOOTER                                 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="sticky-promo" id="sticky-promo">
+  Do you want a pitch deck like this? Contact <a href="https://www.thevisitor.ca/" target="_blank" rel="noopener">THE VISITOR</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- FOOTER                                              -->
+<!-- ═══════════════════════════════════════════════════ -->
+<footer class="footer" id="main-footer">
+  TSXV: AUM &nbsp;|&nbsp; OTCQX: AURMF &nbsp;|&nbsp; FSE: 9AUM &nbsp;&nbsp;&bull;&nbsp;&nbsp; Aurelios Materials Corp. &mdash; Pioneering the Future of Advanced Materials
+</footer>
+
+<script>
+(function() {
+  /* ═══ SPLASH SCREEN — ODOMETER PRICE ═══ */
+  /*
+   * Timeline:
+   *   0.0s  — screen appears
+   *   0.2s  — logo fades up                     (CSS: splash-logo-in, 0.6s)
+   *   0.7s  — "Investor Presentation" fades in   (CSS: splash-fade-in, 0.5s)
+   *   1.7s  — 0.5s pause, then exchange label + price appear
+   *   1.8s  — odometer digits begin rolling      (CSS transition: 1.1s)
+   *   2.9s  — odometer settles
+   *   3.2s  — change badge fades in
+   *   4.4s  — splash fades out
+   */
+  var splash = document.getElementById('splash-overlay');
+  if (splash) {
+    var targetPrice = '3.42';
+    var startPrice  = '3.24';
+    var odoEl = document.getElementById('splash-odometer');
+    var changeEl = document.getElementById('splash-change');
+    var exchangeEl = document.getElementById('splash-exchange');
+
+    // Hide price block initially
+    exchangeEl.style.opacity = '0';
+    odoEl.style.opacity = '0';
+
+    // Build digit columns: $ sign + each character
+    var chars = targetPrice.split('');
+    var startChars = startPrice.split('');
+    var cols = [];
+
+    // Dollar sign (static)
+    var dollarSpan = document.createElement('span');
+    dollarSpan.className = 'splash-digit-static';
+    dollarSpan.textContent = '$';
+    odoEl.appendChild(dollarSpan);
+
+    chars.forEach(function(ch, i) {
+      if (ch === '.') {
+        var dot = document.createElement('span');
+        dot.className = 'splash-digit-static';
+        dot.textContent = '.';
+        odoEl.appendChild(dot);
+        cols.push(null);
+      } else {
+        var endDigit = parseInt(ch, 10);
+        var startDigit = parseInt(startChars[i], 10);
+
+        var colDiv = document.createElement('span');
+        colDiv.className = 'splash-digit-col';
+
+        var strip = document.createElement('span');
+        strip.className = 'splash-digit-strip';
+
+        var digitCount = endDigit - startDigit;
+        if (digitCount < 0) digitCount += 10;
+        for (var d = 0; d <= digitCount; d++) {
+          var numSpan = document.createElement('span');
+          numSpan.textContent = (startDigit + d) % 10;
+          strip.appendChild(numSpan);
+        }
+
+        colDiv.appendChild(strip);
+        odoEl.appendChild(colDiv);
+        cols.push({ strip: strip, count: digitCount });
+      }
+    });
+
+    // 1.7s — After logo + subtitle + 0.5s pause: reveal exchange label + price
+    setTimeout(function() {
+      exchangeEl.style.transition = 'opacity 0.35s ease';
+      exchangeEl.style.opacity = '1';
+      odoEl.style.transition = 'opacity 0.35s ease';
+      odoEl.style.opacity = '1';
+    }, 1700);
+
+    // 1.8s — Start the odometer roll (slight offset so number appears then rolls)
+    setTimeout(function() {
+      cols.forEach(function(col) {
+        if (!col) return;
+        col.strip.style.transform = 'translateY(-' + (col.count * 1.15) + 'em)';
+      });
+    }, 1800);
+
+    // 3.2s — Show the change badge after odometer settles
+    setTimeout(function() {
+      changeEl.classList.add('visible');
+    }, 3200);
+
+    // 4.4s — Fade out splash
+    setTimeout(function() {
+      splash.classList.add('fade-out');
+      document.body.classList.remove('splash-active');
+    }, 4400);
+
+    // 5.3s — Remove from DOM
+    setTimeout(function() {
+      splash.remove();
+    }, 5300);
+  }
+
+  /* ═══ SLIDE NAVIGATION ═══ */
+  var slides = Array.from(document.querySelectorAll('.slide'));
+  var sidebarLinks = Array.from(document.querySelectorAll('.sidebar-nav a[data-slide]'));
+  var counterEl = document.getElementById('current-slide-num');
+  var progressCount = document.getElementById('progress-count');
+  var progressFill = document.getElementById('progress-fill');
+  var prevBtn = document.getElementById('prev-slide');
+  var nextBtn = document.getElementById('next-slide');
+  var total = slides.length;
+  var currentSlide = 0;
+
+  function goToSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= total) index = total - 1;
+    currentSlide = index;
+    slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateActive(index);
+  }
+
+  function updateActive(index) {
+    currentSlide = index;
+    var num = index + 1;
+    counterEl.textContent = num;
+    progressCount.textContent = num + '/' + total;
+    progressFill.style.width = ((num / total) * 100) + '%';
+    sidebarLinks.forEach(function(link, i) {
+      link.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.section-transition .dot').forEach(function(dot) {
+      dot.classList.toggle('active', parseInt(dot.getAttribute('data-dot')) === index);
+    });
+  }
+
+  function onScroll() {
+    var closest = 0, closestDist = Infinity;
+    slides.forEach(function(s, i) {
+      var d = Math.abs(s.getBoundingClientRect().top);
+      if (d < closestDist) { closestDist = d; closest = i; }
+    });
+    if (closest !== currentSlide) updateActive(closest);
+  }
+
+  var scrollAmount = Math.round(window.innerHeight * 0.75);
+  window.addEventListener('resize', function() { scrollAmount = Math.round(window.innerHeight * 0.75); });
+
+  function smoothScroll(dir) {
+    window.scrollBy({ top: dir * scrollAmount, behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); smoothScroll(1); }
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); smoothScroll(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+    else if (e.key === 'End') { e.preventDefault(); goToSlide(total - 1); }
+  });
+
+  prevBtn.addEventListener('click', function() { smoothScroll(-1); });
+  nextBtn.addEventListener('click', function() { smoothScroll(1); });
+  sidebarLinks.forEach(function(link, i) {
+    link.addEventListener('click', function(e) { e.preventDefault(); goToSlide(i); });
+  });
+  document.querySelectorAll('.nav-jump-links a').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      goToSlide(parseInt(a.getAttribute('href').replace('#slide-', '')) - 1);
+    });
+  });
+
+  var scrollTimer;
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(onScroll, 60);
+  }, { passive: true });
+
+  updateActive(0);
+
+  /* ═══ INTERACTIVE REVENUE GROWTH BAR CHART ═══ */
+  var revData = [
+    { year: '2027', base: 0, up: 0 },
+    { year: '2028', base: 45, up: 62 },
+    { year: '2029', base: 128, up: 168 },
+    { year: '2030', base: 210, up: 285 },
+    { year: '2031', base: 295, up: 390 },
+    { year: '2032', base: 360, up: 480 },
+    { year: '2033', base: 410, up: 545 },
+    { year: '2034', base: 445, up: 592 },
+    { year: '2035', base: 470, up: 625 },
+    { year: '2036', base: 490, up: 650 }
+  ];
+  var maxRev = 650;
+  var chartEl = document.getElementById('revenue-chart');
+  var labelsEl = document.getElementById('revenue-labels');
+
+  revData.forEach(function(d, i) {
+    var group = document.createElement('div');
+    group.style.cssText = 'flex:1; display:flex; gap:3px; align-items:flex-end; height:100%; position:relative; cursor:pointer;';
+
+    var baseBar = document.createElement('div');
+    var baseH = (d.base / maxRev) * 100;
+    baseBar.style.cssText = 'flex:1; background:#9E1B32; border-radius:3px 3px 0 0; min-width:0; transition:all 0.3s; height:0;';
+    baseBar.title = d.year + ' Base: $' + d.base + 'M';
+
+    var upBar = document.createElement('div');
+    var upH = (d.up / maxRev) * 100;
+    upBar.style.cssText = 'flex:1; background:#184A63; border-radius:3px 3px 0 0; min-width:0; transition:all 0.3s; height:0; opacity:0.7;';
+    upBar.title = d.year + ' Upside: $' + d.up + 'M';
+
+    group.appendChild(baseBar);
+    group.appendChild(upBar);
+    chartEl.appendChild(group);
+
+    // Animate in
+    setTimeout(function() {
+      baseBar.style.height = baseH + '%';
+      upBar.style.height = upH + '%';
+    }, 100 + i * 80);
+
+    // Hover tooltip
+    group.addEventListener('mouseenter', function() {
+      baseBar.style.filter = 'brightness(1.3)';
+      upBar.style.filter = 'brightness(1.3)';
+      var tip = document.createElement('div');
+      tip.className = 'bar-tip';
+      tip.style.cssText = 'position:absolute; top:-36px; left:50%; transform:translateX(-50%); background:#111; border:1px solid #333; border-radius:4px; padding:4px 10px; font-size:11px; color:#fff; white-space:nowrap; z-index:10; pointer-events:none;';
+      tip.textContent = d.year + ': $' + d.base + 'M / $' + d.up + 'M';
+      group.appendChild(tip);
+    });
+    group.addEventListener('mouseleave', function() {
+      baseBar.style.filter = '';
+      upBar.style.filter = '';
+      var tip = group.querySelector('.bar-tip');
+      if (tip) tip.remove();
+    });
+
+    var label = document.createElement('div');
+    label.style.cssText = 'flex:1; text-align:center;';
+    label.textContent = d.year;
+    labelsEl.appendChild(label);
+  });
+
+  /* ═══ INTERACTIVE PIE CHART BUILDER ═══ */
+  function buildPie(svgId, legendId, tooltipId, data) {
+    var svg = document.getElementById(svgId);
+    var legend = document.getElementById(legendId);
+    var tooltip = document.getElementById(tooltipId);
+    var cx = 100, cy = 100, r = 80;
+    var totalVal = data.reduce(function(s, d) { return s + d.value; }, 0);
+    var angle = -90;
+
+    data.forEach(function(d, i) {
+      var sliceAngle = (d.value / totalVal) * 360;
+      var startAngle = angle * (Math.PI / 180);
+      var endAngle = (angle + sliceAngle) * (Math.PI / 180);
+      var largeArc = sliceAngle > 180 ? 1 : 0;
+      var x1 = cx + r * Math.cos(startAngle);
+      var y1 = cy + r * Math.sin(startAngle);
+      var x2 = cx + r * Math.cos(endAngle);
+      var y2 = cy + r * Math.sin(endAngle);
+
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      var dd = 'M ' + cx + ' ' + cy + ' L ' + x1 + ' ' + y1 + ' A ' + r + ' ' + r + ' 0 ' + largeArc + ' 1 ' + x2 + ' ' + y2 + ' Z';
+      path.setAttribute('d', dd);
+      path.setAttribute('fill', d.color);
+      path.style.cssText = 'cursor:pointer; transition:transform 0.2s, opacity 0.2s; transform-origin:' + cx + 'px ' + cy + 'px;';
+
+      path.addEventListener('mouseenter', function() {
+        path.style.transform = 'scale(1.06)';
+        path.style.opacity = '0.85';
+        tooltip.textContent = d.label + ': ' + d.pct + '% ($' + d.value + 'M)';
+      });
+      path.addEventListener('mouseleave', function() {
+        path.style.transform = '';
+        path.style.opacity = '';
+        tooltip.innerHTML = '&nbsp;';
+      });
+
+      svg.appendChild(path);
+      angle += sliceAngle;
+
+      // Legend
+      var item = document.createElement('div');
+      item.style.cssText = 'display:flex; align-items:center; gap:8px; cursor:pointer;';
+      item.innerHTML = '<span style="width:10px;height:10px;border-radius:2px;background:' + d.color + ';display:inline-block;flex-shrink:0;"></span><span style="color:#555;">' + d.label + ' <strong style="color:#111;">' + d.pct + '%</strong></span>';
+      item.addEventListener('mouseenter', function() {
+        path.style.transform = 'scale(1.06)';
+        path.style.opacity = '0.85';
+        tooltip.textContent = d.label + ': ' + d.pct + '% ($' + d.value + 'M)';
+      });
+      item.addEventListener('mouseleave', function() {
+        path.style.transform = '';
+        path.style.opacity = '';
+        tooltip.innerHTML = '&nbsp;';
+      });
+      legend.appendChild(item);
+    });
+  }
+
+  // Cost Structure Pie
+  buildPie('cost-pie', 'cost-legend', 'cost-tooltip', [
+    { label: 'Energy & Utilities', value: 38, pct: 28, color: '#9E1B32' },
+    { label: 'Reagents', value: 30, pct: 22, color: '#184A63' },
+    { label: 'Labor', value: 24, pct: 18, color: '#CDAA88' },
+    { label: 'Maintenance', value: 20, pct: 15, color: '#7A4E2D' },
+    { label: 'G&A / Overhead', value: 14, pct: 10, color: '#6F2C3F' },
+    { label: 'Royalties & Taxes', value: 10, pct: 7, color: '#7A2E2E' }
+  ]);
+
+  // Liabilities Pie
+  buildPie('liab-pie', 'liab-legend', 'liab-tooltip', [
+    { label: 'Construction Finance', value: 280, pct: 42, color: '#9E1B32' },
+    { label: 'Equipment Leases', value: 120, pct: 18, color: '#184A63' },
+    { label: 'Reclamation Liability', value: 85, pct: 13, color: '#CDAA88' },
+    { label: 'Accounts Payable', value: 65, pct: 10, color: '#7A4E2D' },
+    { label: 'Deferred Revenue', value: 60, pct: 9, color: '#6F2C3F' },
+    { label: 'Other', value: 55, pct: 8, color: '#7A2E2E' }
+  ]);
+
+  /* ═══ INTERACTIVE DEMAND FORECAST (STACKED BAR) ═══ */
+  var demandData = [
+    { year: '2022', ev: 580, bess: 60, portable: 110, industrial: 100 },
+    { year: '2023', ev: 720, bess: 95, portable: 115, industrial: 105 },
+    { year: '2024', ev: 900, bess: 140, portable: 120, industrial: 110 },
+    { year: '2025', ev: 1120, bess: 210, portable: 125, industrial: 115 },
+    { year: '2026', ev: 1350, bess: 310, portable: 130, industrial: 120 },
+    { year: '2027', ev: 1600, bess: 430, portable: 132, industrial: 125 },
+    { year: '2028', ev: 1880, bess: 560, portable: 135, industrial: 130 },
+    { year: '2030', ev: 2400, bess: 820, portable: 140, industrial: 140 },
+    { year: '2032', ev: 2850, bess: 1020, portable: 142, industrial: 148 },
+    { year: '2035', ev: 3200, bess: 1350, portable: 145, industrial: 155 }
+  ];
+  var demandMax = 4850;
+  var demandChartEl = document.getElementById('demand-chart');
+  var demandLabelsEl = document.getElementById('demand-labels');
+  var demandTooltip = document.getElementById('demand-tooltip');
+  var segColors = ['#9E1B32','#184A63','#CDAA88','#7A4E2D'];
+  var segNames = ['EV Batteries','Grid Storage (BESS)','Portable Electronics','Industrial & Other'];
+
+  demandData.forEach(function(d, i) {
+    var total = d.ev + d.bess + d.portable + d.industrial;
+    var segs = [d.ev, d.bess, d.portable, d.industrial];
+    var group = document.createElement('div');
+    group.style.cssText = 'flex:1; display:flex; flex-direction:column; justify-content:flex-end; height:100%; position:relative; cursor:pointer;';
+
+    segs.forEach(function(val, si) {
+      var seg = document.createElement('div');
+      var h = (val / demandMax) * 100;
+      seg.style.cssText = 'width:100%; background:' + segColors[si] + '; transition:all 0.4s; height:0; min-height:' + (val > 0 ? '2px' : '0') + ';';
+      if (si === 0) seg.style.borderRadius = '3px 3px 0 0';
+      group.appendChild(seg);
+      setTimeout(function() { seg.style.height = h + '%'; }, 150 + i * 60);
+    });
+
+    group.addEventListener('mouseenter', function() {
+      group.style.filter = 'brightness(1.2)';
+      demandTooltip.textContent = d.year + ': Total ' + total.toLocaleString() + ' kt LCE — EV: ' + d.ev + ' | BESS: ' + d.bess + ' | Portable: ' + d.portable + ' | Industrial: ' + d.industrial;
+    });
+    group.addEventListener('mouseleave', function() {
+      group.style.filter = '';
+      demandTooltip.innerHTML = '&nbsp;';
+    });
+    demandChartEl.appendChild(group);
+
+    var lbl = document.createElement('div');
+    lbl.style.cssText = 'flex:1; text-align:center;';
+    lbl.textContent = d.year;
+    demandLabelsEl.appendChild(lbl);
+  });
+
+  /* ═══ INTERACTIVE PRICE HISTORY (LINE CHART) ═══ */
+  var priceData = [
+    { year: '2018', price: 16500, label: '$16,500' },
+    { year: '2019', price: 11000, label: '$11,000' },
+    { year: '2020', price: 7800, label: '$7,800' },
+    { year: '2021', price: 17000, label: '$17,000' },
+    { year: '2022', price: 67600, label: '$67,600', annotation: 'All-Time Peak' },
+    { year: '2023', price: 46000, label: '$46,000' },
+    { year: '2024', price: 14000, label: '$14,000' },
+    { year: '2025', price: 10500, label: '$10,500' },
+    { year: '2026', price: 11500, label: '$11,500', annotation: 'YTD' }
+  ];
+  var priceMax = 75000;
+  var svgW = 800, svgH = 240;
+  var priceSvg = document.getElementById('price-line-chart');
+  var priceLabelsEl = document.getElementById('price-labels');
+  var priceAnnotEl = document.getElementById('price-annotations');
+  var priceDot = document.getElementById('price-hover-dot');
+  var priceLabel = document.getElementById('price-hover-label');
+
+  // Grid lines
+  [0, 15000, 30000, 45000, 60000, 75000].forEach(function(v) {
+    var y = svgH - (v / priceMax) * svgH;
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', 0); line.setAttribute('x2', svgW);
+    line.setAttribute('y1', y); line.setAttribute('y2', y);
+    line.setAttribute('stroke', 'rgba(255,255,255,0.08)'); line.setAttribute('stroke-width', '1');
+    priceSvg.appendChild(line);
+    var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', -4); txt.setAttribute('y', y + 3);
+    txt.setAttribute('fill', 'rgba(250,249,246,0.5)'); txt.setAttribute('font-size', '9');
+    txt.setAttribute('text-anchor', 'end'); txt.setAttribute('font-family', 'JetBrains Mono, monospace');
+    txt.textContent = (v / 1000) + 'k';
+    priceSvg.appendChild(txt);
+  });
+
+  // Build path + area
+  var points = [];
+  priceData.forEach(function(d, i) {
+    var x = (i / (priceData.length - 1)) * svgW;
+    var y = svgH - (d.price / priceMax) * svgH;
+    points.push({ x: x, y: y, data: d });
+  });
+
+  // Area fill
+  var areaPath = 'M ' + points[0].x + ' ' + svgH;
+  points.forEach(function(p) { areaPath += ' L ' + p.x + ' ' + p.y; });
+  areaPath += ' L ' + points[points.length - 1].x + ' ' + svgH + ' Z';
+  var area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  area.setAttribute('d', areaPath);
+  area.setAttribute('fill', 'url(#priceGrad)');
+  area.setAttribute('opacity', '0.3');
+
+  // Gradient definition
+  var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  var grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+  grad.setAttribute('id', 'priceGrad'); grad.setAttribute('x1', '0'); grad.setAttribute('y1', '0');
+  grad.setAttribute('x2', '0'); grad.setAttribute('y2', '1');
+  var s1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+  s1.setAttribute('offset', '0%'); s1.setAttribute('stop-color', '#9E1B32');
+  var s2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+  s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', 'transparent');
+  grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad);
+  priceSvg.appendChild(defs);
+  priceSvg.appendChild(area);
+
+  // Line
+  var linePath = 'M';
+  points.forEach(function(p, i) { linePath += (i > 0 ? ' L ' : ' ') + p.x + ' ' + p.y; });
+  var line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  line.setAttribute('d', linePath);
+  line.setAttribute('fill', 'none');
+  line.setAttribute('stroke', '#9E1B32');
+  line.setAttribute('stroke-width', '3');
+  line.setAttribute('stroke-linecap', 'round');
+  line.setAttribute('stroke-linejoin', 'round');
+  priceSvg.appendChild(line);
+
+  // Data point dots
+  points.forEach(function(p) {
+    var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', p.x); c.setAttribute('cy', p.y);
+    c.setAttribute('r', '4'); c.setAttribute('fill', '#9E1B32');
+    c.setAttribute('stroke', '#FAF9F6'); c.setAttribute('stroke-width', '2');
+    priceSvg.appendChild(c);
+  });
+
+  // Year labels
+  priceData.forEach(function(d) {
+    var lbl = document.createElement('span');
+    lbl.textContent = d.year;
+    priceLabelsEl.appendChild(lbl);
+  });
+
+  // Annotations
+  priceData.forEach(function(d) {
+    if (d.annotation) {
+      var ann = document.createElement('span');
+      ann.innerHTML = '<strong style="color:#CDAA88;">' + d.year + '</strong>: ' + d.annotation + ' (' + d.label + '/t)';
+      priceAnnotEl.appendChild(ann);
+    }
+  });
+
+  // Hover interaction
+  var chartContainer = priceSvg.parentElement;
+  chartContainer.style.cursor = 'crosshair';
+  chartContainer.addEventListener('mousemove', function(e) {
+    var rect = chartContainer.getBoundingClientRect();
+    var mx = e.clientX - rect.left;
+    var ratio = mx / rect.width;
+    var idx = Math.round(ratio * (points.length - 1));
+    if (idx < 0) idx = 0;
+    if (idx >= points.length) idx = points.length - 1;
+    var p = points[idx];
+    var dotX = (p.x / svgW) * rect.width;
+    var dotY = (p.y / svgH) * rect.height;
+    priceDot.style.display = 'block';
+    priceDot.style.left = dotX + 'px';
+    priceDot.style.top = dotY + 'px';
+    priceLabel.style.display = 'block';
+    priceLabel.style.left = (dotX + 16) + 'px';
+    priceLabel.style.top = (dotY - 16) + 'px';
+    priceLabel.textContent = p.data.year + ': ' + p.data.label + '/t';
+    if (dotX + 150 > rect.width) {
+      priceLabel.style.left = (dotX - 130) + 'px';
+    }
+  });
+  chartContainer.addEventListener('mouseleave', function() {
+    priceDot.style.display = 'none';
+    priceLabel.style.display = 'none';
+  });
+
+  /* ═══ STICKY PROMO FOOTER — hide when real footer visible ═══ */
+  var stickyPromo = document.getElementById('sticky-promo');
+  var mainFooter = document.getElementById('main-footer');
+  if (stickyPromo && mainFooter) {
+    function checkFooterVisibility() {
+      var footerRect = mainFooter.getBoundingClientRect();
+      var windowH = window.innerHeight;
+      if (footerRect.top < windowH) {
+        stickyPromo.classList.add('hidden');
+      } else {
+        stickyPromo.classList.remove('hidden');
+      }
+    }
+    window.addEventListener('scroll', checkFooterVisibility, { passive: true });
+    checkFooterVisibility();
+  }
+
+  /* ═══ PDF DOWNLOAD ═══ */
+  document.getElementById('download-pdf-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.print();
+  });
+
+})();
+</script>
+
+<style>
+  @media print {
+    .sidebar, .top-bar, .slide-nav-arrows, .section-transition, .sticky-promo { display: none !important; }
+    .slide { margin-left: 0 !important; padding: 40px !important; min-height: auto !important; page-break-after: always; }
+    .disclaimer-section, .footer { margin-left: 0 !important; }
+    body { background: #fff; color: #111; }
+    .slide-accent { background: #9E1B32 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .slide-red { background: #9E1B32 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .slide-light { background: #f7f2ec !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+
+</body>
+</html>

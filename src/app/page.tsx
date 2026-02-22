@@ -16,158 +16,107 @@ import HomeTypeSection from "@/components/sections/HomeTypeSection";
 import ClosingSection from "@/components/sections/ClosingSection";
 import { sections } from "@/data/deck";
 
+/** All section components in order */
+const SECTION_COMPONENTS = [
+  CoverSection,
+  OpportunitySection,
+  PropertySection,
+  ZoningSurroundingsSection,
+  HomeTypeSection,
+  FinancialsSection,
+  TeamSection,
+  ClosingSection,
+];
+
 export default function Home() {
   const [showGrid, setShowGrid] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-  const pendingScrollRef = useRef<number | null>(null);
-  // Lock out scroll-based updates during programmatic navigation
-  const isNavigatingRef = useRef(false);
-  const navTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isScrolling = useRef(false); // true while programmatic scroll is in progress
 
-  // Scroll the snap container to a section index
-  const scrollToIndex = useCallback((index: number, instant = false) => {
-    const container = scrollContainerRef.current;
-    const el = document.getElementById(sections[index].id);
-    if (el && container) {
-      const top = el.offsetTop - container.offsetTop;
-      if (instant) {
-        container.style.scrollBehavior = "auto";
-        container.scrollTo({ top });
-        requestAnimationFrame(() => {
-          container.style.scrollBehavior = "";
-        });
-      } else {
-        container.scrollTo({ top });
-      }
-    }
-  }, []);
-
+  // ── Navigate by scrolling to a section ──
   const navigateToSection = useCallback(
     (index: number) => {
-      // Instantly highlight the clicked section
-      setActiveSection(index);
-      activeSectionRef.current = index;
-
-      // Block scroll handler from overwriting during smooth scroll
-      isNavigatingRef.current = true;
-      if (navTimerRef.current) clearTimeout(navTimerRef.current);
-      navTimerRef.current = setTimeout(() => {
-        isNavigatingRef.current = false;
-      }, 900);
+      if (index < 0 || index >= sections.length) return;
 
       if (showGrid) {
-        pendingScrollRef.current = index;
         setShowGrid(false);
-      } else if (scrollContainerRef.current) {
-        scrollToIndex(index);
+        setActiveSection(index);
+        // Wait a tick for sections to render, then scroll
+        setTimeout(() => {
+          const el = sectionRefs.current[index];
+          if (el) {
+            isScrolling.current = true;
+            const top = el.getBoundingClientRect().top + window.scrollY - 56;
+            window.scrollTo({ top, behavior: "smooth" });
+            setTimeout(() => { isScrolling.current = false; }, 1000);
+          }
+        }, 50);
+        return;
+      }
+
+      const el = sectionRefs.current[index];
+      if (el) {
+        isScrolling.current = true;
+        setActiveSection(index);
+        const top = el.getBoundingClientRect().top + window.scrollY - 56; // 56px header
+        window.scrollTo({ top, behavior: "smooth" });
+        setTimeout(() => { isScrolling.current = false; }, 1000);
       }
     },
-    [showGrid, scrollToIndex]
+    [showGrid]
   );
-
-  // When switching from grid to sections, scroll to the pending target
-  useEffect(() => {
-    if (showGrid || pendingScrollRef.current === null) return;
-
-    const target = pendingScrollRef.current;
-    pendingScrollRef.current = null;
-    // Wait two frames for the sections DOM to be fully laid out
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        scrollToIndex(target, true);
-      });
-    });
-  }, [showGrid, scrollToIndex]);
 
   const showGridView = useCallback(() => {
     setShowGrid(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  // Track active section on scroll — uses rAF to avoid jitter
-  const activeSectionRef = useRef(0);
+  // ── Intersection Observer: track which section is in the viewport ──
   useEffect(() => {
     if (showGrid) return;
-    const container = scrollContainerRef.current;
-    if (!container) return;
 
-    const containerOffset = container.offsetTop;
-    let rafId: number | null = null;
-
-    const updateActive = () => {
-      rafId = null;
-
-      // Don't override active section during click-initiated navigation
-      if (isNavigatingRef.current) return;
-
-      const scrollTop = container.scrollTop;
-      const viewportHeight = container.clientHeight;
-      const scrollProbe = scrollTop + viewportHeight * 0.35;
-
-      const sectionEls = container.querySelectorAll("[data-section-index]");
-      let active = 0;
-
-      sectionEls.forEach((el) => {
-        const htmlEl = el as HTMLElement;
-        const sectionTop = htmlEl.offsetTop - containerOffset;
-        if (sectionTop <= scrollProbe) {
-          active = Number(htmlEl.dataset.sectionIndex);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isScrolling.current) return; // don't fight programmatic scrolls
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const idx = sectionRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (idx !== -1) {
+              setActiveSection(idx);
+            }
+          }
         }
-      });
-
-      // Only update state when the active section actually changes
-      if (!isNaN(active) && active !== activeSectionRef.current) {
-        activeSectionRef.current = active;
-        setActiveSection(active);
+      },
+      {
+        rootMargin: "-40% 0px -55% 0px", // fires when section crosses ~top 40% of viewport
       }
-    };
+    );
 
-    const handleScroll = () => {
-      if (rafId === null) {
-        rafId = requestAnimationFrame(updateActive);
-      }
-    };
+    sectionRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
 
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    updateActive();
-
-    return () => {
-      container.removeEventListener("scroll", handleScroll);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
+    return () => observer.disconnect();
   }, [showGrid]);
 
-  // Keyboard navigation
+  // ── Keyboard navigation ──
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (showGrid) return;
-      // Don't intercept keyboard events when user is interacting with form elements
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
-      if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-        e.preventDefault();
-        if (activeSection < sections.length - 1) {
-          navigateToSection(activeSection + 1);
-        }
-      }
-      if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-        e.preventDefault();
-        if (activeSection > 0) {
-          navigateToSection(activeSection - 1);
-        }
-      }
-      if (e.key === "Escape") {
+
+      if (e.key === "Escape" && !showGrid) {
         showGridView();
       }
     };
 
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [showGrid, activeSection, navigateToSection, showGridView]);
+  }, [showGrid, showGridView]);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: showGrid ? "#ffffff" : "#023E40" }}>
+    <div className="min-h-screen bg-brand-charcoal">
       <Navigation
         activeSection={activeSection}
         onNavigate={navigateToSection}
@@ -182,75 +131,60 @@ export default function Home() {
       />
       <Header onNavigate={navigateToSection} showGrid={showGrid} />
 
-      <main className="lg:ml-[240px] pt-14 relative" style={{ backgroundColor: showGrid ? undefined : "#023E40" }}>
-        {/* Grid view */}
-        <div
-          className="min-h-screen flex items-center justify-center px-6 py-20 transition-opacity duration-300"
-          style={{
-            opacity: showGrid ? 1 : 0,
-            pointerEvents: showGrid ? "auto" : "none",
-            position: showGrid ? "relative" : "absolute",
-            inset: showGrid ? undefined : 0,
-            zIndex: showGrid ? 1 : 0,
-          }}
-        >
-          <div className="w-full max-w-[1200px] mx-auto">
-            {/* Grid header */}
-            <div className="mb-12">
-              <span className="section-label">Investor Deck</span>
-              <h1 className="text-display-md sm:text-display-lg font-display font-bold tracking-tight text-ink mb-2">
-                Craigmore Drive
-              </h1>
-              <p className="text-body-lg text-ink-light max-w-xl">
-                Select a section to explore, or navigate sequentially using the sidebar.
-              </p>
-            </div>
+      <main className="lg:ml-[240px] pt-14 relative">
+        {/* ── Grid overview ── */}
+        {showGrid && (
+          <div className="min-h-screen flex items-center justify-center px-6 py-20 bg-surface-white">
+            <div className="w-full max-w-[1200px] mx-auto">
+              <div className="mb-12">
+                <span className="section-label text-ink">TSX: AUR — Investor Deck</span>
+                <h1 className="text-display-md sm:text-display-lg font-display font-bold tracking-tight text-ink mb-2">
+                  Aurelia Gold Corp
+                </h1>
+                <p className="text-body-lg text-ink-muted max-w-xl">
+                  Advanced-stage gold exploration — Whitefish Lake Project, Northern Ontario.
+                </p>
+              </div>
 
-            {/* Tile grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sections.map((section, i) => (
-                <Tile
-                  key={section.id}
-                  number={section.tileIcon}
-                  title={section.navLabel}
-                  subtitle={section.subtitle}
-                  onClick={() => navigateToSection(i)}
-                  index={i}
-                />
-              ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {sections.map((section, i) => (
+                  <Tile
+                    key={section.id}
+                    number={section.tileIcon}
+                    title={section.navLabel}
+                    subtitle={section.subtitle}
+                    onClick={() => navigateToSection(i)}
+                    index={i}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Sections view */}
-        <div
-          className="transition-opacity duration-300"
-          style={{
-            opacity: showGrid ? 0 : 1,
-            pointerEvents: showGrid ? "none" : "auto",
-            position: showGrid ? "absolute" : "relative",
-            inset: showGrid ? 0 : undefined,
-            zIndex: showGrid ? 0 : 1,
-          }}
-        >
-          <div ref={scrollContainerRef} className="scroll-snap-container" style={{ backgroundColor: "#023E40" }}>
-            <CoverSection onNavigate={navigateToSection} />
-            <OpportunitySection onNavigate={navigateToSection} />
-            <PropertySection onNavigate={navigateToSection} />
-            <ZoningSurroundingsSection onNavigate={navigateToSection} />
-            <HomeTypeSection onNavigate={navigateToSection} />
-            <FinancialsSection onNavigate={navigateToSection} />
-            <TeamSection onNavigate={navigateToSection} />
-            <ClosingSection onNavigate={navigateToSection} />
+        {/* ── All sections stacked vertically ── */}
+        {!showGrid && (
+          <div>
+            {SECTION_COMPONENTS.map((SectionComponent, i) => (
+              <div
+                key={sections[i].id}
+                ref={(el) => { sectionRefs.current[i] = el; }}
+              >
+                <SectionComponent onNavigate={navigateToSection} />
+              </div>
+            ))}
           </div>
-        </div>
+        )}
       </main>
+
+      {/* Grain overlay */}
+      <div className="grain-overlay no-print" />
 
       {/* Mobile progress bar */}
       {!showGrid && (
-        <div className="fixed bottom-0 left-0 right-0 h-1 bg-surface-cool z-50 lg:hidden no-print">
+        <div className="fixed bottom-0 left-0 right-0 h-1 bg-ink/20 z-50 lg:hidden no-print">
           <motion.div
-            className="h-full bg-ink"
+            className="h-full bg-brand-mustard"
             animate={{
               width: `${((activeSection + 1) / sections.length) * 100}%`,
             }}

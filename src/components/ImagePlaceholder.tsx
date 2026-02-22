@@ -22,7 +22,7 @@ export default function ImagePlaceholder({
 
   return (
     <div
-      className={`relative bg-surface-cool rounded-card overflow-hidden ${className}`}
+      className={`relative bg-current/5 border border-current/10 overflow-hidden ${className}`}
       style={{ aspectRatio: aspect }}
     >
       {src && !errored ? (
@@ -38,22 +38,23 @@ export default function ImagePlaceholder({
         />
       ) : null}
       {showPlaceholder && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-ink-muted">
+        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-30">
+          {/* Crosshatch placeholder icon */}
           <svg
             width="40"
             height="40"
-            viewBox="0 0 24 24"
+            viewBox="0 0 40 40"
             fill="none"
             stroke="currentColor"
             strokeWidth="1"
-            className="mb-2 opacity-30"
+            className="mb-2"
             aria-hidden="true"
           >
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <polyline points="21,15 16,10 5,21" />
+            <rect x="4" y="4" width="32" height="32" />
+            <line x1="4" y1="4" x2="36" y2="36" />
+            <line x1="36" y1="4" x2="4" y2="36" />
           </svg>
-          <span className="text-caption font-mono opacity-50">{label}</span>
+          <span className="text-micro font-mono uppercase tracking-[0.12em]">{label}</span>
         </div>
       )}
     </div>

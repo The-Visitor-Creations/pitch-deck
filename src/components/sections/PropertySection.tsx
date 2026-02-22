@@ -18,12 +18,12 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
   return (
     <SectionShell id="property" index={2}>
       <div>
-        <span className="section-label">The Current Property</span>
-        <h2 className="text-display-sm sm:text-display-md font-display font-bold tracking-tight text-ink mb-2">
-          Site Overview
+        <span className="text-micro font-mono uppercase tracking-[0.12em] text-white/30 mb-4 block">Exploration Assets</span>
+        <h2 className="text-display-sm sm:text-display-md font-display font-bold tracking-tight text-white mb-2">
+          Project Overview
         </h2>
-        <p className="text-body-lg text-ink-light max-w-2xl mb-10">
-          {property.location} &mdash; {property.totalAcreage} with capacity for{" "}
+        <p className="text-body-lg text-white/60 max-w-2xl mb-10">
+          {property.location} &mdash; {property.totalAcreage} with{" "}
           {property.proposedLots}.
         </p>
 
@@ -31,7 +31,7 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
         {gallery.length > 0 && (
           <div className="mb-10">
             {/* Main image */}
-            <div className="relative rounded-card overflow-hidden bg-surface-cool" style={{ aspectRatio: "16/9" }}>
+            <div className="relative overflow-hidden bg-white/5 border border-white/15" style={{ aspectRatio: "16/9" }}>
               <AnimatePresence mode="wait">
                 <motion.img
                   key={activeImage}
@@ -58,9 +58,9 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
                 <button
                   key={i}
                   onClick={() => setActiveImage(i)}
-                  className={`relative flex-1 rounded-lg overflow-hidden transition-all duration-200 ${
+                  className={`relative flex-1 overflow-hidden transition-all duration-200 ${
                     i === activeImage
-                      ? "ring-2 ring-accent ring-offset-2 opacity-100"
+                      ? "ring-2 ring-white ring-offset-2 ring-offset-[#2F4F4F] opacity-100"
                       : "opacity-60 hover:opacity-90"
                   }`}
                   style={{ aspectRatio: "16/9" }}
@@ -89,29 +89,29 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Key Facts */}
           <div className="space-y-4">
-            <h4 className="text-heading-md font-display font-semibold text-ink">
+            <h4 className="text-heading-md font-display font-semibold text-white">
               Key Facts
             </h4>
             {[
-              { label: "Total Acreage", value: property.totalAcreage },
-              { label: "Proposed Lots", value: property.proposedLots },
-              { label: "Zoning", value: property.zoning },
-              { label: "Servicing", value: property.servicing },
-              { label: "Topography", value: property.topography },
+              { label: "Land Package", value: property.totalAcreage },
+              { label: "Resource", value: property.proposedLots },
+              { label: "Tenure", value: property.zoning },
+              { label: "Infrastructure", value: property.servicing },
+              { label: "Terrain", value: property.topography },
               { label: "Access", value: property.access },
             ].map((item) => (
-              <div key={item.label} className="flex justify-between items-baseline gap-4">
-                <span className="text-body-sm text-ink-muted flex-shrink-0">
+              <div key={item.label} className="flex justify-between items-baseline gap-4 border-b border-white/10 pb-2">
+                <span className="text-body-sm text-white/50 flex-shrink-0">
                   {item.label}
                 </span>
-                <span className="text-body-sm text-ink text-right">{item.value}</span>
+                <span className="text-body-sm text-white text-right">{item.value}</span>
               </div>
             ))}
           </div>
 
           {/* Constraints */}
           <div className="space-y-4">
-            <h4 className="text-heading-md font-display font-semibold text-ink">
+            <h4 className="text-heading-md font-display font-semibold text-white">
               Constraints
             </h4>
             <ul className="space-y-2">
@@ -121,9 +121,9 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  className="text-body-sm text-ink-light flex items-start gap-2"
+                  className="text-body-sm text-white/60 flex items-start gap-2"
                 >
-                  <span className="text-warning mt-0.5 flex-shrink-0">&#9679;</span>
+                  <span className="text-brand-mustard mt-0.5 flex-shrink-0">&#9679;</span>
                   {c}
                 </motion.li>
               ))}
@@ -132,7 +132,7 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
 
           {/* Advantages */}
           <div className="space-y-4">
-            <h4 className="text-heading-md font-display font-semibold text-ink">
+            <h4 className="text-heading-md font-display font-semibold text-white">
               Advantages
             </h4>
             <ul className="space-y-2">
@@ -142,9 +142,9 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  className="text-body-sm text-ink-light flex items-start gap-2"
+                  className="text-body-sm text-white/60 flex items-start gap-2"
                 >
-                  <span className="text-accent mt-0.5 flex-shrink-0">&#9679;</span>
+                  <span className="text-white mt-0.5 flex-shrink-0">&#9679;</span>
                   {a}
                 </motion.li>
               ))}
@@ -154,13 +154,13 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
 
         {/* Communal Amenities */}
         {property.communalAmenities && property.communalAmenities.length > 0 && (
-          <div className="mt-10 p-8 bg-white rounded-card border border-ink/5">
-            <h4 className="text-heading-md font-display font-semibold text-ink mb-4">
-              Community Amenities
+          <div className="mt-10 p-8 bg-white/8 border border-white/10">
+            <h4 className="text-heading-md font-display font-semibold text-white mb-4">
+              Existing Infrastructure
             </h4>
-            <p className="text-body-sm text-ink-light mb-4">
-              The development includes shared amenities designed to enhance the resident
-              experience and complement the established neighbourhood character.
+            <p className="text-body-sm text-white/50 mb-4">
+              The project benefits from existing exploration infrastructure that
+              reduces pre-development capital requirements.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {property.communalAmenities.map((amenity) => (
@@ -169,9 +169,9 @@ export default function PropertySection({ onNavigate }: PropertySectionProps) {
                   initial={{ opacity: 0, y: 8 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="flex items-start gap-2 text-body-sm text-ink-light"
+                  className="flex items-start gap-2 text-body-sm text-white/60"
                 >
-                  <span className="text-success mt-0.5 flex-shrink-0">&#9679;</span>
+                  <span className="text-white mt-0.5 flex-shrink-0">&#9679;</span>
                   {amenity}
                 </motion.div>
               ))}
