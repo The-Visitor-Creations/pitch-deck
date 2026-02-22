@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aurelios Materials Corp. — Corporate Presentation | February 2026</title>
+<title>Boet Materials Corp. — Corporate Presentation | February 2026</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -939,8 +939,8 @@
   .timeline {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    margin: 32px 0;
+    gap: 16px;
+    margin: 36px 0;
     position: relative;
   }
   @media (max-width: 900px) {
@@ -950,42 +950,65 @@
     content: '';
     position: absolute;
     top: 38px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--border-color);
+    left: 24px;
+    right: 24px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold) 50%, rgba(255,255,255,0.15) 100%);
+    border-radius: 2px;
   }
   .timeline-phase {
-    padding: 0 16px;
+    padding: 0 16px 20px;
     position: relative;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .timeline-phase:hover {
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  .timeline-phase.completed {
+    border-color: rgba(24,74,99,0.35);
+  }
+  .timeline-phase.active {
+    border-color: rgba(205,170,136,0.4);
+    background: rgba(205,170,136,0.08);
+    box-shadow: 0 0 24px rgba(205,170,136,0.12), inset 0 1px 0 rgba(255,255,255,0.1);
   }
   .timeline-dot {
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background: var(--accent-blue);
-    border: 3px solid var(--bg-primary);
+    border: 3px solid rgba(18,16,14,0.6);
     position: relative;
     z-index: 2;
-    margin-bottom: 20px;
-    margin-top: 32px;
+    margin-bottom: 16px;
+    margin-top: 28px;
   }
-  .timeline-phase.completed .timeline-dot { background: var(--accent-teal); }
+  .timeline-phase.completed .timeline-dot { background: var(--accent-teal); box-shadow: 0 0 8px rgba(24,74,99,0.4); }
   .timeline-phase.active .timeline-dot {
     background: var(--accent-gold);
-    box-shadow: 0 0 12px rgba(205, 170, 136, 0.5);
+    box-shadow: 0 0 16px rgba(205, 170, 136, 0.6);
+    width: 20px;
+    height: 20px;
   }
   .timeline-year {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 2px;
-    color: var(--accent-blue);
+    color: var(--accent-gold);
     text-transform: uppercase;
   }
+  .timeline-phase.completed .timeline-year { color: var(--accent-teal); }
+  .timeline-phase.active .timeline-year { color: var(--accent-gold); }
   .timeline-title {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #fff;
     margin: 8px 0;
   }
   .timeline-items {
@@ -993,19 +1016,51 @@
     padding: 0;
   }
   .timeline-items li {
-    font-size: 12px;
-    color: var(--text-secondary);
-    padding: 4px 0;
-    padding-left: 14px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    padding: 5px 0;
+    padding-left: 16px;
     position: relative;
-    line-height: 1.5;
+    line-height: 1.55;
   }
   .timeline-items li::before {
     content: '▸';
     position: absolute;
     left: 0;
-    color: var(--accent-blue);
+    color: var(--accent-gold);
+    font-size: 11px;
+    top: 5px;
+  }
+  .timeline-phase.completed .timeline-items li::before { color: var(--accent-teal); }
+  .timeline-badge {
+    display: inline-block;
     font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+  .timeline-badge.completed {
+    background: rgba(24,74,99,0.25);
+    color: #5bb8d4;
+    border: 1px solid rgba(24,74,99,0.4);
+  }
+  .timeline-badge.active {
+    background: rgba(205,170,136,0.2);
+    color: var(--accent-gold);
+    border: 1px solid rgba(205,170,136,0.4);
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+  .timeline-badge.future {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.45);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  @keyframes badgePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.65; }
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -2180,7 +2235,7 @@
 <!-- ═══════════════════════════════════════════════════ -->
 <div class="splash-overlay" id="splash-overlay">
   <div class="splash-logo">
-    <div class="splash-name">Aurelios <span>Materials</span></div>
+    <div class="splash-name">Boet <span>Materials</span></div>
     <div class="splash-sub">Investor Presentation</div>
   </div>
   <div class="splash-price-spacer"></div>
@@ -2196,11 +2251,11 @@
 <!-- ═══════════════════════════════════════════════════ -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <a href="https://www.aurelioscorp.com" style="display:flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:14px; padding:8px 12px; border-radius:6px; background:rgba(158,27,50,0.08); border:1px solid rgba(158,27,50,0.15); transition:all 0.2s;" onmouseover="this.style.background='rgba(158,27,50,0.16)'" onmouseout="this.style.background='rgba(158,27,50,0.08)'">
+    <a href="https://www.boetmaterials.com" style="display:flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:14px; padding:8px 12px; border-radius:6px; background:rgba(158,27,50,0.08); border:1px solid rgba(158,27,50,0.15); transition:all 0.2s;" onmouseover="this.style.background='rgba(158,27,50,0.16)'" onmouseout="this.style.background='rgba(158,27,50,0.08)'">
       <span style="font-size:16px; color:var(--accent-blue);">&#8962;</span>
       <span style="font-size:12px; font-weight:700; color:var(--text-primary); letter-spacing:1px; text-transform:uppercase;">Home</span>
     </a>
-    <div class="sidebar-logo">Aurelios <span>Materials</span></div>
+    <div class="sidebar-logo">Boet <span>Materials</span></div>
     <div class="sidebar-tickers">TSXV: <span>AUM</span></div>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
@@ -2240,7 +2295,7 @@
     <button class="mobile-hamburger" id="mobile-hamburger" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
     </button>
-    <div class="nav-logo">Aurelios <span>Materials</span></div>
+    <div class="nav-logo">Boet <span>Materials</span></div>
     <div class="topbar-tickers" style="display:flex; align-items:center; gap:16px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-secondary);">
       <span>TSXV: <strong style="color:var(--accent-blue);">AUM</strong></span>
       <span style="color:var(--border-color);">|</span>
@@ -2303,11 +2358,11 @@
   <div class="slide-inner">
 
     <div class="tagline">Pioneering the Future of Advanced Materials</div>
-    <h1>AURELIOS<br>MATERIALS CORP.</h1>
+    <h1>BOET<br>MATERIALS CORP.</h1>
     <div class="section-divider"></div>
     <p class="subtitle mb-0">Corporate Presentation &nbsp;|&nbsp; February 2026</p>
     <div class="ticker-badge">TSXV: AUM &nbsp;&nbsp;|&nbsp;&nbsp; OTCQX: AURMF &nbsp;&nbsp;|&nbsp;&nbsp; FSE: 9AUM</div>
-    <p style="margin-top:24px; font-size:13px; color:var(--text-muted);">www.aurelioscorp.com</p>
+    <p style="margin-top:24px; font-size:13px; color:var(--text-muted);">www.boetmaterials.com</p>
 
   </div>
 </section>
@@ -2319,7 +2374,7 @@
   <div class="slide-inner">
     <h4 style="color:var(--text-muted); margin-bottom:16px;">Disclaimer &amp; Forward-Looking Statements</h4>
     <div class="disclaimer-text">
-      <p>This presentation has been prepared by management of Aurelios Materials Corp. (&ldquo;Aurelios&rdquo;, &ldquo;AUM&rdquo;, or the &ldquo;Company&rdquo;) and does not constitute a recommendation to buy or sell securities of the Company. Investors should consult qualified investment advisors prior to making investment decisions.</p>
+      <p>This presentation has been prepared by management of Boet Materials Corp. (&ldquo;Boet&rdquo;, &ldquo;AUM&rdquo;, or the &ldquo;Company&rdquo;) and does not constitute a recommendation to buy or sell securities of the Company. Investors should consult qualified investment advisors prior to making investment decisions.</p>
       <p>This presentation contains forward-looking statements and forward-looking information within the meaning of applicable securities laws. Forward-looking statements are subject to known and unknown risks, uncertainties, and other factors that may cause actual results to differ materially from those expressed or implied. Readers should not place undue reliance on forward-looking statements. The Company undertakes no obligation to update any forward-looking statements except as required by applicable securities laws.</p>
     </div>
   </div>
@@ -2333,7 +2388,7 @@
     <div class="slide-tag">Slide 02</div>
     <h2>Executive Summary</h2>
     <div class="section-divider"></div>
-    <p>Aurelios Materials Corp. is a publicly traded advanced materials company positioned to become a premier North American producer of high-purity critical materials. The Company is advancing a portfolio of strategically located assets through a de-risked, phased development pathway toward near-term commercial production.</p>
+    <p>Boet Materials Corp. is a publicly traded advanced materials company positioned to become a premier North American producer of high-purity critical materials. The Company is advancing a portfolio of strategically located assets through a de-risked, phased development pathway toward near-term commercial production.</p>
 
     <h4>Key Metrics at a Glance</h4>
     <div class="metric-grid">
@@ -2393,25 +2448,25 @@
     <div class="slide-tag">Slide 03</div>
     <h2>Macro Opportunity</h2>
     <div class="section-divider"></div>
-    <p>The global advanced materials market is entering a period of sustained structural growth. Electrification, energy storage deployment, and supply chain reshoring are accelerating demand across every major consuming region.</p>
+    <p style="color:#f2ede8;">The global advanced materials market is entering a period of sustained structural growth. Electrification, energy storage deployment, and supply chain reshoring are accelerating demand across every major consuming region.</p>
 
     <div class="two-col">
       <div>
         <h4>Demand Growth Drivers</h4>
-        <ul class="bullet-list">
-          <li>Accelerating EV adoption globally &mdash; projected penetration reaching <strong>40%+</strong> of new vehicle sales by 2030</li>
-          <li>Grid-scale BESS expanding at <strong>&gt;35% CAGR</strong> through 2035</li>
-          <li>Government mandates across U.S., Canada, and EU requiring domestic critical minerals sourcing</li>
-          <li>Defense and aerospace sectors increasing strategic reserve requirements</li>
+        <ul class="bullet-list" style="color:#f2ede8;">
+          <li style="color:#f2ede8;">Accelerating EV adoption globally &mdash; projected penetration reaching <strong>40%+</strong> of new vehicle sales by 2030</li>
+          <li style="color:#f2ede8;">Grid-scale BESS expanding at <strong>&gt;35% CAGR</strong> through 2035</li>
+          <li style="color:#f2ede8;">Government mandates across U.S., Canada, and EU requiring domestic critical minerals sourcing</li>
+          <li style="color:#f2ede8;">Defense and aerospace sectors increasing strategic reserve requirements</li>
         </ul>
       </div>
       <div>
         <h4>Supply-Side Constraints</h4>
-        <ul class="bullet-list gold">
-          <li>Long development lead times &mdash; average <strong>7 to 12 years</strong> from discovery to production</li>
-          <li>Significant capital intensity creating barriers to new supply</li>
-          <li>Geopolitical concentration of existing production in high-risk jurisdictions</li>
-          <li>Permitting complexity and ESG scrutiny slowing conventional timelines</li>
+        <ul class="bullet-list gold" style="color:#f2ede8;">
+          <li style="color:#f2ede8;">Long development lead times &mdash; average <strong>7 to 12 years</strong> from discovery to production</li>
+          <li style="color:#f2ede8;">Significant capital intensity creating barriers to new supply</li>
+          <li style="color:#f2ede8;">Geopolitical concentration of existing production in high-risk jurisdictions</li>
+          <li style="color:#f2ede8;">Permitting complexity and ESG scrutiny slowing conventional timelines</li>
         </ul>
       </div>
     </div>
@@ -2506,22 +2561,24 @@
     <div class="slide-tag">Slide 05</div>
     <h2>The Solution / Technology</h2>
     <div class="section-divider"></div>
-    <p>Aurelios has developed and validated a proprietary advanced extraction process that delivers significant advantages over conventional methods &mdash; combining in-house technical innovation with proven third-party components for a low-risk, high-performance commercial solution.</p>
+    <p>Boet has developed and validated a proprietary advanced extraction process that delivers significant advantages over conventional methods &mdash; combining in-house technical innovation with proven third-party components for a low-risk, high-performance commercial solution.</p>
 
     <h4>Technology Advantages</h4>
-    <table class="comparison-table">
+    <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:24px; box-shadow:0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);">
+    <table class="comparison-table" style="margin:0;">
       <thead>
-        <tr><th>Feature</th><th>Aurelios Process</th><th>Conventional Methods</th></tr>
+        <tr><th style="color:#f2ede8; background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.1);">Feature</th><th style="color:#CDAA88; background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.1);">Boet Process</th><th style="color:#9a8e80; background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.1);">Conventional Methods</th></tr>
       </thead>
       <tbody>
-        <tr class="aum-row"><td>Surface Footprint</td><td>&lt;10% of traditional</td><td>Large, disruptive</td></tr>
-        <tr><td>Recovery Rate</td><td style="color:var(--accent-gold); font-weight:700;">&gt;95%</td><td>40&ndash;60%</td></tr>
-        <tr class="aum-row"><td>Processing Time</td><td>Hours</td><td>Months to years</td></tr>
-        <tr><td>Water Usage</td><td style="color:var(--accent-gold); font-weight:700;">Closed-loop recycling</td><td>Water intensive</td></tr>
-        <tr class="aum-row"><td>Infrastructure</td><td>Self-contained</td><td>Extensive secondary required</td></tr>
-        <tr><td>End Product</td><td style="color:var(--accent-gold); font-weight:700;">Battery-grade, market-ready</td><td>Requires offsite refining</td></tr>
+        <tr><td style="color:#f2ede8; border-color:rgba(255,255,255,0.06);">Surface Footprint</td><td style="color:#CDAA88; font-weight:700; border-color:rgba(255,255,255,0.06);">&lt;10% of traditional</td><td style="color:#9a8e80; border-color:rgba(255,255,255,0.06);">Large, disruptive</td></tr>
+        <tr><td style="color:#f2ede8; border-color:rgba(255,255,255,0.06);">Recovery Rate</td><td style="color:#CDAA88; font-weight:700; border-color:rgba(255,255,255,0.06);">&gt;95%</td><td style="color:#9a8e80; border-color:rgba(255,255,255,0.06);">40&ndash;60%</td></tr>
+        <tr><td style="color:#f2ede8; border-color:rgba(255,255,255,0.06);">Processing Time</td><td style="color:#CDAA88; font-weight:700; border-color:rgba(255,255,255,0.06);">Hours</td><td style="color:#9a8e80; border-color:rgba(255,255,255,0.06);">Months to years</td></tr>
+        <tr><td style="color:#f2ede8; border-color:rgba(255,255,255,0.06);">Water Usage</td><td style="color:#CDAA88; font-weight:700; border-color:rgba(255,255,255,0.06);">Closed-loop recycling</td><td style="color:#9a8e80; border-color:rgba(255,255,255,0.06);">Water intensive</td></tr>
+        <tr><td style="color:#f2ede8; border-color:rgba(255,255,255,0.06);">Infrastructure</td><td style="color:#CDAA88; font-weight:700; border-color:rgba(255,255,255,0.06);">Self-contained</td><td style="color:#9a8e80; border-color:rgba(255,255,255,0.06);">Extensive secondary required</td></tr>
+        <tr><td style="color:#f2ede8; border-color:rgba(255,255,255,0.06);">End Product</td><td style="color:#CDAA88; font-weight:700; border-color:rgba(255,255,255,0.06);">Battery-grade, market-ready</td><td style="color:#9a8e80; border-color:rgba(255,255,255,0.06);">Requires offsite refining</td></tr>
       </tbody>
     </table>
+    </div>
 
     <h4>How It Works</h4>
     <div class="metric-grid" style="grid-template-columns: repeat(4, 1fr);">
@@ -2570,26 +2627,27 @@
     <div class="slide-tag">Slide 06</div>
     <h2>Competitive Landscape</h2>
     <div class="section-divider"></div>
-    <p>Aurelios stands apart from its peer group on key dimensions including resource scale, project economics, jurisdictional quality, development stage, and environmental profile.</p>
+    <p>Boet stands apart from its peer group on key dimensions including resource scale, project economics, jurisdictional quality, development stage, and environmental profile.</p>
 
-    <div class="placeholder wide">
-      <div class="placeholder-icon">&#9638;</div>
-      TABLE: Competitor Comparison Matrix
-    </div>
-
+    <h4>Peer Comparison Matrix</h4>
+    <div style="overflow-x:auto;">
     <table class="comparison-table">
       <thead>
-        <tr><th>Company</th><th>Resource (M&amp;I)</th><th>Opex (US$/t)</th><th>NPV (US$ B)</th><th>Jurisdiction</th><th>Stage</th><th>ESG</th></tr>
+        <tr><th>Company</th><th>Resource (M&amp;I)</th><th>Opex (US$/t)</th><th>NPV (US$ B)</th><th>IRR</th><th>Jurisdiction</th><th>Stage</th><th>ESG</th></tr>
       </thead>
       <tbody>
-        <tr class="aum-row"><td>AURELIOS MATERIALS</td><td>16.2 Mt</td><td>$4,230</td><td>$4.8</td><td>Canada (Alberta)</td><td>Demo / FS</td><td>Best-in-Class</td></tr>
-        <tr><td>Nexion Resources</td><td>11.4 Mt</td><td>$5,810</td><td>$2.1</td><td>Argentina</td><td>PFS</td><td>Moderate</td></tr>
-        <tr><td>Pinnacle Lithium</td><td>8.7 Mt</td><td>$6,420</td><td>$1.6</td><td>Chile</td><td>DFS</td><td>Below Avg</td></tr>
-        <tr><td>Boreal Minerals</td><td>6.2 Mt</td><td>$7,150</td><td>$0.9</td><td>Canada (ON)</td><td>PEA</td><td>Good</td></tr>
-        <tr><td>Suncrest Mining</td><td>9.8 Mt</td><td>$5,340</td><td>$1.8</td><td>Australia</td><td>FS</td><td>Moderate</td></tr>
-        <tr><td>Voltaic Metals</td><td>4.1 Mt</td><td>$8,200</td><td>$0.5</td><td>USA (Nevada)</td><td>PEA</td><td>Good</td></tr>
+        <tr class="aum-row"><td>BOET MATERIALS</td><td>16.2 Mt</td><td>$4,230</td><td>$4.8</td><td>28.4%</td><td>Canada (Alberta)</td><td>Demo / FS</td><td>Best-in-Class</td></tr>
+        <tr><td>Nexion Resources</td><td>11.4 Mt</td><td>$5,810</td><td>$2.1</td><td>18.2%</td><td>Argentina</td><td>PFS</td><td>Moderate</td></tr>
+        <tr><td>Pinnacle Lithium</td><td>8.7 Mt</td><td>$6,420</td><td>$1.6</td><td>15.7%</td><td>Chile</td><td>DFS</td><td>Below Avg</td></tr>
+        <tr><td>Boreal Minerals</td><td>6.2 Mt</td><td>$7,150</td><td>$0.9</td><td>12.4%</td><td>Canada (ON)</td><td>PEA</td><td>Good</td></tr>
+        <tr><td>Suncrest Mining</td><td>9.8 Mt</td><td>$5,340</td><td>$1.8</td><td>19.1%</td><td>Australia</td><td>FS</td><td>Moderate</td></tr>
+        <tr><td>Voltaic Metals</td><td>4.1 Mt</td><td>$8,200</td><td>$0.5</td><td>9.8%</td><td>USA (Nevada)</td><td>PEA</td><td>Good</td></tr>
+        <tr><td>Cordova Resources</td><td>7.5 Mt</td><td>$6,880</td><td>$1.2</td><td>14.3%</td><td>Mexico</td><td>PFS</td><td>Moderate</td></tr>
+        <tr><td>Northvale Energy</td><td>5.3 Mt</td><td>$7,600</td><td>$0.7</td><td>11.6%</td><td>Canada (BC)</td><td>PEA</td><td>Good</td></tr>
       </tbody>
     </table>
+    </div>
+    <p style="font-size:10px; color:var(--text-muted); font-style:italic; margin-top:8px;">Source: Company filings, NI 43-101 reports, Benchmark Mineral Intelligence. All figures represent most recent publicly available estimates.</p>
 
     <h4>Key Differentiators vs. Peers</h4>
     <ul class="bullet-list teal">
@@ -2601,19 +2659,19 @@
       <li><strong>Multi-decade reserve life</strong> (50+ years) provides long-duration investor visibility</li>
     </ul>
 
-    <blockquote>Aurelios combines scale, cost advantage, and jurisdictional quality in a way that few peers can match.</blockquote>
+    <blockquote>Boet combines scale, cost advantage, and jurisdictional quality in a way that few peers can match.</blockquote>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- SLIDE 7 — ASSET PORTFOLIO                           -->
 <!-- ═══════════════════════════════════════════════════ -->
-<section class="slide slide-warm" id="slide-7">
+<section class="slide slide-white" id="slide-7">
   <div class="slide-inner">
     <div class="slide-tag">Slide 07</div>
     <h2>Asset Portfolio / Projects</h2>
     <div class="section-divider"></div>
-    <p>Aurelios holds a portfolio of strategically located assets anchored by its flagship development project. The total resource endowment ranks among the largest globally, providing a multi-decade production foundation.</p>
+    <p>Boet holds a portfolio of strategically located assets anchored by its flagship development project. The total resource endowment ranks among the largest globally, providing a multi-decade production foundation.</p>
 
     <h4>Flagship Project: Clearwater Basin</h4>
     <table class="data-table">
@@ -2673,7 +2731,7 @@
     <div class="slide-tag">Slide 08</div>
     <h2>ESG &amp; Sustainability</h2>
     <div class="section-divider"></div>
-    <p>Aurelios is committed to industry-leading environmental, social, and governance practices. The Company&rsquo;s advanced extraction technology inherently delivers a superior environmental profile relative to conventional methods.</p>
+    <p>Boet is committed to industry-leading environmental, social, and governance practices. The Company&rsquo;s advanced extraction technology inherently delivers a superior environmental profile relative to conventional methods.</p>
 
     <div class="esg-grid">
       <div class="esg-pillar">
@@ -2711,7 +2769,6 @@
     <div class="esg-metrics-grid">
       <div class="esg-metric-panel">
         <div class="esg-metric-header">
-          <span class="esg-metric-icon">&#128167;</span>
           <span class="esg-metric-title">Water Intensity</span>
         </div>
         <div class="esg-metric-value-row">
@@ -2723,7 +2780,7 @@
             <div class="esg-bar-fill" style="width:18%; background:var(--accent-teal);"></div>
           </div>
           <div class="esg-bar-labels">
-            <span>Aurelios: 0.8</span>
+            <span>Boet: 0.8</span>
             <span>Industry Avg: 4.5</span>
           </div>
         </div>
@@ -2732,7 +2789,6 @@
 
       <div class="esg-metric-panel">
         <div class="esg-metric-header">
-          <span class="esg-metric-icon">&#9729;</span>
           <span class="esg-metric-title">CO&#8322; Emissions</span>
         </div>
         <div class="esg-metric-value-row">
@@ -2744,7 +2800,7 @@
             <div class="esg-bar-fill" style="width:26%; background:var(--accent-teal);"></div>
           </div>
           <div class="esg-bar-labels">
-            <span>Aurelios: 2.1</span>
+            <span>Boet: 2.1</span>
             <span>Industry Avg: 8.2</span>
           </div>
         </div>
@@ -2753,7 +2809,6 @@
 
       <div class="esg-metric-panel">
         <div class="esg-metric-header">
-          <span class="esg-metric-icon">&#127793;</span>
           <span class="esg-metric-title">Land Disturbance</span>
         </div>
         <div class="esg-metric-value-row">
@@ -2765,7 +2820,7 @@
             <div class="esg-bar-fill" style="width:10%; background:var(--accent-teal);"></div>
           </div>
           <div class="esg-bar-labels">
-            <span>Aurelios: 12 ha</span>
+            <span>Boet: 12 ha</span>
             <span>Industry Avg: 120 ha</span>
           </div>
         </div>
@@ -2774,7 +2829,6 @@
 
       <div class="esg-metric-panel">
         <div class="esg-metric-header">
-          <span class="esg-metric-icon">&#127760;</span>
           <span class="esg-metric-title">Community Investment</span>
         </div>
         <div class="esg-metric-value-row">
@@ -2794,7 +2848,7 @@
       </div>
     </div>
 
-    <blockquote>Aurelios is building a project that meets the highest environmental and social standards demanded by institutional investors and off-take partners.</blockquote>
+    <blockquote>Boet is building a project that meets the highest environmental and social standards demanded by institutional investors and off-take partners.</blockquote>
   </div>
 </section>
 
@@ -2809,7 +2863,7 @@
     <div class="slide-tag">Slide 09</div>
     <h2>Development Roadmap</h2>
     <div class="section-divider"></div>
-    <p>Aurelios is executing a disciplined, phased development plan designed to systematically de-risk the project while advancing toward commercial operations.</p>
+    <p>Boet is executing a disciplined, phased development plan designed to systematically de-risk the project while advancing toward commercial operations.</p>
 
     <!-- Visual Timeline Graphic -->
     <div class="timeline-graphic">
@@ -2859,6 +2913,7 @@
       <div class="timeline-phase completed">
         <div class="timeline-year">2024</div>
         <div class="timeline-dot"></div>
+        <span class="timeline-badge completed">Complete</span>
         <div class="timeline-title">Project Definition</div>
         <ul class="timeline-items">
           <li>Pre-Feasibility Study completed</li>
@@ -2869,6 +2924,7 @@
       <div class="timeline-phase completed">
         <div class="timeline-year">2025</div>
         <div class="timeline-dot"></div>
+        <span class="timeline-badge completed">Complete</span>
         <div class="timeline-title">De-Risking</div>
         <ul class="timeline-items">
           <li>Demo facility commissioned</li>
@@ -2881,6 +2937,7 @@
       <div class="timeline-phase active">
         <div class="timeline-year">2026</div>
         <div class="timeline-dot"></div>
+        <span class="timeline-badge active">In Progress</span>
         <div class="timeline-title">Commercialization</div>
         <ul class="timeline-items">
           <li>Feasibility Study completion</li>
@@ -2893,6 +2950,7 @@
       <div class="timeline-phase">
         <div class="timeline-year">2027 &mdash; 2029+</div>
         <div class="timeline-dot"></div>
+        <span class="timeline-badge future">Planned</span>
         <div class="timeline-title">Production</div>
         <ul class="timeline-items">
           <li>Long-lead equipment procurement</li>
@@ -2917,6 +2975,30 @@
     <h2>Financial Overview</h2>
     <div class="section-divider"></div>
     <p>The Company&rsquo;s Pre-Feasibility Study confirms compelling project economics with strong margins, an attractive return profile, and a rapid payback period.</p>
+
+    <!-- Financial KPI Hero Metrics -->
+    <div class="metric-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:32px;">
+      <div class="metric-card" style="text-align:center; border-top: 3px solid #9E1B32;">
+        <div class="metric-card-label">After-Tax NPV&#8328;</div>
+        <div class="metric-card-value accent">US$4.8 B</div>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid #184A63;">
+        <div class="metric-card-label">After-Tax IRR</div>
+        <div class="metric-card-value accent">28.4%</div>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid #9E1B32;">
+        <div class="metric-card-label">Avg. Annual EBITDA</div>
+        <div class="metric-card-value">US$585 M</div>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid #184A63;">
+        <div class="metric-card-label">Payback Period</div>
+        <div class="metric-card-value">3.8 Years</div>
+      </div>
+      <div class="metric-card" style="text-align:center; border-top: 3px solid var(--accent-gold);">
+        <div class="metric-card-label">CAPEX</div>
+        <div class="metric-card-value">US$1,240 M</div>
+      </div>
+    </div>
 
     <h4>Pre-Feasibility Study &mdash; Key Economics</h4>
     <table class="data-table">
@@ -3000,7 +3082,7 @@
     <div class="slide-tag">Slide 11</div>
     <h2>Capital Structure</h2>
     <div class="section-divider"></div>
-    <p>Aurelios maintains a disciplined capital structure with no debt, a well-funded treasury, and growing institutional participation.</p>
+    <p>Boet maintains a disciplined capital structure with no debt, a well-funded treasury, and growing institutional participation.</p>
 
     <div class="two-col">
       <div>
@@ -3071,7 +3153,7 @@
     <div class="slide-tag">Slide 12</div>
     <h2>Management Team</h2>
     <div class="section-divider"></div>
-    <p>Aurelios is led by a seasoned management team with deep expertise spanning resource development, advanced materials processing, capital markets, and large-scale project execution.</p>
+    <p>Boet is led by a seasoned management team with deep expertise spanning resource development, advanced materials processing, capital markets, and large-scale project execution.</p>
 
     <div class="team-grid">
       <div class="team-card">
@@ -3151,7 +3233,7 @@
 
     <h2>Investment Thesis</h2>
     <div class="section-divider"></div>
-    <p>Why Aurelios Materials Corp.</p>
+    <p>Why Boet Materials Corp.</p>
 
     <div class="thesis-grid">
       <div class="thesis-card">
@@ -3219,7 +3301,7 @@
           <tr><td>Peer Comparable EV/Resource</td><td>$1.9 billion</td><td>3.9x</td></tr>
         </tbody>
       </table>
-      <blockquote>Aurelios represents a rare combination of scale, quality, cost position, and near-term catalysts in a market with structural supply shortages.</blockquote>
+      <blockquote>Boet represents a rare combination of scale, quality, cost position, and near-term catalysts in a market with structural supply shortages.</blockquote>
     </div>
   </div>
 </section>
@@ -3289,23 +3371,23 @@
     <!-- Contact -->
     <div class="contact-row">
       <div class="contact-block">
-        <h3>Aurelios Materials Corp.</h3>
+        <h3>Boet Materials Corp.</h3>
         <p style="color:var(--text-primary); font-weight:600; font-size:12px; letter-spacing:1px;">TSXV: AUM &nbsp;|&nbsp; OTCQX: AURMF &nbsp;|&nbsp; FSE: 9AUM</p>
         <br>
         <p style="color:var(--text-primary);">Jordan Whitfield</p>
         <p>Director, Capital Markets</p>
-        <p>investor@aurelioscorp.com</p>
+        <p>investor@boetmaterials.com</p>
         <br>
         <p>Suite 1400, 250 6th Avenue SW</p>
         <p>Calgary, Alberta T2P 3H7</p>
         <p>Main Office: +1 (403) 555-0172</p>
         <br>
-        <p style="color:var(--accent-gold);">www.aurelioscorp.com</p>
+        <p style="color:var(--accent-gold);">www.boetmaterials.com</p>
       </div>
       <div class="contact-cta">
         <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Ready to learn more?</p>
-        <a href="mailto:investor@aurelioscorp.com" class="contact-cta-btn">&#9993; Contact Us</a>
-        <p style="font-size:11px; color:var(--text-muted); margin-top:16px;">investor@aurelioscorp.com<br>+1 (403) 555-0172</p>
+        <a href="mailto:investor@boetmaterials.com" class="contact-cta-btn">&#9993; Contact Us</a>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:16px;">investor@boetmaterials.com<br>+1 (403) 555-0172</p>
       </div>
     </div>
   </div>
@@ -3322,7 +3404,7 @@
 <!-- FOOTER                                              -->
 <!-- ═══════════════════════════════════════════════════ -->
 <footer class="footer" id="main-footer">
-  TSXV: AUM &nbsp;|&nbsp; OTCQX: AURMF &nbsp;|&nbsp; FSE: 9AUM &nbsp;&nbsp;&bull;&nbsp;&nbsp; Aurelios Materials Corp. &mdash; Pioneering the Future of Advanced Materials
+  TSXV: AUM &nbsp;|&nbsp; OTCQX: AURMF &nbsp;|&nbsp; FSE: 9AUM &nbsp;&nbsp;&bull;&nbsp;&nbsp; Boet Materials Corp. &mdash; Pioneering the Future of Advanced Materials
 </footer>
 
 <script>
@@ -3482,23 +3564,61 @@
     if (closest !== currentSlide) updateActive(closest);
   }
 
-  var scrollAmount = Math.round(window.innerHeight * 0.75);
-  window.addEventListener('resize', function() { scrollAmount = Math.round(window.innerHeight * 0.75); });
+  /* ═══ CONTINUOUS ARROW-KEY SCROLL ═══ */
+  var scrollSpeed = 6;           // px per frame (~360 px/s at 60 fps)
+  var scrollDir = 0;             // -1 up, +1 down, 0 idle
+  var scrollRAF = null;
+  var activeKeys = {};           // track held keys
 
-  function smoothScroll(dir) {
-    window.scrollBy({ top: dir * scrollAmount, behavior: 'smooth' });
+  function continuousScroll() {
+    if (scrollDir !== 0) {
+      window.scrollBy(0, scrollDir * scrollSpeed);
+      scrollRAF = requestAnimationFrame(continuousScroll);
+    }
+  }
+
+  function startScroll(dir) {
+    scrollDir = dir;
+    if (!scrollRAF) {
+      scrollRAF = requestAnimationFrame(continuousScroll);
+    }
+  }
+
+  function stopScroll() {
+    scrollDir = 0;
+    if (scrollRAF) {
+      cancelAnimationFrame(scrollRAF);
+      scrollRAF = null;
+    }
   }
 
   document.addEventListener('keydown', function(e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); smoothScroll(1); }
-    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); smoothScroll(-1); }
+    if (e.repeat && (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowLeft')) {
+      e.preventDefault();
+      return; // already scrolling from initial keydown
+    }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); activeKeys[e.key] = 1; startScroll(1); }
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); activeKeys[e.key] = 1; startScroll(-1); }
     else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
     else if (e.key === 'End') { e.preventDefault(); goToSlide(total - 1); }
   });
 
-  prevBtn.addEventListener('click', function() { smoothScroll(-1); });
-  nextBtn.addEventListener('click', function() { smoothScroll(1); });
+  document.addEventListener('keyup', function(e) {
+    delete activeKeys[e.key];
+    if (Object.keys(activeKeys).length === 0) stopScroll();
+  });
+
+  // Also stop if window loses focus while key is held
+  window.addEventListener('blur', function() { activeKeys = {}; stopScroll(); });
+
+  /* Button clicks still do a single smooth nudge */
+  function buttonScroll(dir) {
+    window.scrollBy({ top: dir * Math.round(window.innerHeight * 0.35), behavior: 'smooth' });
+  }
+
+  prevBtn.addEventListener('click', function() { buttonScroll(-1); });
+  nextBtn.addEventListener('click', function() { buttonScroll(1); });
   sidebarLinks.forEach(function(link, i) {
     link.addEventListener('click', function(e) { e.preventDefault(); goToSlide(i); });
   });
