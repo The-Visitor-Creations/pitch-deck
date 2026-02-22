@@ -34,6 +34,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
     /* scroll-snap removed for clean continuous scroll */
   }
 
@@ -43,6 +44,7 @@
     color: var(--text-primary);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -694,11 +696,11 @@
     display: inline-block;
     margin-top: 16px;
     padding: 8px 20px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.5);
     border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    color: var(--text-secondary);
+    color: #fff;
     letter-spacing: 1.5px;
   }
 
@@ -1881,8 +1883,10 @@
   .esg-bar-fill {
     height: 100%;
     border-radius: 3px;
-    transition: width 0.8s ease;
+    width: 0 !important;
+    transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+  .visible .esg-bar-fill { width: var(--bar-width) !important; }
   .esg-bar-labels {
     display: flex;
     justify-content: space-between;
@@ -1923,8 +1927,10 @@
     height: 100%;
     background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold));
     border-radius: 2px;
-    transition: width 1s ease;
+    width: 0 !important;
+    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+  .visible .tg-progress { width: var(--bar-width) !important; }
   .tg-nodes {
     display: flex;
     justify-content: space-between;
@@ -1942,10 +1948,14 @@
   .tg-node-dot {
     width: 16px;
     height: 16px;
+    min-width: 16px;
+    min-height: 16px;
     border-radius: 50%;
     border: 3px solid var(--bg-card);
     position: relative;
     z-index: 3;
+    flex-shrink: 0;
+    aspect-ratio: 1;
   }
   .tg-node.completed .tg-node-dot {
     background: var(--accent-teal);
@@ -2181,7 +2191,7 @@
     h4 { font-size: 12px; letter-spacing: 1.5px; }
     .subtitle { font-size: 15px; }
     p { font-size: 14px; }
-    .metric-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .metric-grid { grid-template-columns: 1fr; gap: 12px; }
     .metric-card { padding: 14px; }
     .metric-card-value { font-size: 20px; }
     .team-grid { grid-template-columns: 1fr; }
@@ -2395,7 +2405,7 @@
     <div class="section-divider"></div>
     <p class="subtitle mb-0">Corporate Presentation &nbsp;|&nbsp; February 2026</p>
     <div class="ticker-badge">TSXV: AUM &nbsp;&nbsp;|&nbsp;&nbsp; OTCQX: AURMF &nbsp;&nbsp;|&nbsp;&nbsp; FSE: 9AUM</div>
-    <p style="margin-top:24px; font-size:13px; color:var(--text-muted);">www.boetmaterials.com</p>
+    <p style="margin-top:24px; font-size:13px; color:rgba(255,255,255,0.7);">www.boetmaterials.com</p>
 
   </div>
 </section>
@@ -2810,7 +2820,7 @@
         </div>
         <div class="esg-bar-container">
           <div class="esg-bar-track">
-            <div class="esg-bar-fill" style="width:18%; background:var(--accent-teal);"></div>
+            <div class="esg-bar-fill" style="--bar-width:18%; background:var(--accent-teal);"></div>
           </div>
           <div class="esg-bar-labels">
             <span>Boet: 0.8</span>
@@ -2830,7 +2840,7 @@
         </div>
         <div class="esg-bar-container">
           <div class="esg-bar-track">
-            <div class="esg-bar-fill" style="width:26%; background:var(--accent-teal);"></div>
+            <div class="esg-bar-fill" style="--bar-width:26%; background:var(--accent-teal);"></div>
           </div>
           <div class="esg-bar-labels">
             <span>Boet: 2.1</span>
@@ -2850,7 +2860,7 @@
         </div>
         <div class="esg-bar-container">
           <div class="esg-bar-track">
-            <div class="esg-bar-fill" style="width:10%; background:var(--accent-teal);"></div>
+            <div class="esg-bar-fill" style="--bar-width:10%; background:var(--accent-teal);"></div>
           </div>
           <div class="esg-bar-labels">
             <span>Boet: 12 ha</span>
@@ -2870,7 +2880,7 @@
         </div>
         <div class="esg-bar-container">
           <div class="esg-bar-track">
-            <div class="esg-bar-fill" style="width:100%; background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold));"></div>
+            <div class="esg-bar-fill" style="--bar-width:100%; background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold));"></div>
           </div>
           <div class="esg-bar-labels">
             <span>Local hiring: 78%</span>
@@ -2901,7 +2911,7 @@
     <!-- Visual Timeline Graphic -->
     <div class="timeline-graphic">
       <div class="tg-track">
-        <div class="tg-progress" style="width:58%;"></div>
+        <div class="tg-progress" style="--bar-width:58%;"></div>
       </div>
       <div class="tg-nodes">
         <div class="tg-node completed">
@@ -4068,6 +4078,39 @@
                 strip.style.transform = 'translateY(-' + (count * 1.15) + 'em)';
               }, delay);
             });
+          });
+
+          // Stagger ESG bar fill animations (200ms apart)
+          var esgBars = entry.target.querySelectorAll('.esg-bar-fill:not(.bar-animated)');
+          esgBars.forEach(function(bar, i) {
+            bar.classList.add('bar-animated');
+            bar.style.transitionDelay = (i * 200) + 'ms';
+          });
+
+          // Stagger timeline phase card animations
+          var phases = entry.target.querySelectorAll('.timeline-phase:not(.phase-animated)');
+          phases.forEach(function(phase, i) {
+            phase.classList.add('phase-animated');
+            phase.style.opacity = '0';
+            phase.style.transform = 'translateY(20px)';
+            phase.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            phase.style.transitionDelay = (i * 150) + 'ms';
+            setTimeout(function() {
+              phase.style.opacity = '1';
+              phase.style.transform = 'translateY(0)';
+            }, 50);
+          });
+
+          // Stagger timeline graphic node dot pop-in
+          var tgNodes = entry.target.querySelectorAll('.tg-node-dot:not(.dot-animated)');
+          tgNodes.forEach(function(dot, i) {
+            dot.classList.add('dot-animated');
+            dot.style.transform = 'scale(0)';
+            dot.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            dot.style.transitionDelay = (i * 120) + 'ms';
+            setTimeout(function() {
+              dot.style.transform = 'scale(1)';
+            }, 50);
           });
         }
       });
