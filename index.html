@@ -1234,6 +1234,16 @@
     gap: 16px;
     transition: border-color 0.2s;
   }
+  .team-card .team-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .team-card .team-linkedin {
+    margin-top: auto;
+    align-self: center;
+  }
   .team-card:hover { border-color: var(--accent-blue); }
   .team-photo {
     width: 72px;
@@ -1883,37 +1893,11 @@
   /* ODOMETER COUNT-UP for key numbers              */
   /* ═══════════════════════════════════════════════ */
   .countup-number {
-    display: inline-flex;
-    overflow: hidden;
-    line-height: 1;
+    display: inline;
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
     font-family: inherit;
-  }
-  .countup-number .cu-digit-col {
-    display: inline-block;
-    height: 1.15em;
-    overflow: hidden;
-    position: relative;
-  }
-  .countup-number .cu-strip {
-    display: flex;
-    flex-direction: column;
-    will-change: transform;
-    transition: transform 1s cubic-bezier(0.33, 0, 0.2, 1);
-  }
-  .countup-number .cu-strip span {
-    display: block;
-    height: 1.15em;
-    line-height: 1.15em;
-    text-align: center;
-  }
-  .countup-number .cu-static {
-    display: inline-block;
-    height: 1.15em;
-    line-height: 1.15em;
-    white-space: pre;
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -1985,12 +1969,10 @@
   .esg-bar-fill {
     height: 100%;
     border-radius: 3px;
-    width: var(--bar-width);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  /* Animation driven by JS IntersectionObserver — sets inline transform: scaleX(1) */
+  /* Animation driven by JS IntersectionObserver — sets inline width to var(--bar-width) */
   .esg-bar-labels {
     display: flex;
     justify-content: space-between;
@@ -2031,12 +2013,10 @@
     height: 100%;
     background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold));
     border-radius: 2px;
-    width: var(--bar-width);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 0;
+    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  /* Animation driven by JS IntersectionObserver — sets inline transform: scaleX(1) */
+  /* Animation driven by JS IntersectionObserver — sets inline width */
   .tg-nodes {
     display: flex;
     justify-content: space-between;
@@ -2392,6 +2372,93 @@
   .slide-inner.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* ═══ IMAGE GALLERY SELECTOR ═══ */
+  .img-gallery {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.12);
+    position: relative;
+  }
+  .img-gallery-main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    max-height: 380px;
+    overflow: hidden;
+    background: var(--bg-card);
+  }
+  .img-gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .img-gallery-main img.active {
+    opacity: 1;
+    z-index: 1;
+  }
+  .img-gallery-thumbs {
+    display: flex;
+    gap: 0;
+    background: rgba(18,16,14,0.9);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .img-gallery-thumb {
+    flex: 1;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    height: 64px;
+    overflow: hidden;
+    opacity: 0.45;
+    transition: opacity 0.3s ease;
+    background: none;
+  }
+  .img-gallery-thumb:not(:last-child) {
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .img-gallery-thumb.active {
+    opacity: 1;
+  }
+  .img-gallery-thumb:hover {
+    opacity: 0.8;
+  }
+  .img-gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .img-gallery-thumb .thumb-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    padding: 12px 8px 5px;
+    text-align: center;
+  }
+  .img-gallery-thumb.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-gold);
+  }
+  @media (max-width: 600px) {
+    .img-gallery-main { max-height: 240px; }
+    .img-gallery-thumb { height: 48px; }
+    .img-gallery-thumb .thumb-label { font-size: 8px; padding: 8px 4px 3px; }
   }
 
   /* ═══ PIE CHART LAYOUT ═══ */
@@ -2822,8 +2889,26 @@
       </div>
     </div>
 
-    <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color);">
-      <img src="photo-industrial-2.jpg" alt="Technology and process" style="width:100%; max-height:360px; object-fit:cover; display:block;">
+    <div class="img-gallery" id="tech-gallery">
+      <div class="img-gallery-main">
+        <img src="photo-tech-1.jpg" alt="Aerial view of extraction site" class="active">
+        <img src="photo-tech-2.jpg" alt="Haul truck transporting material">
+        <img src="photo-tech-3.jpg" alt="Underground tunnel infrastructure">
+      </div>
+      <div class="img-gallery-thumbs">
+        <button class="img-gallery-thumb active" data-idx="0">
+          <img src="photo-tech-1.jpg" alt="Extraction">
+          <span class="thumb-label">Extraction</span>
+        </button>
+        <button class="img-gallery-thumb" data-idx="1">
+          <img src="photo-tech-2.jpg" alt="Transport">
+          <span class="thumb-label">Transport</span>
+        </button>
+        <button class="img-gallery-thumb" data-idx="2">
+          <img src="photo-tech-3.jpg" alt="Infrastructure">
+          <span class="thumb-label">Infrastructure</span>
+        </button>
+      </div>
     </div>
     <p style="font-size:11px; color:var(--text-muted); margin-top:8px; font-style:italic;">Advanced extraction technology and processing infrastructure</p>
 
@@ -4279,6 +4364,44 @@
     checkFooterVisibility();
   }
 
+  /* ═══ IMAGE GALLERY SELECTOR ═══ */
+  (function() {
+    var gallery = document.getElementById('tech-gallery');
+    if (!gallery) return;
+    var mainImgs = gallery.querySelectorAll('.img-gallery-main img');
+    var thumbBtns = gallery.querySelectorAll('.img-gallery-thumb');
+    var autoTimer = null;
+    function switchTo(idx) {
+      mainImgs.forEach(function(img) { img.classList.remove('active'); });
+      thumbBtns.forEach(function(btn) { btn.classList.remove('active'); });
+      if (mainImgs[idx]) mainImgs[idx].classList.add('active');
+      if (thumbBtns[idx]) thumbBtns[idx].classList.add('active');
+    }
+    thumbBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        switchTo(idx);
+        // Reset auto-rotate on manual click
+        clearInterval(autoTimer);
+        autoTimer = setInterval(function() {
+          var current = gallery.querySelector('.img-gallery-main img.active');
+          var nextIdx = 0;
+          mainImgs.forEach(function(img, i) { if (img === current) nextIdx = (i + 1) % mainImgs.length; });
+          switchTo(nextIdx);
+        }, 5000);
+      });
+      // Touch support
+      btn.addEventListener('touchstart', function(e) { e.preventDefault(); btn.click(); }, { passive: false });
+    });
+    // Auto-rotate every 5 seconds
+    autoTimer = setInterval(function() {
+      var current = gallery.querySelector('.img-gallery-main img.active');
+      var nextIdx = 0;
+      mainImgs.forEach(function(img, i) { if (img === current) nextIdx = (i + 1) % mainImgs.length; });
+      switchTo(nextIdx);
+    }, 5000);
+  })();
+
   /* ═══ PDF DOWNLOAD ═══ */
   document.getElementById('download-pdf-btn').addEventListener('click', function(e) {
     e.preventDefault();
@@ -4304,15 +4427,7 @@
           var countups = entry.target.querySelectorAll('.countup-number:not(.cu-animated)');
           countups.forEach(function(cu, cuIndex) {
             cu.classList.add('cu-animated');
-            var strips = cu.querySelectorAll('.cu-strip');
-            strips.forEach(function(strip, stripIndex) {
-              var count = parseInt(strip.getAttribute('data-count'), 10);
-              // Stagger each digit strip slightly (30ms apart per card, 20ms apart per digit)
-              var delay = (cuIndex * 30) + (stripIndex * 20);
-              setTimeout(function() {
-                strip.style.transform = 'translateY(-' + (count * 1.15) + 'em)';
-              }, delay);
-            });
+            animateCountup(cu, cuIndex * 80);
           });
 
           // Stagger ESG metric panels slide-up animation
@@ -4333,15 +4448,17 @@
           var esgBars = entry.target.querySelectorAll('.esg-bar-fill:not(.bar-animated)');
           esgBars.forEach(function(bar, i) {
             bar.classList.add('bar-animated');
+            var targetWidth = getComputedStyle(bar).getPropertyValue('--bar-width') || bar.style.getPropertyValue('--bar-width');
             bar.style.transitionDelay = (400 + i * 200) + 'ms';
-            setTimeout(function() { bar.style.transform = 'scaleX(1)'; }, 50);
+            setTimeout(function() { bar.style.width = targetWidth; }, 50);
           });
 
           // Animate TG progress bar
           var tgBars = entry.target.querySelectorAll('.tg-progress:not(.bar-animated)');
           tgBars.forEach(function(bar) {
             bar.classList.add('bar-animated');
-            setTimeout(function() { bar.style.transform = 'scaleX(1)'; }, 50);
+            var targetW = getComputedStyle(bar).getPropertyValue('--bar-width') || bar.style.getPropertyValue('--bar-width') || '58%';
+            setTimeout(function() { bar.style.width = targetW; }, 50);
           });
 
           // Stagger timeline phase card animations
@@ -4399,6 +4516,60 @@
             t.classList.add('sa-done', 'scroll-fade');
             setTimeout(function() { t.classList.add('in-view'); }, 150);
           });
+
+          // H4 headings — slide up
+          var headings = entry.target.querySelectorAll('h4:not(.sa-done)');
+          headings.forEach(function(h, hi) {
+            h.classList.add('sa-done', 'scroll-fade');
+            h.style.transitionDelay = (hi * 60) + 'ms';
+            setTimeout(function() { h.classList.add('in-view'); }, 30);
+          });
+
+          // Section dividers — width grow
+          var dividers = entry.target.querySelectorAll('.section-divider:not(.sa-done)');
+          dividers.forEach(function(d) {
+            d.classList.add('sa-done');
+            d.style.width = '0';
+            d.style.transition = 'width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            setTimeout(function() { d.style.width = '60px'; }, 100);
+          });
+
+          // Paragraphs (direct children of slide-inner) — fade up
+          var paras = entry.target.querySelectorAll(':scope > p:not(.sa-done)');
+          paras.forEach(function(p, pi) {
+            p.classList.add('sa-done', 'scroll-fade');
+            p.style.transitionDelay = (pi * 80) + 'ms';
+            setTimeout(function() { p.classList.add('in-view'); }, 60);
+          });
+
+          // Glass/card containers (backdrop-filter divs) — scale in
+          var glassPanels = entry.target.querySelectorAll('[style*="backdrop-filter"]:not(.sa-done)');
+          glassPanels.forEach(function(gp, gi) {
+            gp.classList.add('sa-done', 'scroll-scale');
+            gp.style.transitionDelay = (gi * 120) + 'ms';
+            setTimeout(function() { gp.classList.add('in-view'); }, 50);
+          });
+
+          // Images with border-radius containers — fade in
+          var imgWraps = entry.target.querySelectorAll('[style*="border-radius"][style*="overflow:hidden"]:not(.sa-done)');
+          imgWraps.forEach(function(iw) {
+            iw.classList.add('sa-done', 'scroll-fade');
+            setTimeout(function() { iw.classList.add('in-view'); }, 200);
+          });
+
+          // Slide tags — fade in
+          var tags = entry.target.querySelectorAll('.slide-tag:not(.sa-done)');
+          tags.forEach(function(tag) {
+            tag.classList.add('sa-done', 'scroll-fade');
+            setTimeout(function() { tag.classList.add('in-view'); }, 0);
+          });
+
+          // H2 titles — slide up with slight scale
+          var titles = entry.target.querySelectorAll('h2:not(.sa-done)');
+          titles.forEach(function(t) {
+            t.classList.add('sa-done', 'scroll-fade');
+            setTimeout(function() { t.classList.add('in-view'); }, 50);
+          });
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
@@ -4413,74 +4584,77 @@
   }
 
   /* ═══════════════════════════════════════════════════════════ */
-  /* ODOMETER COUNT-UP — Build digit strips for key numbers      */
+  /* COUNT-UP — Smooth numerical animation using rAF             */
   /* ═══════════════════════════════════════════════════════════ */
   function buildCountup(el) {
     var rawText = el.textContent.trim();
     if (!rawText) return;
-
-    // Parse the text into digit characters vs non-digit characters
-    // Examples: "20,000 t/yr", "US$4.8 B", "28%", "$50 Million"
-    var parts = [];
-    var i = 0;
-    while (i < rawText.length) {
-      var ch = rawText[i];
-      if (ch >= '0' && ch <= '9') {
-        // Collect consecutive digit characters
-        var digitGroup = '';
-        while (i < rawText.length && rawText[i] >= '0' && rawText[i] <= '9') {
-          digitGroup += rawText[i];
-          i++;
-        }
-        parts.push({ type: 'digits', value: digitGroup });
-      } else {
-        // Collect consecutive non-digit characters (prefix, suffix, comma, dot, etc.)
-        var staticGroup = '';
-        while (i < rawText.length && !(rawText[i] >= '0' && rawText[i] <= '9')) {
-          staticGroup += rawText[i];
-          i++;
-        }
-        parts.push({ type: 'static', value: staticGroup });
-      }
-    }
-
-    // Build the countup-number container
-    el.innerHTML = '';
-    var wrapper = document.createElement('span');
-    wrapper.className = 'countup-number';
-
-    parts.forEach(function(part) {
-      if (part.type === 'static') {
-        var staticSpan = document.createElement('span');
-        staticSpan.className = 'cu-static';
-        staticSpan.textContent = part.value;
-        wrapper.appendChild(staticSpan);
-      } else {
-        // For each digit, create a column with a strip of numbers 0→target
-        var digits = part.value.split('');
-        digits.forEach(function(d) {
-          var targetDigit = parseInt(d, 10);
-          var colDiv = document.createElement('span');
-          colDiv.className = 'cu-digit-col';
-
-          var strip = document.createElement('span');
-          strip.className = 'cu-strip';
-          strip.setAttribute('data-count', targetDigit);
-
-          // Build strip: 0, 1, 2, ... targetDigit
-          for (var n = 0; n <= targetDigit; n++) {
-            var numSpan = document.createElement('span');
-            numSpan.textContent = n;
-            strip.appendChild(numSpan);
-          }
-
-          colDiv.appendChild(strip);
-          wrapper.appendChild(colDiv);
-        });
-      }
+    // Extract all numeric sequences with their positions
+    // e.g. "US$4.8 B" → numericValue = 4.8, template = "US${0} B"
+    var nums = [];
+    var template = rawText.replace(/(\d[\d,]*\.?\d*)/g, function(match) {
+      var cleanNum = parseFloat(match.replace(/,/g, ''));
+      var hasComma = match.indexOf(',') !== -1;
+      var decimals = match.indexOf('.') !== -1 ? match.split('.')[1].length : 0;
+      nums.push({ target: cleanNum, hasComma: hasComma, decimals: decimals, original: match });
+      return '\x00' + (nums.length - 1) + '\x00';
     });
+    if (nums.length === 0) return;
+    // Store the data for animation later
+    var span = document.createElement('span');
+    span.className = 'countup-number';
+    span.setAttribute('data-cu-template', template);
+    span.setAttribute('data-cu-nums', JSON.stringify(nums));
+    span.textContent = rawText;
+    el.innerHTML = '';
+    el.appendChild(span);
+  }
 
-    el.appendChild(wrapper);
+  function animateCountup(span, delay) {
+    var template = span.getAttribute('data-cu-template');
+    var nums = JSON.parse(span.getAttribute('data-cu-nums'));
+    if (!nums || nums.length === 0) return;
+    var duration = 1500;
+    function formatNum(val, info) {
+      var fixed = val.toFixed(info.decimals);
+      if (info.hasComma) {
+        var parts = fixed.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+      }
+      return fixed;
+    }
+    function render(t) {
+      var progress = 1 - Math.pow(1 - t, 3);
+      var text = template;
+      for (var i = 0; i < nums.length; i++) {
+        var current = nums[i].target * progress;
+        text = text.replace('\x00' + i + '\x00', formatNum(current, nums[i]));
+      }
+      span.textContent = text;
+    }
+    // Start from 0
+    render(0);
+    setTimeout(function() {
+      var start = performance.now();
+      var done = false;
+      function step() {
+        if (done) return;
+        var elapsed = performance.now() - start;
+        var t = Math.min(elapsed / duration, 1);
+        render(t);
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          done = true;
+        }
+      }
+      requestAnimationFrame(step);
+      // Safety fallback: guarantee final value is set
+      setTimeout(function() {
+        if (!done) { done = true; render(1); }
+      }, duration + 200);
+    }, delay);
   }
 
   // Find and build count-up for all metric-card-value elements
