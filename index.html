@@ -393,12 +393,7 @@
   /* ARROW NAV CONTROLS                              */
   /* ═══════════════════════════════════════════════ */
   .slide-nav-arrows {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    display: flex;
-    gap: 8px;
-    z-index: 900;
+    display: none !important;
   }
   .slide-nav-arrows button {
     width: 44px;
@@ -1028,7 +1023,7 @@
     gap: 24px;
     margin: 28px 0;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 650px) {
     .two-col { grid-template-columns: 1fr; }
   }
 
@@ -1537,7 +1532,7 @@
   .footer {
     text-align: center;
     margin-left: 240px;
-    padding: 40px 60px;
+    padding: 40px 60px 70px;
     border-top: 1px solid var(--border-color);
     font-size: 12px;
     color: var(--text-muted);
@@ -2268,7 +2263,6 @@
     .slide-nav-arrows button { width: 38px; height: 38px; font-size: 15px; }
     .slide-counter { font-size: 10px; padding: 0 8px; }
     .section-transition { margin-left: 0; padding: 12px 24px; }
-    .two-col { grid-template-columns: 1fr; }
     .metric-grid { grid-template-columns: repeat(2, 1fr); }
     .team-grid { grid-template-columns: repeat(2, 1fr); }
     .thesis-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2465,29 +2459,27 @@
     .img-gallery-thumb .thumb-label { font-size: 8px; padding: 8px 4px 3px; }
   }
 
-  /* ═══ PIE CHART LAYOUT ═══ */
+  /* ═══ PIE CHART LAYOUT — LEGEND BELOW ═══ */
   .pie-layout {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
   }
   .pie-layout svg {
     flex-shrink: 0;
-    width: 180px;
-    height: 180px;
+    width: 160px;
+    height: 160px;
   }
-  @media (max-width: 900px) {
-    .pie-layout { gap: 16px; }
-    .pie-layout svg { width: 150px; height: 150px; }
+  .pie-layout > div {
+    font-size: 12px;
+    line-height: 2;
+    text-align: left;
+    width: 100%;
   }
   @media (max-width: 600px) {
-    .pie-layout {
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-    }
     .pie-layout svg { width: 140px; height: 140px; }
-    .pie-layout > div { font-size: 11px; line-height: 2; text-align: center; }
+    .pie-layout > div { font-size: 11px; }
   }
   @media (max-width: 375px) {
     .pie-layout svg { width: 120px; height: 120px; }
@@ -2566,13 +2558,7 @@
     .timeline { grid-template-columns: 1fr; }
   }
 
-  /* ═══ PIE CHART LEGEND LAYOUT IMPROVEMENTS ═══ */
-  .pie-layout > div {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    line-height: 1.8;
-  }
+  /* (pie layout is now handled in main .pie-layout rules above) */
 
   /* ═══ ESG METRIC PANELS — SLIDE-UP ANIMATION ═══ */
   .esg-metric-panel {
@@ -2725,8 +2711,8 @@
   </div>
 </div>
 
-<!-- Arrow Navigation Controls -->
-<div class="slide-nav-arrows" id="slide-arrows">
+<!-- Arrow Navigation Controls (hidden — removed per design) -->
+<div class="slide-nav-arrows" id="slide-arrows" style="display:none !important;">
   <button id="prev-slide" title="Previous Slide (Up Arrow)">&#9650;</button>
   <div class="slide-counter"><span id="current-slide-num">1</span> / 14</div>
   <button id="next-slide" title="Next Slide (Down Arrow)">&#9660;</button>
