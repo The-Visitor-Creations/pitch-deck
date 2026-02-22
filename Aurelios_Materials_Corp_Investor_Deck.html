@@ -1676,6 +1676,176 @@
     position: relative;
     z-index: 10;
   }
+
+  /* ═══════════════════════════════════════════════ */
+  /* PERFORMANCE — GPU hints                        */
+  /* ═══════════════════════════════════════════════ */
+  .splash-digit-strip { will-change: transform; }
+  .progress-bar-fill { will-change: width; }
+  .splash-overlay { will-change: opacity; }
+  .sticky-promo { will-change: opacity, transform; }
+  .contact-cta-btn,
+  .download-btn,
+  .slide-nav-arrows button { will-change: transform; }
+
+  /* ═══════════════════════════════════════════════ */
+  /* ODOMETER COUNT-UP for key numbers              */
+  /* ═══════════════════════════════════════════════ */
+  .countup-number {
+    display: inline-flex;
+    overflow: hidden;
+    line-height: 1;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    font-family: inherit;
+  }
+  .countup-number .cu-digit-col {
+    display: inline-block;
+    height: 1.15em;
+    overflow: hidden;
+    position: relative;
+  }
+  .countup-number .cu-strip {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+    transition: transform 1s cubic-bezier(0.33, 0, 0.2, 1);
+  }
+  .countup-number .cu-strip span {
+    display: block;
+    height: 1.15em;
+    line-height: 1.15em;
+    text-align: center;
+  }
+  .countup-number .cu-static {
+    display: inline-block;
+    height: 1.15em;
+    line-height: 1.15em;
+    white-space: pre;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* COMPREHENSIVE RESPONSIVE — Tablet (≤900px)     */
+  /* ═══════════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .top-bar { left: 0; padding: 0 20px; }
+    .slide { margin-left: 0; padding: 70px 24px 60px; }
+    .disclaimer-section { margin-left: 0; padding: 30px 24px; }
+    .footer { margin-left: 0; padding: 30px 24px; }
+    .title-slide .slide-inner { padding: 70px 24px; }
+    .nav-stock-tracker { display: none; }
+    .nav-jump-links { display: none; }
+    .slide-nav-arrows { bottom: 20px; right: 16px; }
+    .slide-nav-arrows button { width: 38px; height: 38px; font-size: 15px; }
+    .slide-counter { font-size: 10px; padding: 0 8px; }
+    .section-transition { margin-left: 0; padding: 12px 24px; }
+    .two-col { grid-template-columns: 1fr; }
+    .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .thesis-grid { grid-template-columns: repeat(2, 1fr); }
+    .esg-grid { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 32px; }
+    h2 { font-size: 26px; }
+    .ask-amount { font-size: 36px; }
+    .splash-odometer { font-size: 42px; }
+    .splash-logo .splash-name { font-size: 22px; letter-spacing: 4px; }
+    .comparison-table { font-size: 11px; }
+    .comparison-table th, .comparison-table td { padding: 8px 8px; }
+    .data-table { font-size: 12px; }
+    .data-table th, .data-table td { padding: 10px 10px; }
+    .return-potential-glass { padding: 24px 20px; }
+    .stock-metrics { gap: 20px; }
+    .stock-tracker { padding: 16px 20px; }
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* COMPREHENSIVE RESPONSIVE — Mobile (≤600px)     */
+  /* ═══════════════════════════════════════════════ */
+  @media (max-width: 600px) {
+    .slide { padding: 64px 16px 48px; }
+    .title-slide .slide-inner { padding: 64px 16px; max-width: 100%; }
+    h1 { font-size: 26px; letter-spacing: 0; }
+    h2 { font-size: 22px; letter-spacing: 0; }
+    h4 { font-size: 12px; letter-spacing: 1.5px; }
+    .subtitle { font-size: 15px; }
+    p { font-size: 14px; }
+    .metric-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .metric-card { padding: 14px; }
+    .metric-card-value { font-size: 20px; }
+    .team-grid { grid-template-columns: 1fr; }
+    .thesis-grid { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: 1fr; }
+    .contact-row { grid-template-columns: 1fr; }
+    .contact-cta { flex: 1; }
+    .slide-nav-arrows { bottom: 14px; right: 10px; gap: 4px; }
+    .slide-nav-arrows button { width: 34px; height: 34px; font-size: 14px; }
+    .slide-counter { display: none; }
+    .top-bar { height: 46px; }
+    .nav-logo { font-size: 12px; letter-spacing: 1.5px; }
+    .splash-overlay { padding-top: 28vh; }
+    .splash-odometer { font-size: 34px; }
+    .splash-logo .splash-name { font-size: 18px; letter-spacing: 3px; }
+    .splash-logo .splash-sub { font-size: 8px; letter-spacing: 3px; }
+    .splash-price-spacer { height: 24px; }
+    .ask-amount { font-size: 28px; }
+    .ticker-badge { font-size: 11px; padding: 6px 14px; }
+    .stock-metrics { flex-direction: column; gap: 12px; }
+    .board-table { font-size: 11px; }
+    .board-table th, .board-table td { padding: 8px 8px; }
+    .comparison-table { font-size: 10px; }
+    .comparison-table th, .comparison-table td { padding: 6px 6px; }
+    .data-table th, .data-table td { padding: 8px 8px; }
+    .section-transition { padding: 10px 16px; }
+    .section-transition a { font-size: 11px; min-width: auto; }
+    .section-transition .dots { display: none; }
+    blockquote { padding: 12px 16px; font-size: 14px; }
+    .return-potential-glass { padding: 20px 16px; margin-top: 24px; }
+    .bullet-list li { font-size: 13px; padding-left: 18px; }
+    .numbered-header { gap: 10px; }
+    .numbered-header .num { width: 30px; height: 30px; font-size: 12px; }
+    .tagline { font-size: 14px; }
+    .date-line { font-size: 11px; }
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* COMPREHENSIVE RESPONSIVE — Small Mobile (≤375px) */
+  /* ═══════════════════════════════════════════════ */
+  @media (max-width: 375px) {
+    .slide { padding: 60px 12px 40px; }
+    .metric-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 20px; }
+    .splash-odometer { font-size: 28px; }
+    .ask-amount { font-size: 24px; }
+    .top-bar { padding: 0 12px; }
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* SMOOTH TRANSITIONS — Global polish             */
+  /* ═══════════════════════════════════════════════ */
+  .slide { transition: none; }
+  .metric-card { transition: border-color 0.25s ease, transform 0.25s ease; }
+  .metric-card:hover { transform: translateY(-2px); }
+  .team-card { transition: border-color 0.25s ease, transform 0.25s ease; }
+  .team-card:hover { transform: translateY(-2px); }
+  .thesis-card { transition: border-color 0.25s ease, transform 0.25s ease; }
+  .thesis-card:hover { transform: translateY(-2px); }
+  .esg-pillar { transition: border-color 0.25s ease, transform 0.25s ease; }
+  .esg-pillar:hover { transform: translateY(-2px); }
+
+  /* Fade-in on scroll for slide content */
+  .slide-inner {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .slide-inner.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 </style>
 </head>
 <body class="splash-active">
@@ -1922,7 +2092,7 @@
         <div id="price-hover-dot" style="position:absolute; width:12px; height:12px; border-radius:50%; background:#9E1B32; border:2px solid #FAF9F6; display:none; pointer-events:none; transform:translate(-50%,-50%); z-index:5; box-shadow:0 0 10px rgba(158,27,50,0.5);"></div>
         <div id="price-hover-label" style="position:absolute; background:rgba(18,16,14,0.95); border:1px solid rgba(250,249,246,0.2); border-radius:6px; padding:6px 12px; font-size:12px; color:#FAF9F6; display:none; pointer-events:none; z-index:6; white-space:nowrap; font-family:'JetBrains Mono',monospace;"></div>
         <!-- Invisible hover rects for each data point -->
-        <div id="price-hover-zones" style="position:absolute; top:0; left:0; width:100%; height:100; display:flex;"></div>
+        <div id="price-hover-zones" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex;"></div>
       </div>
       <div id="price-labels" style="display:flex; justify-content:space-between; font-size:10px; color:#FAF9F6; opacity:0.5; padding:0 4px;"></div>
       <div id="price-annotations" style="margin-top:12px; display:flex; gap:16px; flex-wrap:wrap; font-size:11px; color:#FAF9F6; opacity:0.8;"></div>
@@ -3200,6 +3370,136 @@
   document.getElementById('download-pdf-btn').addEventListener('click', function(e) {
     e.preventDefault();
     window.print();
+  });
+
+  /* ═══════════════════════════════════════════════════════════ */
+  /* INTERSECTION OBSERVER — Fade-in slide content on scroll     */
+  /* ═══════════════════════════════════════════════════════════ */
+  var slideInners = document.querySelectorAll('.slide-inner');
+
+  // Make first slide (title) visible immediately — no need to scroll to it
+  if (slideInners.length > 0) {
+    slideInners[0].classList.add('visible');
+  }
+
+  if ('IntersectionObserver' in window) {
+    var slideObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Once visible, trigger count-up animations inside this slide with stagger
+          var countups = entry.target.querySelectorAll('.countup-number:not(.cu-animated)');
+          countups.forEach(function(cu, cuIndex) {
+            cu.classList.add('cu-animated');
+            var strips = cu.querySelectorAll('.cu-strip');
+            strips.forEach(function(strip, stripIndex) {
+              var count = parseInt(strip.getAttribute('data-count'), 10);
+              // Stagger each digit strip slightly (30ms apart per card, 20ms apart per digit)
+              var delay = (cuIndex * 30) + (stripIndex * 20);
+              setTimeout(function() {
+                strip.style.transform = 'translateY(-' + (count * 1.15) + 'em)';
+              }, delay);
+            });
+          });
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+    slideInners.forEach(function(inner, i) {
+      // Skip first slide — already visible
+      if (i > 0) slideObserver.observe(inner);
+    });
+  } else {
+    // Fallback: show all immediately
+    slideInners.forEach(function(inner) { inner.classList.add('visible'); });
+  }
+
+  /* ═══════════════════════════════════════════════════════════ */
+  /* ODOMETER COUNT-UP — Build digit strips for key numbers      */
+  /* ═══════════════════════════════════════════════════════════ */
+  function buildCountup(el) {
+    var rawText = el.textContent.trim();
+    if (!rawText) return;
+
+    // Parse the text into digit characters vs non-digit characters
+    // Examples: "20,000 t/yr", "US$4.8 B", "28%", "$50 Million"
+    var parts = [];
+    var i = 0;
+    while (i < rawText.length) {
+      var ch = rawText[i];
+      if (ch >= '0' && ch <= '9') {
+        // Collect consecutive digit characters
+        var digitGroup = '';
+        while (i < rawText.length && rawText[i] >= '0' && rawText[i] <= '9') {
+          digitGroup += rawText[i];
+          i++;
+        }
+        parts.push({ type: 'digits', value: digitGroup });
+      } else {
+        // Collect consecutive non-digit characters (prefix, suffix, comma, dot, etc.)
+        var staticGroup = '';
+        while (i < rawText.length && !(rawText[i] >= '0' && rawText[i] <= '9')) {
+          staticGroup += rawText[i];
+          i++;
+        }
+        parts.push({ type: 'static', value: staticGroup });
+      }
+    }
+
+    // Build the countup-number container
+    el.innerHTML = '';
+    var wrapper = document.createElement('span');
+    wrapper.className = 'countup-number';
+
+    parts.forEach(function(part) {
+      if (part.type === 'static') {
+        var staticSpan = document.createElement('span');
+        staticSpan.className = 'cu-static';
+        staticSpan.textContent = part.value;
+        wrapper.appendChild(staticSpan);
+      } else {
+        // For each digit, create a column with a strip of numbers 0→target
+        var digits = part.value.split('');
+        digits.forEach(function(d) {
+          var targetDigit = parseInt(d, 10);
+          var colDiv = document.createElement('span');
+          colDiv.className = 'cu-digit-col';
+
+          var strip = document.createElement('span');
+          strip.className = 'cu-strip';
+          strip.setAttribute('data-count', targetDigit);
+
+          // Build strip: 0, 1, 2, ... targetDigit
+          for (var n = 0; n <= targetDigit; n++) {
+            var numSpan = document.createElement('span');
+            numSpan.textContent = n;
+            strip.appendChild(numSpan);
+          }
+
+          colDiv.appendChild(strip);
+          wrapper.appendChild(colDiv);
+        });
+      }
+    });
+
+    el.appendChild(wrapper);
+  }
+
+  // Find and build count-up for all metric-card-value elements
+  var metricValues = document.querySelectorAll('.metric-card-value');
+  metricValues.forEach(function(el) {
+    // Only build if the element contains numbers
+    if (/\d/.test(el.textContent)) {
+      buildCountup(el);
+    }
+  });
+
+  // Build count-up for the ask-amount element
+  var askAmounts = document.querySelectorAll('.ask-amount');
+  askAmounts.forEach(function(el) {
+    if (/\d/.test(el.textContent)) {
+      buildCountup(el);
+    }
   });
 
 })();
