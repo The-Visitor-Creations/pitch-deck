@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boet Materials Corp. — Corporate Presentation | February 2026</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@900%26display=swap')%3C/style%3E%3Ctext x='50%25' y='75%25' text-anchor='middle' font-family='Outfit,sans-serif' font-weight='900' font-size='58' fill='%239E1B32'%3EB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
   :root {
     --bg-primary: #12100e;
@@ -2138,8 +2139,8 @@
   /* ═══════════════════════════════════════════════ */
   .mobile-hamburger {
     display: none;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     background: transparent;
@@ -2196,7 +2197,8 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 24px;
+    padding: 14px 24px;
+    min-height: 44px;
     font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary);
@@ -2311,8 +2313,8 @@
     .slide-counter { display: none; }
     .top-bar { height: 46px; }
     .mobile-nav-dropdown { top: 46px; }
-    .mobile-hamburger { width: 32px; height: 32px; }
-    .mobile-hamburger span { width: 16px; }
+    .mobile-hamburger { width: 44px; height: 44px; }
+    .mobile-hamburger span { width: 18px; }
     .nav-logo { font-size: 12px; letter-spacing: 1.5px; }
     .splash-overlay { padding-top: 28vh; }
     .splash-odometer { font-size: 34px; }
@@ -2599,6 +2601,20 @@
   .scroll-scale.in-view {
     opacity: 1;
     transform: scale(1);
+  }
+
+  /* ═══ REDUCED MOTION — Accessibility ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .scroll-fade, .scroll-scale { opacity: 1; transform: none; }
+    .esg-metric-panel { opacity: 1; transform: none; }
+    .thesis-card { opacity: 1; transform: none; }
+    .splash-overlay { display: none !important; }
   }
 </style>
 </head>
@@ -2984,21 +3000,21 @@
 
     <div class="img-gallery" id="tech-gallery">
       <div class="img-gallery-main">
-        <img src="photo-tech-1.jpg" alt="Aerial view of extraction site" class="active">
-        <img src="photo-tech-2.jpg" alt="Haul truck transporting material">
-        <img src="photo-tech-3.jpg" alt="Underground tunnel infrastructure">
+        <img src="photo-tech-1.jpg" alt="Aerial view of extraction site" class="active" loading="lazy">
+        <img src="photo-tech-2.jpg" alt="Haul truck transporting material" loading="lazy">
+        <img src="photo-tech-3.jpg" alt="Underground tunnel infrastructure" loading="lazy">
       </div>
       <div class="img-gallery-thumbs">
         <button class="img-gallery-thumb active" data-idx="0">
-          <img src="photo-tech-1.jpg" alt="Extraction">
+          <img src="photo-tech-1.jpg" alt="Extraction" loading="lazy">
           <span class="thumb-label">Extraction</span>
         </button>
         <button class="img-gallery-thumb" data-idx="1">
-          <img src="photo-tech-2.jpg" alt="Transport">
+          <img src="photo-tech-2.jpg" alt="Transport" loading="lazy">
           <span class="thumb-label">Transport</span>
         </button>
         <button class="img-gallery-thumb" data-idx="2">
-          <img src="photo-tech-3.jpg" alt="Infrastructure">
+          <img src="photo-tech-3.jpg" alt="Infrastructure" loading="lazy">
           <span class="thumb-label">Infrastructure</span>
         </button>
       </div>
@@ -3086,7 +3102,7 @@
     </table>
 
     <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color); margin-bottom:8px;">
-      <img src="sitemap.png" alt="Project Site Map" style="width:100%; max-height:440px; object-fit:cover; display:block;">
+      <img src="sitemap.png" alt="Project Site Map" loading="lazy" style="width:100%; max-height:440px; object-fit:cover; display:block;">
     </div>
     <p style="font-size:11px; color:var(--text-muted); margin-bottom:28px; font-style:italic;">Site map overview of the flagship project area and surrounding infrastructure</p>
 
@@ -3107,7 +3123,7 @@
     </div>
 
     <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color);">
-      <img src="photo-industrial-3.jpg" alt="Regional overview" style="width:100%; max-height:300px; object-fit:cover; display:block;">
+      <img src="photo-industrial-3.jpg" alt="Regional overview" loading="lazy" style="width:100%; max-height:300px; object-fit:cover; display:block;">
     </div>
 
     <blockquote>The Company&rsquo;s resource base supports multi-decade operations with clear expansion pathways across the district.</blockquote>
@@ -3829,6 +3845,25 @@
 
 <script>
 (function() {
+  /* ═══ DYNAMIC FAVICON — Red B in Outfit 900 ═══ */
+  document.fonts.ready.then(function() {
+    var c = document.createElement('canvas');
+    c.width = 64; c.height = 64;
+    var ctx = c.getContext('2d');
+    ctx.font = '900 56px Outfit, sans-serif';
+    ctx.fillStyle = '#9E1B32';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('B', 32, 35);
+    var link = document.createElement('link');
+    link.rel = 'icon';
+    link.type = 'image/png';
+    link.href = c.toDataURL('image/png');
+    var old = document.querySelector('link[rel="icon"]');
+    if (old) old.remove();
+    document.head.appendChild(link);
+  });
+
   /* ═══ SPLASH SCREEN — ODOMETER PRICE ═══ */
   /*
    * Timeline:
