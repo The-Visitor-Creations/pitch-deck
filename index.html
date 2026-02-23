@@ -2844,6 +2844,8 @@
       </div>
     </div>
 
+    <div class="print-break"><div class="slide-tag">Slide 03</div><h2>Macro Opportunity <em>(cont.)</em></h2><div class="section-divider"></div></div>
+
     <!-- ═══ INTERACTIVE: Global Lithium Demand Forecast ═══ -->
     <div style="background:rgba(255,255,255,0.06); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:28px; margin:28px 0;">
       <h4 style="margin-bottom:4px; color:#FAF9F6; white-space:nowrap; font-size:clamp(10px, 3vw, 14px);">Global Lithium Demand Forecast (kt LCE)</h4>
@@ -2952,6 +2954,8 @@
       </tbody>
     </table>
     </div>
+
+    <div class="print-break"><div class="slide-tag">Slide 05</div><h2>Our Solution &amp; Technology <em>(cont.)</em></h2><div class="section-divider"></div></div>
 
     <h4 style="margin-top:36px;">How It Works</h4>
     <div class="metric-grid how-it-works-grid">
@@ -3085,6 +3089,8 @@
     </div>
     <p style="font-size:11px; color:var(--text-muted); margin-bottom:28px; font-style:italic;">Site map overview of the flagship project area and surrounding infrastructure</p>
 
+    <div class="print-break"><div class="slide-tag">Slide 07</div><h2>Asset Portfolio <em>(cont.)</em></h2><div class="section-divider"></div></div>
+
     <h4 style="margin-top:40px;">Consolidated Resource Summary</h4>
     <div style="overflow-x:auto;">
     <table class="data-table">
@@ -3158,6 +3164,8 @@
         </ul>
       </div>
     </div>
+
+    <div class="print-break"><div class="slide-tag">Slide 08</div><h2>ESG &amp; Sustainability <em>(cont.)</em></h2><div class="section-divider"></div></div>
 
     <!-- ESG Performance Metrics -->
     <h4 style="margin-top:36px;">Performance Metrics</h4>
@@ -3304,6 +3312,8 @@
       </div>
     </div>
 
+    <div class="print-break"><div class="slide-tag">Slide 09</div><h2>Development Roadmap <em>(cont.)</em></h2><div class="section-divider"></div></div>
+
     <div class="timeline">
       <div class="timeline-phase completed">
         <div class="timeline-year">2024</div>
@@ -3414,6 +3424,8 @@
         <tr><td>Payback Period</td><td>Years</td><td>3.8</td></tr>
       </tbody>
     </table>
+
+    <div class="print-break"><div class="slide-tag">Slide 10</div><h2>Financial Overview <em>(cont.)</em></h2><div class="section-divider"></div></div>
 
     <!-- ═══ INTERACTIVE REVENUE GROWTH CHART ═══ -->
     <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; margin:28px 0; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6); overflow-x:auto;">
@@ -3607,6 +3619,8 @@
       </div>
     </div>
 
+    <div class="print-break"><div class="slide-tag">Slide 12</div><h2>Management Team <em>(cont.)</em></h2><div class="section-divider"></div></div>
+
     <h4 style="margin-top:40px;">Board of Directors</h4>
     <table class="board-table">
       <thead>
@@ -3687,6 +3701,8 @@
       </div>
     </div>
 
+    <div class="print-break"><div class="slide-tag">Slide 13</div><h2>Investment Thesis <em>(cont.)</em></h2><div class="section-divider"></div></div>
+
     <div class="return-potential-glass">
       <div class="rp-photo-bg"></div>
       <div class="rp-photo-overlay"></div>
@@ -3744,6 +3760,8 @@
       <li><strong>Off-Take Agreements</strong> &mdash; Product commitments de-risking revenue and financing</li>
       <li><strong>Project Financing Readiness</strong> &mdash; Positioning for non-dilutive debt and strategic capital</li>
     </ul>
+
+    <div class="print-break"><div class="slide-tag">Slide 14</div><h2>The Ask <em>(cont.)</em></h2><div class="section-divider"></div></div>
 
     <h4 style="margin-top:32px;">Upcoming Catalysts (12&ndash;18 Months)</h4>
     <div class="metric-grid-5col catalyst-grid">
@@ -4850,18 +4868,99 @@
     }
   });
 
+  /* ═══ PRINT: Force all animated elements visible ═══ */
+  window.addEventListener('beforeprint', function() {
+    document.querySelectorAll('.scroll-animate, .thesis-card, .esg-metric-panel, .step-card, .metric-card, .team-card').forEach(function(el) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.transition = 'none';
+    });
+  });
+
 })();
 </script>
 
 <style>
+  /* ═══ PRINT-BREAK DIVIDER (hidden on screen) ═══ */
+  .print-break { display: none; }
+
+  @page { size: landscape; margin: 0.4in; }
+
   @media print {
-    .sidebar, .top-bar, .slide-nav-arrows, .section-transition, .sticky-promo { display: none !important; }
-    .slide { margin-left: 0 !important; padding: 40px !important; min-height: auto !important; page-break-after: always; }
-    .disclaimer-section, .footer { margin-left: 0 !important; }
+    /* ─── Force color printing ─── */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    /* ─── Hide UI chrome ─── */
+    .sidebar, .top-bar, .slide-nav-arrows, .section-transition,
+    .sticky-promo, .download-btn, .nav-jump-links { display: none !important; }
+
+    /* ─── Slide base ─── */
+    .slide {
+      margin-left: 0 !important;
+      padding: 30px 40px !important;
+      min-height: auto !important;
+      height: auto !important;
+      page-break-after: always;
+      overflow: visible !important;
+    }
+
+    /* ─── Slide background preservation ─── */
     body { background: #fff; color: #111; }
-    .slide-accent { background: #9E1B32 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .slide-red { background: #9E1B32 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .slide-light { background: #f7f2ec !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .slide-accent, .slide-red { background: linear-gradient(135deg, #9E1B32, #7A2E2E, #6F2C3F) !important; color: #f5f0eb !important; }
+    .slide-light { background: #f7f2ec !important; }
+    .slide-dark, .slide-darker, .slide-darkest { background: #12100e !important; color: #f5f0eb !important; }
+    .slide-warm { background: linear-gradient(180deg, #181410, #12100e) !important; color: #f5f0eb !important; }
+    .slide-cool { background: linear-gradient(180deg, #10141a, #12100e) !important; color: #f5f0eb !important; }
+    .slide-white { background: #ffffff !important; color: #111 !important; }
+    .slide-accent-dark { background: linear-gradient(180deg, #1a100c, #12100e) !important; color: #f5f0eb !important; }
+
+    /* ─── Hero layers in print ─── */
+    .slide-hero .hero-bg,
+    .slide-hero .hero-overlay,
+    .slide-hero .hero-tint { position: absolute; }
+
+    /* ─── Atomic break protection ─── */
+    .metric-card, .team-card, .thesis-card, .step-card,
+    .timeline-phase, .esg-metric-panel, blockquote,
+    .data-table, .comparison-table, .board-table { break-inside: avoid; }
+    p, li { orphans: 3; widows: 3; }
+
+    /* ─── Print-break continuation pages ─── */
+    .print-break {
+      display: block;
+      page-break-before: always;
+      padding-top: 20px;
+      margin-bottom: 16px;
+    }
+    .print-break h2 {
+      font-size: 28px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 8px;
+    }
+    .print-break .section-divider { display: block; }
+
+    /* ─── Grid layouts for landscape print ─── */
+    .two-col { grid-template-columns: 1fr 1fr !important; }
+    .team-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .thesis-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .esg-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .timeline { grid-template-columns: repeat(2, 1fr) !important; }
+
+    /* ─── Image gallery: main image only ─── */
+    .gallery-thumbs { display: none !important; }
+    .img-gallery img { max-height: 250px; }
+
+    /* ─── Font scaling for print ─── */
+    h2 { font-size: 28px !important; }
+    .ask-amount { font-size: 28px !important; }
+
+    /* ─── Footer & disclaimer ─── */
+    .disclaimer-section, .footer {
+      margin-left: 0 !important;
+      page-break-before: always;
+    }
   }
 </style>
 
