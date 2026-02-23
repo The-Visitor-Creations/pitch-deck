@@ -2367,7 +2367,8 @@
   .esg-pillar { transition: border-color 0.25s ease, transform 0.25s ease; }
   .esg-pillar:hover { transform: translateY(-2px); }
 
-  /* Fade-in on scroll for slide content */
+  /* Fade-in on scroll for slide content — DISABLED (kept for re-enabling) */
+  /*
   .slide-inner {
     opacity: 0;
     transform: translateY(20px);
@@ -2377,6 +2378,7 @@
     opacity: 1;
     transform: translateY(0);
   }
+  */
 
   /* ═══ IMAGE GALLERY SELECTOR ═══ */
   .img-gallery {
@@ -2581,8 +2583,9 @@
     transition: opacity 0.4s ease, transform 0.4s ease;
   }
 
-  /* ═══ STAGGER SCROLL ANIMATIONS ═══ */
+  /* ═══ STAGGER SCROLL ANIMATIONS — DISABLED (kept for re-enabling) ═══ */
   /* Cards, team cards, thesis cards, bullet items, blockquotes, tables */
+  /*
   .scroll-fade {
     opacity: 0;
     transform: translateY(18px);
@@ -2592,7 +2595,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-  /* Scale-up variant for cards */
   .scroll-scale {
     opacity: 0;
     transform: scale(0.92);
@@ -2602,6 +2604,7 @@
     opacity: 1;
     transform: scale(1);
   }
+  */
 
   /* ═══ REDUCED MOTION — Accessibility ═══ */
   @media (prefers-reduced-motion: reduce) {
@@ -4584,14 +4587,11 @@
   /* ═══════════════════════════════════════════════════════════ */
   /* INTERSECTION OBSERVER — Fade-in slide content on scroll     */
   /* ═══════════════════════════════════════════════════════════ */
+  /* DISABLED — animations turned off; kept for re-enabling     */
   var slideInners = document.querySelectorAll('.slide-inner');
+  slideInners.forEach(function(inner) { inner.classList.add('visible'); });
 
-  // Make first slide (title) visible immediately — no need to scroll to it
-  if (slideInners.length > 0) {
-    slideInners[0].classList.add('visible');
-  }
-
-  if ('IntersectionObserver' in window) {
+  if (false && 'IntersectionObserver' in window) {
     var slideObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
