@@ -2583,6 +2583,9 @@
     transition: opacity 0.4s ease, transform 0.4s ease;
   }
 
+  /* ═══ SPLASH OVERLAY — DISABLED (kept for re-enabling) ═══ */
+  .splash-overlay { display: none !important; }
+
   /* ═══ STAGGER SCROLL ANIMATIONS — DISABLED (kept for re-enabling) ═══ */
   /* Cards, team cards, thesis cards, bullet items, blockquotes, tables */
   /*
@@ -2621,7 +2624,8 @@
   }
 </style>
 </head>
-<body class="splash-active">
+<!-- splash-active class removed while animations disabled; re-add to enable -->
+<body>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- LOAD-IN SPLASH OVERLAY                              -->
@@ -3879,8 +3883,9 @@
    *   3.2s  — change badge fades in
    *   4.4s  — splash fades out
    */
+  /* DISABLED — splash animation turned off; change to `if (splash)` to re-enable */
   var splash = document.getElementById('splash-overlay');
-  if (splash) {
+  if (false && splash) {
     var targetPrice = '3.42';
     var startPrice  = '3.24';
     var odoEl = document.getElementById('splash-odometer');
