@@ -4964,91 +4964,137 @@
 
 <script>
 /* ═══════════════════════════════════════════════════════════ */
-/* DECK PDF GENERATOR — Off-Screen Clone Approach             */
-/* Captures each slide segment into 1280×720 off-screen       */
-/* containers → A4 landscape full-bleed JPEG pages            */
+/* DECK PDF GENERATOR v3 — 35-Page Slide Deck                */
+/* Off-screen 1280×720 clones → A4 landscape full-bleed      */
 /* ═══════════════════════════════════════════════════════════ */
 window.generateDeckPDF = async function() {
-  var CONTAINER_W = 1280;
-  var CONTAINER_H = 720;
-  var SCALE = 2;
-  var A4_W = 297;  /* mm */
-  var A4_H = 210;  /* mm */
+  var W = 1280, H = 720, SCALE = 2;
+  var A4_W = 297, A4_H = 210; /* mm */
 
   var overlay = document.getElementById('pdf-loading');
   var progress = document.getElementById('pdf-progress');
   overlay.classList.add('active');
   progress.textContent = 'Loading fonts\u2026';
 
-  /* ── 1. Wait for web fonts ── */
-  try { await document.fonts.ready; } catch (e) { /* proceed anyway */ }
+  try { await document.fonts.ready; } catch(e) {}
   await sleep(200);
 
-  /* ── 2. Build ordered page descriptors (24 pages) ── */
-  var pages = [];
-  var slides = document.querySelectorAll('.slide');
+  /* ── Slide references ── */
+  var s = function(id) { return document.getElementById(id); };
 
-  slides.forEach(function(slide) {
-    var inner = slide.querySelector('.slide-inner');
-    if (!inner) { pages.push({ slide: slide, type: 'full' }); return; }
-
-    /* Special: Management Team (slide-12) → 3 pages */
-    if (slide.id === 'slide-12') {
-      pages.push({ slide: slide, type: 'mgmt-1' });
-      pages.push({ slide: slide, type: 'mgmt-2' });
-      pages.push({ slide: slide, type: 'mgmt-3' });
-      return;
-    }
-
-    var breaks = Array.from(inner.querySelectorAll(':scope > .print-break'));
-    if (breaks.length === 0) {
-      pages.push({ slide: slide, type: 'full' });
-    } else {
-      pages.push({ slide: slide, type: 'before-break' });
-      pages.push({ slide: slide, type: 'after-break' });
-    }
-  });
+  /* ── 35-page descriptor array ── */
+  var pages = [
+    /* 1  */ { slide: s('slide-1'),  type: 'title' },
+    /* 2  */ { type: 'toc' },
+    /* 3  */ { type: 'disclaimer' },
+    /* 4  */ { slide: s('slide-2'),  type: 'exec-summary' },
+    /* 5  */ { slide: s('slide-3'),  type: 'before-break' },
+    /* 6  */ { slide: s('slide-3'),  type: 'macro-demand' },
+    /* 7  */ { slide: s('slide-3'),  type: 'macro-price' },
+    /* 8  */ { slide: s('slide-4'),  type: 'full' },
+    /* 9  */ { slide: s('slide-5'),  type: 'before-break' },
+    /* 10 */ { slide: s('slide-5'),  type: 'sol-steps' },
+    /* 11 */ { slide: s('slide-5'),  type: 'sol-gallery' },
+    /* 12 */ { slide: s('slide-5'),  type: 'sol-decade' },
+    /* 13 */ { slide: s('slide-6'),  type: 'comp-table' },
+    /* 14 */ { slide: s('slide-6'),  type: 'comp-diff' },
+    /* 15 */ { slide: s('slide-7'),  type: 'asset-flagship' },
+    /* 16 */ { slide: s('slide-7'),  type: 'asset-sitemap' },
+    /* 17 */ { slide: s('slide-7'),  type: 'asset-resource' },
+    /* 18 */ { slide: s('slide-8'),  type: 'esg-pillars' },
+    /* 19 */ { slide: s('slide-8'),  type: 'esg-metrics' },
+    /* 20 */ { slide: s('slide-9'),  type: 'road-timeline' },
+    /* 21 */ { slide: s('slide-9'),  type: 'road-phases' },
+    /* 22 */ { slide: s('slide-10'), type: 'fin-npv' },
+    /* 23 */ { slide: s('slide-10'), type: 'fin-pfs' },
+    /* 24 */ { slide: s('slide-10'), type: 'fin-revenue' },
+    /* 25 */ { slide: s('slide-10'), type: 'fin-pies' },
+    /* 26 */ { slide: s('slide-11'), type: 'cap-main' },
+    /* 27 */ { slide: s('slide-11'), type: 'cap-govt' },
+    /* 28 */ { slide: s('slide-12'), type: 'mgmt-1' },
+    /* 29 */ { slide: s('slide-12'), type: 'mgmt-2' },
+    /* 30 */ { slide: s('slide-12'), type: 'mgmt-3' },
+    /* 31 */ { slide: s('slide-13'), type: 'thesis-1' },
+    /* 32 */ { slide: s('slide-13'), type: 'thesis-2' },
+    /* 33 */ { slide: s('slide-13'), type: 'thesis-return' },
+    /* 34 */ { slide: s('slide-14'), type: 'ask-main' },
+    /* 35 */ { slide: s('slide-14'), type: 'ask-catalysts' }
+  ];
 
   var totalPages = pages.length;
   progress.textContent = '0 / ' + totalPages + ' pages';
 
-  /* ── 3. Create PDF (A4 landscape, millimetres) ── */
   var jsPDF = window.jspdf.jsPDF;
-  var pdf = new jsPDF({
-    orientation: 'landscape',
-    unit: 'mm',
-    format: 'a4',
-    compress: true
-  });
+  var pdf = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4', compress:true });
 
-  /* ── 4. html2canvas options ── */
   var h2cOpts = {
-    scale: SCALE,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: null,
-    width: CONTAINER_W,
-    height: CONTAINER_H,
-    windowWidth: CONTAINER_W,
-    windowHeight: CONTAINER_H,
-    logging: false,
-    imageTimeout: 15000,
-    removeContainer: false
+    scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: null,
+    width: W, height: H, windowWidth: W, windowHeight: H,
+    logging: false, imageTimeout: 15000, removeContainer: false
   };
 
-  /* ── 5. Helper: build a 1280×720 off-screen clone ── */
+  /* ── Helper: hide all children from index onward ── */
+  function hideFrom(inner, startIdx) {
+    var ch = Array.from(inner.children);
+    for (var j = startIdx; j < ch.length; j++) ch[j].style.display = 'none';
+  }
+  /* ── Helper: hide children before index ── */
+  function hideBefore(inner, endIdx) {
+    var ch = Array.from(inner.children);
+    for (var j = 0; j < endIdx; j++) ch[j].style.display = 'none';
+  }
+  /* ── Helper: hide a print-break and everything after ── */
+  function hideBreakAndAfter(inner) {
+    var ch = Array.from(inner.children);
+    var pb = inner.querySelector('.print-break');
+    if (pb) { var idx = ch.indexOf(pb); hideFrom(inner, idx); }
+  }
+  /* ── Helper: add a section header to a continuation page ── */
+  function addContHeader(inner, tagText, titleHtml) {
+    var tag = document.createElement('div');
+    tag.className = 'slide-tag';
+    tag.textContent = tagText;
+    tag.style.cssText = 'font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;opacity:0.6;';
+    var h2 = document.createElement('h2');
+    h2.innerHTML = titleHtml;
+    h2.style.cssText = 'font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;';
+    var div = document.createElement('div');
+    div.className = 'section-divider';
+    div.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:16px;';
+    inner.insertBefore(div, inner.firstChild);
+    inner.insertBefore(h2, inner.firstChild);
+    inner.insertBefore(tag, inner.firstChild);
+  }
+
+  /* ── Helper: build generated page (TOC / Disclaimer) ── */
+  function buildGeneratedPage(bgClass, contentFn) {
+    var sec = document.createElement('section');
+    sec.className = 'slide ' + bgClass;
+    sec.style.cssText = 'position:fixed !important;left:-9999px !important;top:0 !important;' +
+      'width:' + W + 'px !important;height:' + H + 'px !important;' +
+      'min-height:' + H + 'px !important;max-height:' + H + 'px !important;' +
+      'overflow:hidden !important;margin:0 !important;padding:0 !important;' +
+      'box-sizing:border-box !important;z-index:-1 !important;display:flex !important;align-items:stretch !important;';
+    var inner = document.createElement('div');
+    inner.className = 'slide-inner';
+    inner.style.cssText = 'width:100% !important;height:100% !important;' +
+      'padding:36px 48px !important;box-sizing:border-box !important;overflow:hidden !important;';
+    contentFn(inner);
+    sec.appendChild(inner);
+    document.body.appendChild(sec);
+    return sec;
+  }
+
+  /* ── Helper: build off-screen clone ── */
   function buildContainer(slideEl, modifier) {
     var clone = slideEl.cloneNode(true);
     clone.removeAttribute('id');
-
-    /* Position off-screen, locked to 1280 × 720 */
     clone.style.cssText =
       'position:fixed !important;left:-9999px !important;top:0 !important;' +
-      'width:' + CONTAINER_W + 'px !important;height:' + CONTAINER_H + 'px !important;' +
-      'min-height:' + CONTAINER_H + 'px !important;max-height:' + CONTAINER_H + 'px !important;' +
+      'width:' + W + 'px !important;height:' + H + 'px !important;' +
+      'min-height:' + H + 'px !important;max-height:' + H + 'px !important;' +
       'overflow:hidden !important;margin:0 !important;padding:0 !important;' +
       'box-sizing:border-box !important;z-index:-1 !important;';
-
     var inner = clone.querySelector('.slide-inner');
     if (inner) {
       inner.style.cssText =
@@ -5056,28 +5102,818 @@ window.generateDeckPDF = async function() {
         'padding:36px 48px !important;box-sizing:border-box !important;' +
         'overflow:hidden !important;';
     }
-
-    /* Force every animated / observer-driven element visible */
+    /* Force all animated elements visible */
     clone.querySelectorAll(
-      '.scroll-animate, .thesis-card, .esg-metric-panel, .step-card, ' +
-      '.metric-card, .team-card, .slide-inner, .phase-detail-card, ' +
-      '.highlight-card, .esg-column, .callout-box, blockquote, ' +
-      '.two-col, .timeline-graphic, .timeline, h2, h3, h4, p, li, ' +
-      'table, .data-table, .board-table, img'
+      '.scroll-animate,.thesis-card,.esg-metric-panel,.step-card,' +
+      '.metric-card,.team-card,.slide-inner,.phase-detail-card,' +
+      '.highlight-card,.esg-column,.callout-box,blockquote,' +
+      '.two-col,.timeline-graphic,.timeline,h2,h3,h4,p,li,' +
+      'table,.data-table,.board-table,img,.catalyst-card'
     ).forEach(function(el) {
       el.style.opacity = '1';
       el.style.transform = 'none';
       el.style.transition = 'none';
     });
-
-    /* Apply page-specific content modifications */
     if (modifier && inner) modifier(clone, inner);
-
     document.body.appendChild(clone);
     return clone;
   }
 
-  /* ── 6. Capture each page ── */
+  /* ═══ PAGE MODIFIERS ═══ */
+
+  var modifiers = {
+    /* ── Page 1: Title ── */
+    'title': function(clone, inner) {
+      clone.querySelectorAll('.print-break').forEach(function(pb) { pb.style.display = 'none'; });
+      /* Prevent vertical letter stretching: ensure slide-inner doesn't stretch h1 */
+      inner.style.display = 'flex';
+      inner.style.flexDirection = 'column';
+      inner.style.justifyContent = 'center';
+      inner.style.alignItems = 'center';
+      inner.style.textAlign = 'center';
+      var h1 = inner.querySelector('h1');
+      if (h1) {
+        h1.style.cssText = 'font-size:clamp(48px,6vw,72px);line-height:1.05;letter-spacing:4px;font-weight:900;text-transform:uppercase;margin:0;flex-shrink:0;';
+      }
+    },
+
+    /* ── Page 4: Executive Summary (compact to fit) ── */
+    'exec-summary': function(clone, inner) {
+      clone.querySelectorAll('.print-break').forEach(function(pb) { pb.style.display = 'none'; });
+      var h2 = inner.querySelector('h2');
+      if (h2) h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;';
+      /* Compact intro paragraph */
+      var introP = inner.querySelector(':scope > p');
+      if (introP) introP.style.cssText = 'font-size:11px;line-height:1.4;margin:0 0 8px;color:#3a3530;';
+      /* Compact h4 headings */
+      inner.querySelectorAll('h4').forEach(function(h4) {
+        h4.style.cssText = 'font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:6px 0 4px;';
+      });
+      /* Compact metric grid */
+      var grid = inner.querySelector('.metric-grid');
+      if (grid) {
+        grid.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:6px;';
+        grid.querySelectorAll('.metric-card').forEach(function(card) {
+          card.style.cssText = 'padding:10px 12px;border-radius:6px;';
+          var label = card.querySelector('.metric-card-label');
+          if (label) label.style.cssText = 'font-size:9px;margin-bottom:2px;';
+          var val = card.querySelector('.metric-card-value');
+          if (val) val.style.cssText = 'font-size:16px;font-weight:800;' + (val.classList.contains('accent') ? 'color:#9E1B32;' : '');
+        });
+      }
+      /* Compact bullet list */
+      var ul = inner.querySelector('.bullet-list');
+      if (ul) {
+        ul.style.cssText = 'margin:0;padding-left:16px;';
+        ul.querySelectorAll('li').forEach(function(li) {
+          li.style.cssText = 'font-size:11px;line-height:1.35;margin-bottom:2px;color:#3a3530;';
+        });
+      }
+      /* Compact section divider */
+      var divider = inner.querySelector('.section-divider');
+      if (divider) divider.style.marginBottom = '6px';
+      /* Compact slide tag */
+      var tag = inner.querySelector('.slide-tag');
+      if (tag) tag.style.marginBottom = '2px';
+    },
+
+    /* ── Page 5: Macro Opportunity before-break (UNCHANGED) ── */
+    'before-break': function(clone, inner) {
+      hideBreakAndAfter(inner);
+    },
+
+    /* ── Page 6: Macro Opportunity — demand chart only ── */
+    'macro-demand': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      var pb = inner.querySelector('.print-break');
+      var pbIdx = pb ? ch.indexOf(pb) : ch.length;
+      /* Hide everything before the print-break except the demand chart */
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show the demand chart container (first div after print-break) */
+      if (pb) pb.style.display = 'none';
+      /* Find demand chart wrapper — it's the div containing #demand-chart */
+      var demandChart = inner.querySelector('#demand-chart');
+      if (demandChart) {
+        var wrapper = demandChart.closest('[style*="background"]') || demandChart.parentElement;
+        if (wrapper) {
+          wrapper.style.display = 'block';
+          wrapper.style.marginTop = '0';
+          wrapper.style.height = 'auto';
+          wrapper.style.maxHeight = '580px';
+        }
+      }
+      /* Add cont. header */
+      addContHeader(inner, 'Slide 03', 'Macro Opportunity <em>(cont.)</em>');
+    },
+
+    /* ── Page 7: Macro Opportunity — price line chart ── */
+    'macro-price': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show price chart wrapper — contains #price-line-chart */
+      var priceChart = inner.querySelector('#price-line-chart');
+      if (priceChart) {
+        var wrapper = priceChart.closest('[style*="background"]') || priceChart.parentElement.parentElement;
+        if (wrapper) {
+          wrapper.style.display = 'block';
+          wrapper.style.marginTop = '0';
+          wrapper.style.height = 'auto';
+          wrapper.style.maxHeight = '520px';
+        }
+      }
+      /* Show blockquote */
+      var bq = inner.querySelector('blockquote');
+      if (bq) { bq.style.display = 'block'; bq.style.marginTop = '16px'; bq.style.fontSize = '13px'; }
+      addContHeader(inner, 'Slide 03', 'Macro Opportunity <em>(cont.)</em>');
+    },
+
+    /* ── Page 8: The Problem (UNCHANGED — full) ── */
+    'full': function(clone, inner) {
+      clone.querySelectorAll('.print-break').forEach(function(pb) { pb.style.display = 'none'; });
+    },
+
+    /* ── Pages 10: Solution — How It Works steps ── */
+    'sol-steps': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show "How It Works" h4 and the step cards grid */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('How It Works') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '8px';
+          h4.style.marginBottom = '12px';
+        }
+      });
+      var stepGrid = inner.querySelector('.metric-grid');
+      if (stepGrid) {
+        stepGrid.style.display = 'grid';
+        stepGrid.style.gridTemplateColumns = 'repeat(4,1fr)';
+        stepGrid.style.gap = '16px';
+        stepGrid.querySelectorAll('.step-card').forEach(function(card) {
+          card.style.padding = '20px';
+          card.style.minHeight = '280px';
+        });
+      }
+      addContHeader(inner, 'Slide 05', 'Our Solution &amp; Technology <em>(cont.)</em>');
+    },
+
+    /* ── Page 11: Solution — Image gallery ── */
+    'sol-gallery': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show the image gallery */
+      var gallery = inner.querySelector('.img-gallery');
+      if (gallery) {
+        gallery.style.display = 'block';
+        gallery.style.marginTop = '8px';
+        /* Show main image larger, hide thumbnails strip for cleaner look */
+        var mainImg = gallery.querySelector('.gallery-main img, .gallery-main');
+        if (mainImg) {
+          mainImg.style.maxHeight = '480px';
+          mainImg.style.width = '100%';
+          mainImg.style.objectFit = 'contain';
+        }
+        var thumbs = gallery.querySelector('.gallery-thumbs');
+        if (thumbs) thumbs.style.display = 'none';
+      }
+      /* Show caption paragraph */
+      var allP = inner.querySelectorAll(':scope > p');
+      allP.forEach(function(p) {
+        if (p.textContent && p.textContent.length > 20 && !p.classList.contains('subtitle')) {
+          p.style.display = 'block';
+          p.style.fontSize = '12px';
+          p.style.marginTop = '12px';
+        }
+      });
+      addContHeader(inner, 'Slide 05', 'Our Solution &amp; Technology <em>(cont.)</em>');
+    },
+
+    /* ── Page 12: Solution — Over a Decade of Development ── */
+    'sol-decade': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show "Over a Decade" h4 and bullet list */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Decade') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '12px';
+          h4.style.fontSize = '18px';
+        }
+      });
+      /* The last UL in the slide is the decade bullets */
+      var allUL = inner.querySelectorAll(':scope > ul');
+      var lastUL = allUL.length > 0 ? allUL[allUL.length - 1] : null;
+      if (lastUL) {
+        lastUL.style.display = 'block';
+        lastUL.style.marginTop = '16px';
+        lastUL.querySelectorAll('li').forEach(function(li) {
+          li.style.fontSize = '14px';
+          li.style.lineHeight = '1.6';
+          li.style.marginBottom = '10px';
+        });
+      }
+      addContHeader(inner, 'Slide 05', 'Our Solution &amp; Technology <em>(cont.)</em>');
+    },
+
+    /* ── Page 13: Competitive Landscape — Peer table ── */
+    'comp-table': function(clone, inner) {
+      /* Hide key differentiators and blockquote, keep header + table + source */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Differentiator') !== -1) h4.style.display = 'none';
+      });
+      var allUL = inner.querySelectorAll(':scope > ul');
+      allUL.forEach(function(ul) { ul.style.display = 'none'; });
+      var bq = inner.querySelector('blockquote');
+      if (bq) bq.style.display = 'none';
+      /* Tighten table spacing */
+      var table = inner.querySelector('.data-table, table');
+      if (table) {
+        table.style.fontSize = '11px';
+        table.style.marginTop = '8px';
+      }
+      /* Compact intro paragraph */
+      var introP = inner.querySelector(':scope > p');
+      if (introP) introP.style.fontSize = '12px';
+      var pb = inner.querySelector('.print-break');
+      if (pb) pb.style.display = 'none';
+    },
+
+    /* ── Page 14: Competitive Landscape — Key Differentiators ── */
+    'comp-diff': function(clone, inner) {
+      /* Hide everything, show only Key Differentiators */
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Differentiator') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '8px';
+          h4.style.fontSize = '18px';
+        }
+      });
+      /* Show the bullet list for differentiators */
+      var allUL = inner.querySelectorAll(':scope > ul');
+      if (allUL.length > 0) {
+        var diffUL = allUL[allUL.length - 1];
+        diffUL.style.display = 'block';
+        diffUL.style.marginTop = '12px';
+        diffUL.querySelectorAll('li').forEach(function(li) {
+          li.style.fontSize = '14px';
+          li.style.lineHeight = '1.6';
+          li.style.marginBottom = '10px';
+        });
+      }
+      var bq = inner.querySelector('blockquote');
+      if (bq) { bq.style.display = 'block'; bq.style.marginTop = '20px'; bq.style.fontSize = '13px'; }
+      addContHeader(inner, 'Slide 06', 'Competitive Landscape <em>(cont.)</em>');
+    },
+
+    /* ── Page 15: Asset Portfolio — intro + flagship table ── */
+    'asset-flagship': function(clone, inner) {
+      /* Hide everything from sitemap onward */
+      var ch = Array.from(inner.children);
+      var sitemapImg = inner.querySelector('img[src*="sitemap"]');
+      if (sitemapImg) {
+        var wrapper = sitemapImg.closest('div') || sitemapImg.parentElement;
+        var wIdx = ch.indexOf(wrapper);
+        if (wIdx === -1) {
+          /* Try parent */
+          ch.forEach(function(c, i) { if (c.contains(sitemapImg)) wIdx = i; });
+        }
+        if (wIdx > -1) hideFrom(inner, wIdx);
+      }
+      var pb = inner.querySelector('.print-break');
+      if (pb) pb.style.display = 'none';
+      /* Also hide everything after print-break */
+      if (pb) {
+        var pbIdx = ch.indexOf(pb);
+        hideFrom(inner, pbIdx);
+      }
+      /* Tighten table */
+      var table = inner.querySelector('.data-table, table');
+      if (table) { table.style.fontSize = '11px'; }
+      /* Compact intro */
+      var introP = inner.querySelector(':scope > p');
+      if (introP) introP.style.fontSize = '12px';
+    },
+
+    /* ── Page 16: Asset Portfolio — site map ── */
+    'asset-sitemap': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show sitemap image */
+      var sitemapImg = inner.querySelector('img[src*="sitemap"]');
+      if (sitemapImg) {
+        var wrapper = sitemapImg.closest('div') || sitemapImg.parentElement;
+        if (wrapper) {
+          wrapper.style.display = 'block';
+          wrapper.style.marginTop = '8px';
+          wrapper.style.textAlign = 'center';
+        }
+        sitemapImg.style.maxHeight = '500px';
+        sitemapImg.style.width = 'auto';
+        sitemapImg.style.maxWidth = '100%';
+        sitemapImg.style.objectFit = 'contain';
+      }
+      /* Add title line above map */
+      var mapTitle = document.createElement('h4');
+      mapTitle.textContent = 'Site Map of Flagship Project \u2014 Clearwater Basin';
+      mapTitle.style.cssText = 'font-size:16px;font-weight:700;margin:8px 0 8px;display:block;';
+      /* Insert after the cont header */
+      addContHeader(inner, 'Slide 07', 'Asset Portfolio <em>(cont.)</em>');
+      var divider = inner.querySelector('.section-divider');
+      if (divider) divider.parentNode.insertBefore(mapTitle, divider.nextSibling);
+    },
+
+    /* ── Page 17: Asset Portfolio — consolidated resource ── */
+    'asset-resource': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show consolidated resource summary h4, table, and optionally the photo/blockquote */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Consolidated') !== -1 || h4.textContent.indexOf('Resource Summary') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '8px';
+          h4.style.fontSize = '16px';
+        }
+      });
+      /* Show the resource table — it's the second table or inside a div wrapper after print-break */
+      var allTables = inner.querySelectorAll('.data-table, table');
+      if (allTables.length > 1) {
+        var resTbl = allTables[allTables.length - 1];
+        resTbl.style.display = 'table';
+        resTbl.style.fontSize = '12px';
+        resTbl.style.marginTop = '12px';
+        /* If table is inside a wrapper div, show that too */
+        if (resTbl.parentElement && resTbl.parentElement !== inner) {
+          resTbl.parentElement.style.display = 'block';
+        }
+      }
+      var bq = inner.querySelector('blockquote');
+      if (bq) { bq.style.display = 'block'; bq.style.marginTop = '16px'; bq.style.fontSize = '13px'; }
+      addContHeader(inner, 'Slide 07', 'Asset Portfolio <em>(cont.)</em>');
+    },
+
+    /* ── Page 18: ESG — 3 pillars (fit on one page) ── */
+    'esg-pillars': function(clone, inner) {
+      hideBreakAndAfter(inner);
+      /* Compact everything to fit */
+      var h2 = inner.querySelector('h2');
+      if (h2) h2.style.fontSize = '24px';
+      var introP = inner.querySelector(':scope > p');
+      if (introP) introP.style.cssText = 'font-size:11px;line-height:1.35;margin-bottom:8px;';
+      var grid = inner.querySelector('.esg-grid');
+      if (grid) {
+        grid.style.gap = '12px';
+        grid.querySelectorAll('.esg-column').forEach(function(col) {
+          col.style.padding = '16px';
+          var colH4 = col.querySelector('h4');
+          if (colH4) colH4.style.fontSize = '13px';
+          col.querySelectorAll('li').forEach(function(li) {
+            li.style.fontSize = '10px';
+            li.style.lineHeight = '1.35';
+            li.style.marginBottom = '2px';
+          });
+        });
+      }
+      var divider = inner.querySelector('.section-divider');
+      if (divider) divider.style.marginBottom = '6px';
+      var tag = inner.querySelector('.slide-tag');
+      if (tag) tag.style.marginBottom = '2px';
+    },
+
+    /* ── Page 19: ESG — performance metrics ── */
+    'esg-metrics': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show performance metrics h4 */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Performance') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '8px';
+          h4.style.fontSize = '18px';
+        }
+      });
+      /* Show metrics grid */
+      var metricsGrid = inner.querySelector('.esg-metrics-grid');
+      if (metricsGrid) {
+        metricsGrid.style.display = 'grid';
+        metricsGrid.style.gridTemplateColumns = 'repeat(2,1fr)';
+        metricsGrid.style.gap = '16px';
+        metricsGrid.style.marginTop = '12px';
+        /* Ensure progress bars render with their widths */
+        metricsGrid.querySelectorAll('.esg-metric-panel').forEach(function(panel) {
+          panel.style.padding = '20px';
+          var barFill = panel.querySelector('.esg-bar-fill');
+          if (barFill) {
+            var w = barFill.style.getPropertyValue('--bar-width') || barFill.style.width;
+            if (!w) w = getComputedStyle(barFill).getPropertyValue('--bar-width');
+            barFill.style.width = w || '50%';
+            barFill.style.minHeight = '8px';
+            barFill.style.display = 'block';
+            barFill.style.borderRadius = '4px';
+            barFill.style.background = '#CDAA88';
+          }
+          var barTrack = panel.querySelector('.esg-bar-track');
+          if (barTrack) {
+            barTrack.style.display = 'block';
+            barTrack.style.minHeight = '8px';
+            barTrack.style.background = 'rgba(255,255,255,0.1)';
+            barTrack.style.borderRadius = '4px';
+            barTrack.style.marginTop = '8px';
+          }
+        });
+      }
+      var bq = inner.querySelector('blockquote');
+      if (bq) { bq.style.display = 'block'; bq.style.marginTop = '16px'; bq.style.fontSize = '13px'; }
+      addContHeader(inner, 'Slide 08', 'ESG &amp; Sustainability <em>(cont.)</em>');
+    },
+
+    /* ── Page 20: Development Roadmap — timeline ── */
+    'road-timeline': function(clone, inner) {
+      hideBreakAndAfter(inner);
+      /* Ensure timeline graphic bar extends properly */
+      var tgProgress = clone.querySelector('.tg-progress');
+      if (tgProgress) {
+        tgProgress.style.width = '58%';
+        tgProgress.style.display = 'block';
+      }
+      /* Ensure active node has yellow ring */
+      var activeNode = clone.querySelector('.tg-node.active');
+      if (activeNode) {
+        activeNode.style.cssText += 'box-shadow:0 0 0 4px rgba(205,170,136,0.4);border:2px solid #CDAA88;';
+      }
+    },
+
+    /* ── Page 21: Development Roadmap — phase cards ── */
+    'road-phases': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show timeline div with phase cards */
+      var timeline = inner.querySelector('.timeline');
+      if (timeline) {
+        timeline.style.display = 'grid';
+        timeline.style.gridTemplateColumns = 'repeat(2,1fr)';
+        timeline.style.gap = '20px';
+        timeline.style.marginTop = '8px';
+        timeline.querySelectorAll('.timeline-phase').forEach(function(phase) {
+          phase.style.padding = '20px';
+          phase.style.fontSize = '12px';
+          phase.querySelectorAll('li').forEach(function(li) {
+            li.style.fontSize = '11px';
+            li.style.lineHeight = '1.4';
+            li.style.marginBottom = '3px';
+          });
+        });
+      }
+      var bq = inner.querySelector('blockquote');
+      if (bq) { bq.style.display = 'block'; bq.style.marginTop = '12px'; bq.style.fontSize = '12px'; }
+      addContHeader(inner, 'Slide 09', 'Development Roadmap <em>(cont.)</em>');
+    },
+
+    /* ── Page 22: Financial Overview — NPV cards ── */
+    'fin-npv': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show header elements */
+      var tag = inner.querySelector('.slide-tag');
+      if (tag) { tag.style.display = 'block'; }
+      var h2 = inner.querySelector('h2');
+      if (h2) { h2.style.display = 'block'; }
+      var divider = inner.querySelector('.section-divider');
+      if (divider) { divider.style.display = 'block'; }
+      var introP = inner.querySelector(':scope > p');
+      if (introP) { introP.style.display = 'block'; introP.style.fontSize = '12px'; }
+      /* Show KPI grid, make cards bigger */
+      var kpiGrid = inner.querySelector('.financial-kpi-grid');
+      if (kpiGrid) {
+        kpiGrid.style.display = 'grid';
+        kpiGrid.style.gridTemplateColumns = 'repeat(5,1fr)';
+        kpiGrid.style.gap = '16px';
+        kpiGrid.style.marginTop = '20px';
+        kpiGrid.querySelectorAll('.metric-card, .financial-kpi-card').forEach(function(card) {
+          card.style.padding = '24px 16px';
+          card.style.minHeight = '200px';
+          card.style.display = 'flex';
+          card.style.flexDirection = 'column';
+          card.style.justifyContent = 'center';
+          card.style.alignItems = 'center';
+          card.style.textAlign = 'center';
+          var val = card.querySelector('.metric-card-value, .financial-kpi-value');
+          if (val) val.style.fontSize = '22px';
+          var label = card.querySelector('.metric-card-label, .financial-kpi-label');
+          if (label) label.style.fontSize = '11px';
+        });
+      }
+    },
+
+    /* ── Page 23: Financial Overview — PFS table ── */
+    'fin-pfs': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show PFS h4 and table */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Pre-Feasibility') !== -1 || h4.textContent.indexOf('PFS') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '8px';
+          h4.style.fontSize = '18px';
+        }
+      });
+      /* Show the PFS table (first table in the slide) */
+      var tables = inner.querySelectorAll('.data-table, table');
+      if (tables.length > 0) {
+        tables[0].style.display = 'table';
+        tables[0].style.fontSize = '12px';
+        tables[0].style.marginTop = '12px';
+        tables[0].style.width = '100%';
+      }
+      addContHeader(inner, 'Slide 10', 'Financial Overview <em>(cont.)</em>');
+    },
+
+    /* ── Page 24: Financial Overview — revenue chart ── */
+    'fin-revenue': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show revenue chart container */
+      var revChart = inner.querySelector('#revenue-chart');
+      if (revChart) {
+        var wrapper = revChart.closest('div[style]') || revChart.parentElement;
+        if (wrapper && wrapper !== inner) {
+          wrapper.style.display = 'block';
+          wrapper.style.marginTop = '8px';
+          wrapper.style.height = 'auto';
+          wrapper.style.maxHeight = '520px';
+        }
+        revChart.style.display = 'flex';
+      }
+      addContHeader(inner, 'Slide 10', 'Financial Overview <em>(cont.)</em>');
+    },
+
+    /* ── Page 25: Financial Overview — pie charts + highlights ── */
+    'fin-pies': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show two-col pie charts */
+      var twoCol = inner.querySelector('.two-col');
+      if (twoCol) {
+        twoCol.style.display = 'grid';
+        twoCol.style.gridTemplateColumns = '1fr 1fr';
+        twoCol.style.gap = '24px';
+        twoCol.style.marginTop = '8px';
+      }
+      /* Show economic highlights h4 + ul */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Economic Highlights') !== -1 || h4.textContent.indexOf('Highlights') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '16px';
+          h4.style.fontSize = '14px';
+        }
+      });
+      /* Show the highlights UL (last ul) */
+      var allUL = inner.querySelectorAll(':scope > ul');
+      if (allUL.length > 0) {
+        var hlUL = allUL[allUL.length - 1];
+        hlUL.style.display = 'block';
+        hlUL.style.marginTop = '8px';
+        hlUL.querySelectorAll('li').forEach(function(li) {
+          li.style.fontSize = '12px';
+          li.style.lineHeight = '1.5';
+        });
+      }
+      var bq = inner.querySelector('blockquote');
+      if (bq) { bq.style.display = 'block'; bq.style.marginTop = '12px'; bq.style.fontSize = '12px'; }
+      addContHeader(inner, 'Slide 10', 'Financial Overview <em>(cont.)</em>');
+    },
+
+    /* ── Page 26: Capital Structure — main tables ── */
+    'cap-main': function(clone, inner) {
+      /* Hide govt funding section */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Government') !== -1 || h4.textContent.indexOf('Funding') !== -1) {
+          h4.style.display = 'none';
+        }
+      });
+      /* Hide the last table (govt funding) */
+      var tables = inner.querySelectorAll('.data-table, table');
+      if (tables.length > 1) {
+        tables[tables.length - 1].style.display = 'none';
+      }
+      var pb = inner.querySelector('.print-break');
+      if (pb) pb.style.display = 'none';
+      /* Compact two-col layout */
+      var twoCol = inner.querySelector('.two-col');
+      if (twoCol) {
+        twoCol.style.gap = '20px';
+        twoCol.style.marginTop = '8px';
+      }
+    },
+
+    /* ── Page 27: Capital Structure — govt funding ── */
+    'cap-govt': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show govt funding h4 and table */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Government') !== -1 || h4.textContent.indexOf('Funding') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '8px';
+          h4.style.fontSize = '18px';
+        }
+      });
+      /* Show the last table */
+      var tables = inner.querySelectorAll('.data-table, table');
+      if (tables.length > 0) {
+        var govtTbl = tables[tables.length - 1];
+        govtTbl.style.display = 'table';
+        govtTbl.style.width = '100%';
+        govtTbl.style.fontSize = '12px';
+        govtTbl.style.marginTop = '12px';
+      }
+      addContHeader(inner, 'Slide 11', 'Capital Structure <em>(cont.)</em>');
+    },
+
+    /* ── Page 28: Management Team — first 3 cards ── */
+    'mgmt-1': function(clone, inner) {
+      hideBreakAndAfter(inner);
+      var grid = inner.querySelector('.team-grid');
+      if (grid) {
+        var cards = Array.from(grid.querySelectorAll('.team-card'));
+        for (var k = 3; k < cards.length; k++) cards[k].style.display = 'none';
+        grid.style.cssText += 'grid-template-columns:repeat(3,1fr) !important;gap:20px !important;';
+        cards.slice(0, 3).forEach(function(card) {
+          card.style.padding = '32px';
+          card.style.minHeight = '340px';
+          var photo = card.querySelector('.team-photo');
+          if (photo) { photo.style.width = '90px'; photo.style.height = '90px'; }
+        });
+      }
+      /* Remove LinkedIn icons */
+      clone.querySelectorAll('.team-linkedin').forEach(function(el) { el.style.display = 'none'; });
+    },
+
+    /* ── Page 29: Management Team — last 3 cards ── */
+    'mgmt-2': function(clone, inner) {
+      hideBreakAndAfter(inner);
+      var h2 = inner.querySelector('h2');
+      if (h2) h2.innerHTML = 'Management Team <em>(cont.)</em>';
+      var introP = inner.querySelector(':scope > p');
+      if (introP) introP.style.display = 'none';
+      var grid = inner.querySelector('.team-grid');
+      if (grid) {
+        var cards = Array.from(grid.querySelectorAll('.team-card'));
+        for (var k = 0; k < 3; k++) cards[k].style.display = 'none';
+        grid.style.cssText += 'grid-template-columns:repeat(3,1fr) !important;gap:20px !important;';
+        cards.slice(3).forEach(function(card) {
+          card.style.padding = '32px';
+          card.style.minHeight = '340px';
+          var photo = card.querySelector('.team-photo');
+          if (photo) { photo.style.width = '90px'; photo.style.height = '90px'; }
+        });
+      }
+      clone.querySelectorAll('.team-linkedin').forEach(function(el) { el.style.display = 'none'; });
+    },
+
+    /* ── Page 30: Management Team — Board of Directors ── */
+    'mgmt-3': function(clone, inner) {
+      var h2 = inner.querySelector('h2');
+      if (h2) h2.innerHTML = 'Management Team <em>(cont.)</em>';
+      var introP = inner.querySelector(':scope > p');
+      if (introP) introP.style.display = 'none';
+      var grid = inner.querySelector('.team-grid');
+      if (grid) grid.style.display = 'none';
+      var pb = inner.querySelector('.print-break');
+      if (pb) pb.style.display = 'none';
+      var h4 = inner.querySelector('h4');
+      if (h4) h4.style.marginTop = '16px';
+      clone.querySelectorAll('.team-linkedin').forEach(function(el) { el.style.display = 'none'; });
+    },
+
+    /* ── Page 31: Investment Thesis — cards 1-3 ── */
+    'thesis-1': function(clone, inner) {
+      hideBreakAndAfter(inner);
+      var grid = inner.querySelector('.thesis-grid');
+      if (grid) {
+        var cards = Array.from(grid.querySelectorAll('.thesis-card'));
+        for (var k = 3; k < cards.length; k++) cards[k].style.display = 'none';
+        grid.style.gridTemplateColumns = 'repeat(3,1fr)';
+        grid.style.gap = '20px';
+        grid.style.marginTop = '12px';
+        cards.slice(0, 3).forEach(function(card) {
+          card.style.padding = '28px';
+          card.style.minHeight = '320px';
+        });
+      }
+    },
+
+    /* ── Page 32: Investment Thesis — cards 4-6 ── */
+    'thesis-2': function(clone, inner) {
+      hideBreakAndAfter(inner);
+      var h2 = inner.querySelector('h2');
+      if (h2) h2.innerHTML = 'Investment Thesis <em>(cont.)</em>';
+      var introP = inner.querySelector(':scope > p');
+      if (introP) introP.style.display = 'none';
+      var grid = inner.querySelector('.thesis-grid');
+      if (grid) {
+        var cards = Array.from(grid.querySelectorAll('.thesis-card'));
+        for (var k = 0; k < 3; k++) cards[k].style.display = 'none';
+        grid.style.gridTemplateColumns = 'repeat(3,1fr)';
+        grid.style.gap = '20px';
+        grid.style.marginTop = '12px';
+        cards.slice(3).forEach(function(card) {
+          card.style.padding = '28px';
+          card.style.minHeight = '320px';
+        });
+      }
+    },
+
+    /* ── Page 33: Investment Thesis — return potential ── */
+    'thesis-return': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      var retPanel = inner.querySelector('.return-potential-glass');
+      if (retPanel) {
+        retPanel.style.display = 'block';
+        retPanel.style.marginTop = '8px';
+        retPanel.style.padding = '28px';
+        retPanel.style.minHeight = '400px';
+      }
+      addContHeader(inner, 'Slide 13', 'Investment Thesis <em>(cont.)</em>');
+    },
+
+    /* ── Page 34: The Ask — main content ── */
+    'ask-main': function(clone, inner) {
+      hideBreakAndAfter(inner);
+      /* Compact spacing so nothing gets cut off */
+      var askAmount = inner.querySelector('.ask-amount');
+      if (askAmount) askAmount.style.fontSize = '28px';
+      var h2 = inner.querySelector('h2');
+      if (h2) h2.style.fontSize = '24px';
+      inner.querySelectorAll('h4').forEach(function(h4) {
+        h4.style.fontSize = '13px';
+        h4.style.marginTop = '8px';
+        h4.style.marginBottom = '4px';
+      });
+      var table = inner.querySelector('table');
+      if (table) { table.style.fontSize = '11px'; table.style.marginTop = '4px'; }
+      var ul = inner.querySelector('ul');
+      if (ul) {
+        ul.querySelectorAll('li').forEach(function(li) {
+          li.style.fontSize = '11px';
+          li.style.lineHeight = '1.35';
+          li.style.marginBottom = '2px';
+        });
+      }
+      var introP = inner.querySelector(':scope > .ask-label');
+      if (introP) introP.style.fontSize = '11px';
+      var descP = inner.querySelector('.ask-amount + p');
+      if (descP) descP.style.fontSize = '11px';
+    },
+
+    /* ── Page 35: The Ask — catalysts + contact ── */
+    'ask-catalysts': function(clone, inner) {
+      var ch = Array.from(inner.children);
+      for (var j = 0; j < ch.length; j++) ch[j].style.display = 'none';
+      /* Show catalysts h4 */
+      var allH4 = inner.querySelectorAll('h4');
+      allH4.forEach(function(h4) {
+        if (h4.textContent.indexOf('Catalyst') !== -1) {
+          h4.style.display = 'block';
+          h4.style.marginTop = '8px';
+          h4.style.fontSize = '16px';
+        }
+      });
+      /* Show catalyst grid */
+      var catGrid = inner.querySelector('.metric-grid-5col');
+      if (catGrid) {
+        catGrid.style.display = 'grid';
+        catGrid.style.gridTemplateColumns = 'repeat(5,1fr)';
+        catGrid.style.gap = '14px';
+        catGrid.style.marginTop = '12px';
+        catGrid.querySelectorAll('.catalyst-card, .metric-card').forEach(function(card) {
+          card.style.padding = '18px';
+          card.style.minHeight = '180px';
+        });
+      }
+      /* Show contact row */
+      var contactRow = inner.querySelector('.contact-row');
+      if (contactRow) {
+        contactRow.style.display = 'flex';
+        contactRow.style.marginTop = '20px';
+      }
+      addContHeader(inner, 'Slide 14', 'The Ask <em>(cont.)</em>');
+    }
+  };
+
+  /* ═══ CAPTURE LOOP ═══ */
   var isFirstPage = true;
 
   for (var i = 0; i < pages.length; i++) {
@@ -5086,118 +5922,92 @@ window.generateDeckPDF = async function() {
     var container = null;
 
     try {
-      /* ─── Build the off-screen container ─── */
+      /* ─── Generated pages (TOC, Disclaimer) ─── */
+      if (pg.type === 'toc') {
+        container = buildGeneratedPage('slide-darkest', function(inner) {
+          inner.style.color = '#f5f0eb';
+          var logo = document.createElement('div');
+          logo.style.cssText = 'font-size:12px;text-transform:uppercase;letter-spacing:3px;color:rgba(245,240,235,0.5);margin-bottom:6px;';
+          logo.textContent = 'Boet Materials Corp.';
+          inner.appendChild(logo);
+          var h2 = document.createElement('h2');
+          h2.textContent = 'Table of Contents';
+          h2.style.cssText = 'font-size:32px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#f5f0eb;margin:0 0 6px;';
+          inner.appendChild(h2);
+          var div = document.createElement('div');
+          div.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:24px;';
+          inner.appendChild(div);
 
-      if (pg.type === 'full') {
-        container = buildContainer(pg.slide, function(clone, inner) {
-          clone.querySelectorAll('.print-break').forEach(function(pb) {
-            pb.style.display = 'none';
+          var tocItems = [
+            ['Executive Summary', '4'],
+            ['Macro Opportunity', '5'],
+            ['The Problem', '8'],
+            ['Our Solution & Technology', '9'],
+            ['Competitive Landscape', '13'],
+            ['Asset Portfolio & Projects', '15'],
+            ['ESG & Sustainability', '18'],
+            ['Development Roadmap', '20'],
+            ['Financial Overview', '22'],
+            ['Capital Structure', '26'],
+            ['Management Team', '28'],
+            ['Investment Thesis', '31'],
+            ['The Ask', '34']
+          ];
+          var list = document.createElement('div');
+          list.style.cssText = 'display:flex;flex-direction:column;gap:10px;margin-top:8px;';
+          tocItems.forEach(function(item, idx) {
+            var row = document.createElement('div');
+            row.style.cssText = 'display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(205,170,136,0.15);padding-bottom:8px;';
+            var title = document.createElement('span');
+            title.style.cssText = 'font-size:15px;font-weight:600;color:#f5f0eb;letter-spacing:0.5px;';
+            title.textContent = item[0];
+            var num = document.createElement('span');
+            num.style.cssText = 'font-size:14px;font-family:"JetBrains Mono",monospace;color:#CDAA88;font-weight:600;';
+            num.textContent = item[1];
+            row.appendChild(title);
+            row.appendChild(num);
+            list.appendChild(row);
           });
+          inner.appendChild(list);
         });
 
-      } else if (pg.type === 'before-break') {
-        container = buildContainer(pg.slide, function(clone, inner) {
-          var children = Array.from(inner.children);
-          var pb = inner.querySelector('.print-break');
-          if (pb) {
-            var idx = children.indexOf(pb);
-            for (var j = idx; j < children.length; j++) {
-              children[j].style.display = 'none';
-            }
-          }
+      } else if (pg.type === 'disclaimer') {
+        container = buildGeneratedPage('slide-darkest', function(inner) {
+          inner.style.color = '#f5f0eb';
+          var tag = document.createElement('div');
+          tag.style.cssText = 'font-size:11px;text-transform:uppercase;letter-spacing:2px;color:rgba(245,240,235,0.5);margin-bottom:6px;';
+          tag.textContent = 'Legal Notice';
+          inner.appendChild(tag);
+          var h2 = document.createElement('h2');
+          h2.innerHTML = 'Disclaimer &amp; Forward-Looking Statements';
+          h2.style.cssText = 'font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#f5f0eb;margin:0 0 6px;';
+          inner.appendChild(h2);
+          var div = document.createElement('div');
+          div.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:24px;';
+          inner.appendChild(div);
+
+          var p1 = document.createElement('p');
+          p1.style.cssText = 'font-size:13px;line-height:1.7;color:rgba(245,240,235,0.85);margin-bottom:20px;';
+          p1.textContent = 'This presentation has been prepared by management of Boet Materials Corp. (\u201cBoet\u201d, \u201cAUM\u201d, or the \u201cCompany\u201d) and does not constitute a recommendation to buy or sell securities of the Company. Investors should consult qualified investment advisors prior to making investment decisions.';
+          inner.appendChild(p1);
+          var p2 = document.createElement('p');
+          p2.style.cssText = 'font-size:13px;line-height:1.7;color:rgba(245,240,235,0.85);margin-bottom:20px;';
+          p2.textContent = 'This presentation contains forward-looking statements and forward-looking information within the meaning of applicable securities laws. Forward-looking statements are subject to known and unknown risks, uncertainties, and other factors that may cause actual results to differ materially from those expressed or implied. Readers should not place undue reliance on forward-looking statements. The Company undertakes no obligation to update any forward-looking statements except as required by applicable securities laws.';
+          inner.appendChild(p2);
+          var p3 = document.createElement('p');
+          p3.style.cssText = 'font-size:12px;line-height:1.6;color:rgba(245,240,235,0.5);margin-top:32px;font-style:italic;';
+          p3.textContent = 'All dollar amounts are in Canadian dollars unless otherwise stated. All resource estimates are compliant with NI 43-101 standards. Mineral resources that are not mineral reserves do not have demonstrated economic viability.';
+          inner.appendChild(p3);
         });
 
-      } else if (pg.type === 'after-break') {
-        container = buildContainer(pg.slide, function(clone, inner) {
-          var children = Array.from(inner.children);
-          var pb = inner.querySelector('.print-break');
-          if (pb) {
-            var idx = children.indexOf(pb);
-            for (var j = 0; j < idx; j++) {
-              children[j].style.display = 'none';
-            }
-            pb.style.display = 'block';
-          }
-        });
-
-      } else if (pg.type === 'mgmt-1') {
-        /* Management Team page 1: header + first 3 team cards (bigger) */
-        container = buildContainer(pg.slide, function(clone, inner) {
-          /* Hide everything from print-break onward */
-          var children = Array.from(inner.children);
-          var pb = inner.querySelector('.print-break');
-          if (pb) {
-            var idx = children.indexOf(pb);
-            for (var j = idx; j < children.length; j++) {
-              children[j].style.display = 'none';
-            }
-          }
-          /* Keep only first 3 team cards, enlarge them */
-          var grid = inner.querySelector('.team-grid');
-          if (grid) {
-            var cards = Array.from(grid.querySelectorAll('.team-card'));
-            for (var k = 3; k < cards.length; k++) cards[k].style.display = 'none';
-            grid.style.cssText += 'grid-template-columns:repeat(3,1fr) !important;gap:20px !important;';
-            cards.slice(0, 3).forEach(function(card) {
-              card.style.padding = '32px';
-              card.style.minHeight = '340px';
-              var photo = card.querySelector('.team-photo');
-              if (photo) { photo.style.width = '90px'; photo.style.height = '90px'; }
-            });
-          }
-        });
-
-      } else if (pg.type === 'mgmt-2') {
-        /* Management Team page 2: header (cont.) + last 3 cards (bigger) */
-        container = buildContainer(pg.slide, function(clone, inner) {
-          var h2 = inner.querySelector('h2');
-          if (h2) h2.innerHTML = 'Management Team <em>(cont.)</em>';
-          /* Hide intro paragraph */
-          var introP = inner.querySelector(':scope > p');
-          if (introP) introP.style.display = 'none';
-          /* Hide everything from print-break onward */
-          var children = Array.from(inner.children);
-          var pb = inner.querySelector('.print-break');
-          if (pb) {
-            var idx = children.indexOf(pb);
-            for (var j = idx; j < children.length; j++) {
-              children[j].style.display = 'none';
-            }
-          }
-          /* Keep only last 3 team cards, enlarge them */
-          var grid = inner.querySelector('.team-grid');
-          if (grid) {
-            var cards = Array.from(grid.querySelectorAll('.team-card'));
-            for (var k = 0; k < 3; k++) cards[k].style.display = 'none';
-            grid.style.cssText += 'grid-template-columns:repeat(3,1fr) !important;gap:20px !important;';
-            cards.slice(3).forEach(function(card) {
-              card.style.padding = '32px';
-              card.style.minHeight = '340px';
-              var photo = card.querySelector('.team-photo');
-              if (photo) { photo.style.width = '90px'; photo.style.height = '90px'; }
-            });
-          }
-        });
-
-      } else if (pg.type === 'mgmt-3') {
-        /* Management Team page 3: Board of Directors */
-        container = buildContainer(pg.slide, function(clone, inner) {
-          var h2 = inner.querySelector('h2');
-          if (h2) h2.innerHTML = 'Management Team <em>(cont.)</em>';
-          /* Hide intro paragraph, team grid, print-break */
-          var introP = inner.querySelector(':scope > p');
-          if (introP) introP.style.display = 'none';
-          var grid = inner.querySelector('.team-grid');
-          if (grid) grid.style.display = 'none';
-          var pb = inner.querySelector('.print-break');
-          if (pb) pb.style.display = 'none';
-          /* Tighten Board of Directors spacing */
-          var h4 = inner.querySelector('h4');
-          if (h4) h4.style.marginTop = '16px';
-        });
+      } else {
+        /* ─── Slide-based pages ─── */
+        var mod = modifiers[pg.type];
+        if (!mod) mod = modifiers['full'];
+        container = buildContainer(pg.slide, mod);
       }
 
-      /* ─── Capture with html2canvas ─── */
+      /* ─── Capture ─── */
       await sleep(100);
 
       var canvas = await Promise.race([
@@ -5207,33 +6017,32 @@ window.generateDeckPDF = async function() {
 
       var imgData = canvas.toDataURL('image/jpeg', 0.92);
 
-      /* ─── Add page to PDF ─── */
       if (!isFirstPage) pdf.addPage();
       isFirstPage = false;
 
-      /* Solid background fill (safety net for transparency) */
-      var bgColor = getSlideBackground(pg.slide);
+      /* Background fill */
+      var bgColor;
+      if (pg.type === 'toc' || pg.type === 'disclaimer') {
+        bgColor = { r: 15, g: 13, b: 11 };
+      } else {
+        bgColor = getSlideBackground(pg.slide);
+      }
       pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
       pdf.rect(0, 0, A4_W, A4_H, 'F');
-
-      /* Full-bleed image: 0,0 → 297×210 mm */
       pdf.addImage(imgData, 'JPEG', 0, 0, A4_W, A4_H);
 
-      /* ─── Cleanup this container ─── */
+      /* Cleanup */
       if (container.parentNode) document.body.removeChild(container);
-      canvas.width = 0;
-      canvas.height = 0;
-      canvas = null;
+      canvas.width = 0; canvas.height = 0; canvas = null;
 
     } catch (err) {
-      console.warn('PDF capture failed for page ' + (i + 1) + ':', err);
+      console.warn('PDF capture failed for page ' + (i + 1) + ' (' + pg.type + '):', err);
       if (container && container.parentNode) document.body.removeChild(container);
       if (!isFirstPage) pdf.addPage();
       isFirstPage = false;
     }
   }
 
-  /* ── 7. Save PDF & dismiss overlay ── */
   overlay.classList.remove('active');
   pdf.save('Boet-Materials-Corp-February-2026.pdf');
 };
@@ -5243,7 +6052,6 @@ function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
 
 function getSlideBackground(slide) {
   var classes = slide.className;
-  /* Map slide CSS classes → dominant background RGB */
   if (/slide-white/.test(classes)) return { r: 255, g: 255, b: 255 };
   if (/slide-light/.test(classes)) return { r: 247, g: 242, b: 236 };
   if (/slide-accent|slide-red/.test(classes)) return { r: 158, g: 27, b: 50 };
@@ -5252,7 +6060,6 @@ function getSlideBackground(slide) {
   if (/slide-accent-dark/.test(classes)) return { r: 26, g: 16, b: 12 };
   if (/slide-dark/.test(classes)) return { r: 18, g: 16, b: 14 };
   if (/title-slide|slide-darkest/.test(classes)) return { r: 15, g: 13, b: 11 };
-  /* Default: dark */
   return { r: 18, g: 16, b: 14 };
 }
 </script>
