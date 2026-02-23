@@ -4924,88 +4924,6 @@
   /* ═══ PRINT-BREAK DIVIDER (hidden on screen) ═══ */
   .print-break { display: none; }
 
-  /* ═══ PDF CAPTURE MODE ═══ */
-  .pdf-capture-mode .sidebar,
-  .pdf-capture-mode .top-bar,
-  .pdf-capture-mode .slide-nav-arrows,
-  .pdf-capture-mode .section-transition,
-  .pdf-capture-mode .sticky-promo,
-  .pdf-capture-mode .footer,
-  .pdf-capture-mode .nav-jump-links,
-  .pdf-capture-mode .download-btn { display: none !important; }
-
-  .pdf-capture-mode .slide {
-    margin-left: 0 !important;
-    width: 1280px !important;
-    min-height: auto !important;
-    height: auto !important;
-    overflow: visible !important;
-    padding: 24px 36px !important;
-  }
-  .pdf-capture-mode .slide-inner {
-    font-size: 12.5px !important;
-    line-height: 1.4 !important;
-  }
-  .pdf-capture-mode h2 { font-size: 22px !important; margin-bottom: 6px !important; }
-  .pdf-capture-mode h3 { font-size: 14px !important; margin-bottom: 4px !important; }
-  .pdf-capture-mode p { margin-bottom: 5px !important; }
-  .pdf-capture-mode .slide-tag { font-size: 9px !important; margin-bottom: 4px !important; padding: 2px 8px !important; }
-  .pdf-capture-mode .section-divider { margin: 4px 0 8px !important; }
-
-  /* Print breaks – compact */
-  .pdf-capture-mode .print-break {
-    display: block !important;
-    padding-top: 14px;
-    margin-bottom: 6px;
-  }
-  .pdf-capture-mode .print-break h2 {
-    font-size: 22px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 0 0 4px;
-  }
-
-  /* Compact tables */
-  .pdf-capture-mode table { font-size: 11px !important; border-collapse: collapse !important; }
-  .pdf-capture-mode td, .pdf-capture-mode th { padding: 3px 8px !important; }
-
-  /* Constrain images */
-  .pdf-capture-mode .img-gallery-main img { max-height: 180px !important; }
-  .pdf-capture-mode .img-gallery-thumbs,
-  .pdf-capture-mode .gallery-thumbs { display: none !important; }
-  .pdf-capture-mode img { max-height: 260px !important; object-fit: cover !important; }
-  .pdf-capture-mode .title-slide img,
-  .pdf-capture-mode .splash-overlay img { max-height: none !important; }
-
-  /* Compact grids & cards */
-  .pdf-capture-mode .team-grid { gap: 10px !important; }
-  .pdf-capture-mode .team-card { padding: 10px !important; }
-  .pdf-capture-mode .team-card h3 { font-size: 13px !important; margin-bottom: 2px !important; }
-  .pdf-capture-mode .team-card .team-title { font-size: 10px !important; }
-  .pdf-capture-mode .team-card p { font-size: 10px !important; }
-  .pdf-capture-mode .thesis-grid { gap: 10px !important; }
-  .pdf-capture-mode .thesis-card { padding: 10px !important; }
-  .pdf-capture-mode .thesis-card h3 { font-size: 13px !important; }
-  .pdf-capture-mode .esg-grid { gap: 10px !important; }
-  .pdf-capture-mode .esg-column { padding: 10px !important; }
-  .pdf-capture-mode .esg-column h3 { font-size: 13px !important; }
-  .pdf-capture-mode .esg-metric-panel { padding: 12px !important; }
-  .pdf-capture-mode .metric-card { padding: 10px !important; }
-  .pdf-capture-mode .step-card { padding: 10px !important; }
-  .pdf-capture-mode .step-card h4 { font-size: 12px !important; }
-  .pdf-capture-mode .phase-detail-card { padding: 10px !important; }
-  .pdf-capture-mode .highlight-card { padding: 6px 10px !important; }
-  .pdf-capture-mode .highlight-card .value { font-size: 18px !important; }
-
-  /* Reduce spacing */
-  .pdf-capture-mode .two-col { gap: 16px !important; }
-  .pdf-capture-mode li { margin-bottom: 2px !important; }
-  .pdf-capture-mode ul, .pdf-capture-mode ol { margin: 0 0 6px !important; }
-  .pdf-capture-mode blockquote,
-  .pdf-capture-mode .callout-box { font-size: 11px !important; padding: 6px 12px !important; margin: 6px 0 !important; }
-  .pdf-capture-mode .timeline-graphic { margin: 6px 0 !important; }
-
   /* ═══ PDF LOADING OVERLAY ═══ */
   .pdf-loading-overlay {
     display: none;
@@ -5046,248 +4964,278 @@
 
 <script>
 /* ═══════════════════════════════════════════════════════════ */
-/* DECK PDF GENERATOR                                         */
-/* Captures each slide as a visual image → landscape PDF       */
+/* DECK PDF GENERATOR — Off-Screen Clone Approach             */
+/* Captures each slide segment into 1280×720 off-screen       */
+/* containers → A4 landscape full-bleed JPEG pages            */
 /* ═══════════════════════════════════════════════════════════ */
 window.generateDeckPDF = async function() {
-  var SLIDE_W = 1280;
-  var SLIDE_H = 720;
-  var SCALE = 1.5;
+  var CONTAINER_W = 1280;
+  var CONTAINER_H = 720;
+  var SCALE = 2;
+  var A4_W = 297;  /* mm */
+  var A4_H = 210;  /* mm */
 
   var overlay = document.getElementById('pdf-loading');
   var progress = document.getElementById('pdf-progress');
   overlay.classList.add('active');
+  progress.textContent = 'Loading fonts\u2026';
 
-  await sleep(120);
+  /* ── 1. Wait for web fonts ── */
+  try { await document.fonts.ready; } catch (e) { /* proceed anyway */ }
+  await sleep(200);
 
-  /* ── 1. Enter capture mode ── */
-  document.body.classList.add('pdf-capture-mode');
-
-  /* Force every animated element to full opacity */
-  document.querySelectorAll(
-    '.scroll-animate, .thesis-card, .esg-metric-panel, ' +
-    '.step-card, .metric-card, .team-card, .slide-inner'
-  ).forEach(function(el) {
-    el.style.opacity = '1';
-    el.style.transform = 'none';
-    el.style.transition = 'none';
-  });
-
-  await sleep(300);
-
-  /* ── 2. Build ordered list of virtual slides (segments) ── */
-  /*    Print-breaks live inside .slide-inner, not directly under .slide.
-        We hide/show .slide-inner children to isolate each segment.       */
-  var segments = [];
+  /* ── 2. Build ordered page descriptors (24 pages) ── */
+  var pages = [];
   var slides = document.querySelectorAll('.slide');
 
   slides.forEach(function(slide) {
     var inner = slide.querySelector('.slide-inner');
-    if (!inner) {
-      segments.push({ slide: slide, inner: null, hideAfter: null, hideBefore: null });
+    if (!inner) { pages.push({ slide: slide, type: 'full' }); return; }
+
+    /* Special: Management Team (slide-12) → 3 pages */
+    if (slide.id === 'slide-12') {
+      pages.push({ slide: slide, type: 'mgmt-1' });
+      pages.push({ slide: slide, type: 'mgmt-2' });
+      pages.push({ slide: slide, type: 'mgmt-3' });
       return;
     }
+
     var breaks = Array.from(inner.querySelectorAll(':scope > .print-break'));
     if (breaks.length === 0) {
-      segments.push({ slide: slide, inner: inner, hideAfter: null, hideBefore: null });
+      pages.push({ slide: slide, type: 'full' });
     } else {
-      /* First segment: everything before the first break */
-      segments.push({ slide: slide, inner: inner, hideAfter: breaks[0], hideBefore: null });
-      /* Each additional segment: starts at break[i], ends at break[i+1] or end */
-      for (var i = 0; i < breaks.length; i++) {
-        var nextBreak = i + 1 < breaks.length ? breaks[i + 1] : null;
-        segments.push({ slide: slide, inner: inner, hideAfter: nextBreak, hideBefore: breaks[i] });
-      }
+      pages.push({ slide: slide, type: 'before-break' });
+      pages.push({ slide: slide, type: 'after-break' });
     }
   });
 
-  var totalPages = segments.length;
-  progress.textContent = '0 / ' + totalPages + ' slides';
+  var totalPages = pages.length;
+  progress.textContent = '0 / ' + totalPages + ' pages';
 
-  /* ── 3. Create PDF ── */
+  /* ── 3. Create PDF (A4 landscape, millimetres) ── */
   var jsPDF = window.jspdf.jsPDF;
   var pdf = new jsPDF({
     orientation: 'landscape',
-    unit: 'px',
-    format: [SLIDE_W, SLIDE_H],
-    compress: true,
-    hotfixes: ['px_scaling']
+    unit: 'mm',
+    format: 'a4',
+    compress: true
   });
 
-  /* ── 4. Capture each segment ── */
+  /* ── 4. html2canvas options ── */
+  var h2cOpts = {
+    scale: SCALE,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: null,
+    width: CONTAINER_W,
+    height: CONTAINER_H,
+    windowWidth: CONTAINER_W,
+    windowHeight: CONTAINER_H,
+    logging: false,
+    imageTimeout: 15000,
+    removeContainer: false
+  };
+
+  /* ── 5. Helper: build a 1280×720 off-screen clone ── */
+  function buildContainer(slideEl, modifier) {
+    var clone = slideEl.cloneNode(true);
+    clone.removeAttribute('id');
+
+    /* Position off-screen, locked to 1280 × 720 */
+    clone.style.cssText =
+      'position:fixed !important;left:-9999px !important;top:0 !important;' +
+      'width:' + CONTAINER_W + 'px !important;height:' + CONTAINER_H + 'px !important;' +
+      'min-height:' + CONTAINER_H + 'px !important;max-height:' + CONTAINER_H + 'px !important;' +
+      'overflow:hidden !important;margin:0 !important;padding:0 !important;' +
+      'box-sizing:border-box !important;z-index:-1 !important;';
+
+    var inner = clone.querySelector('.slide-inner');
+    if (inner) {
+      inner.style.cssText =
+        'width:100% !important;height:100% !important;' +
+        'padding:36px 48px !important;box-sizing:border-box !important;' +
+        'overflow:hidden !important;';
+    }
+
+    /* Force every animated / observer-driven element visible */
+    clone.querySelectorAll(
+      '.scroll-animate, .thesis-card, .esg-metric-panel, .step-card, ' +
+      '.metric-card, .team-card, .slide-inner, .phase-detail-card, ' +
+      '.highlight-card, .esg-column, .callout-box, blockquote, ' +
+      '.two-col, .timeline-graphic, .timeline, h2, h3, h4, p, li, ' +
+      'table, .data-table, .board-table, img'
+    ).forEach(function(el) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.transition = 'none';
+    });
+
+    /* Apply page-specific content modifications */
+    if (modifier && inner) modifier(clone, inner);
+
+    document.body.appendChild(clone);
+    return clone;
+  }
+
+  /* ── 6. Capture each page ── */
   var isFirstPage = true;
-  var TITLE_BAR_H = 44;
 
-  for (var s = 0; s < segments.length; s++) {
-    progress.textContent = (s + 1) + ' / ' + totalPages + ' sections';
-    var seg = segments[s];
-    var slide = seg.slide;
-    var inner = seg.inner;
-    var children = inner ? Array.from(inner.children) : [];
+  for (var i = 0; i < pages.length; i++) {
+    progress.textContent = (i + 1) + ' / ' + totalPages + ' pages';
+    var pg = pages[i];
+    var container = null;
 
-    /* Save original display values */
-    var savedDisplay = children.map(function(c) { return c.style.display; });
-
-    /* Hide .slide-inner children outside this segment */
-    if (seg.hideBefore) {
-      var cutIdx = children.indexOf(seg.hideBefore);
-      for (var i = 0; i < cutIdx; i++) children[i].style.display = 'none';
-    }
-    if (seg.hideAfter) {
-      var cutIdx2 = children.indexOf(seg.hideAfter);
-      for (var j = cutIdx2; j < children.length; j++) children[j].style.display = 'none';
-    }
-
-    await sleep(60);
-
-    /* Capture the visible portion with timeout safety */
-    var canvas;
     try {
-      canvas = await Promise.race([
-        html2canvas(slide, {
-          width: SLIDE_W,
-          scale: SCALE,
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          backgroundColor: null,
-          imageTimeout: 3000,
-          removeContainer: true
-        }),
-        sleep(45000).then(function() { throw new Error('html2canvas timeout'); })
-      ]);
-    } catch (err) {
-      console.warn('PDF capture failed for segment ' + s, err);
-      children.forEach(function(c, idx) { c.style.display = savedDisplay[idx]; });
-      if (!isFirstPage) pdf.addPage();
-      isFirstPage = false;
-      continue;
-    }
+      /* ─── Build the off-screen container ─── */
 
-    /* Restore children */
-    children.forEach(function(c, idx) { c.style.display = savedDisplay[idx]; });
+      if (pg.type === 'full') {
+        container = buildContainer(pg.slide, function(clone, inner) {
+          clone.querySelectorAll('.print-break').forEach(function(pb) {
+            pb.style.display = 'none';
+          });
+        });
 
-    /* Segment metrics */
-    var imgH = canvas.height / SCALE;
-    var bgColor = getSlideBackground(slide);
-    var bgLum = 0.299 * bgColor.r + 0.587 * bgColor.g + 0.114 * bgColor.b;
-
-    /* Get segment title for overflow continuation headers */
-    var segTitle = '';
-    if (seg.hideBefore) {
-      var pbH2 = seg.hideBefore.querySelector('h2');
-      if (pbH2) segTitle = pbH2.textContent.replace(/\s*\(cont\.\)\s*/gi, '').trim();
-    }
-    if (!segTitle) {
-      var firstH2 = slide.querySelector('h2');
-      if (firstH2) segTitle = firstH2.textContent.replace(/\s*\(cont\.\)\s*/gi, '').trim();
-    }
-
-    var OVERFLOW_TOLERANCE = 1.25; /* up to 25% over — scale to fit rather than slice */
-
-    if (imgH <= SLIDE_H) {
-      /* ── Content fits on one page — draw at full size ── */
-      if (!isFirstPage) pdf.addPage();
-      isFirstPage = false;
-
-      pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-      pdf.rect(0, 0, SLIDE_W, SLIDE_H, 'F');
-
-      pdf.addImage(
-        canvas.toDataURL('image/jpeg', 0.88),
-        'JPEG', 0, 0, SLIDE_W, imgH
-      );
-    } else if (imgH <= SLIDE_H * OVERFLOW_TOLERANCE) {
-      /* ── Slightly over — scale to fit with small side margins ── */
-      if (!isFirstPage) pdf.addPage();
-      isFirstPage = false;
-
-      var fitScale = SLIDE_H / imgH;
-      var drawW = SLIDE_W * fitScale;
-      var drawH = SLIDE_H;
-      var offX = (SLIDE_W - drawW) / 2;
-
-      pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-      pdf.rect(0, 0, SLIDE_W, SLIDE_H, 'F');
-
-      pdf.addImage(
-        canvas.toDataURL('image/jpeg', 0.88),
-        'JPEG', offX, 0, drawW, drawH
-      );
-    } else {
-      /* ── Content overflows — slice into multiple full-size pages ── */
-      var srcY = 0;
-      var chunkIdx = 0;
-
-      while (srcY < canvas.height - 4 * SCALE) {
-        if (!isFirstPage) pdf.addPage();
-        isFirstPage = false;
-
-        /* Fill page background */
-        pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-        pdf.rect(0, 0, SLIDE_W, SLIDE_H, 'F');
-
-        var drawY = 0;
-        var availH = SLIDE_H;
-
-        /* Title bar on overflow continuation pages (not the first chunk) */
-        if (chunkIdx > 0 && segTitle) {
-          drawY = TITLE_BAR_H;
-          availH = SLIDE_H - TITLE_BAR_H;
-
-          /* Slightly darker bar */
-          pdf.setFillColor(
-            Math.max(0, bgColor.r - 8),
-            Math.max(0, bgColor.g - 8),
-            Math.max(0, bgColor.b - 8)
-          );
-          pdf.rect(0, 0, SLIDE_W, TITLE_BAR_H, 'F');
-
-          /* Accent line */
-          pdf.setFillColor(158, 27, 50);
-          pdf.rect(36, TITLE_BAR_H - 2, 40, 2, 'F');
-
-          /* Title text */
-          if (bgLum > 128) {
-            pdf.setTextColor(30, 28, 26);
-          } else {
-            pdf.setTextColor(245, 240, 235);
+      } else if (pg.type === 'before-break') {
+        container = buildContainer(pg.slide, function(clone, inner) {
+          var children = Array.from(inner.children);
+          var pb = inner.querySelector('.print-break');
+          if (pb) {
+            var idx = children.indexOf(pb);
+            for (var j = idx; j < children.length; j++) {
+              children[j].style.display = 'none';
+            }
           }
-          pdf.setFont('helvetica', 'bold');
-          pdf.setFontSize(13);
-          pdf.text(segTitle.toUpperCase() + '  (CONT.)', 36, 26);
-        }
+        });
 
-        /* Slice the canvas at full resolution */
-        var sliceHpx = Math.min(Math.round(availH * SCALE), canvas.height - srcY);
-        if (sliceHpx < 10) break;
+      } else if (pg.type === 'after-break') {
+        container = buildContainer(pg.slide, function(clone, inner) {
+          var children = Array.from(inner.children);
+          var pb = inner.querySelector('.print-break');
+          if (pb) {
+            var idx = children.indexOf(pb);
+            for (var j = 0; j < idx; j++) {
+              children[j].style.display = 'none';
+            }
+            pb.style.display = 'block';
+          }
+        });
 
-        var sliceCanvas = document.createElement('canvas');
-        sliceCanvas.width = canvas.width;
-        sliceCanvas.height = sliceHpx;
-        var sliceCtx = sliceCanvas.getContext('2d');
-        sliceCtx.drawImage(canvas, 0, srcY, canvas.width, sliceHpx, 0, 0, canvas.width, sliceHpx);
+      } else if (pg.type === 'mgmt-1') {
+        /* Management Team page 1: header + first 3 team cards (bigger) */
+        container = buildContainer(pg.slide, function(clone, inner) {
+          /* Hide everything from print-break onward */
+          var children = Array.from(inner.children);
+          var pb = inner.querySelector('.print-break');
+          if (pb) {
+            var idx = children.indexOf(pb);
+            for (var j = idx; j < children.length; j++) {
+              children[j].style.display = 'none';
+            }
+          }
+          /* Keep only first 3 team cards, enlarge them */
+          var grid = inner.querySelector('.team-grid');
+          if (grid) {
+            var cards = Array.from(grid.querySelectorAll('.team-card'));
+            for (var k = 3; k < cards.length; k++) cards[k].style.display = 'none';
+            grid.style.cssText += 'grid-template-columns:repeat(3,1fr) !important;gap:20px !important;';
+            cards.slice(0, 3).forEach(function(card) {
+              card.style.padding = '32px';
+              card.style.minHeight = '340px';
+              var photo = card.querySelector('.team-photo');
+              if (photo) { photo.style.width = '90px'; photo.style.height = '90px'; }
+            });
+          }
+        });
 
-        pdf.addImage(
-          sliceCanvas.toDataURL('image/jpeg', 0.88),
-          'JPEG', 0, drawY, SLIDE_W, sliceHpx / SCALE
-        );
+      } else if (pg.type === 'mgmt-2') {
+        /* Management Team page 2: header (cont.) + last 3 cards (bigger) */
+        container = buildContainer(pg.slide, function(clone, inner) {
+          var h2 = inner.querySelector('h2');
+          if (h2) h2.innerHTML = 'Management Team <em>(cont.)</em>';
+          /* Hide intro paragraph */
+          var introP = inner.querySelector(':scope > p');
+          if (introP) introP.style.display = 'none';
+          /* Hide everything from print-break onward */
+          var children = Array.from(inner.children);
+          var pb = inner.querySelector('.print-break');
+          if (pb) {
+            var idx = children.indexOf(pb);
+            for (var j = idx; j < children.length; j++) {
+              children[j].style.display = 'none';
+            }
+          }
+          /* Keep only last 3 team cards, enlarge them */
+          var grid = inner.querySelector('.team-grid');
+          if (grid) {
+            var cards = Array.from(grid.querySelectorAll('.team-card'));
+            for (var k = 0; k < 3; k++) cards[k].style.display = 'none';
+            grid.style.cssText += 'grid-template-columns:repeat(3,1fr) !important;gap:20px !important;';
+            cards.slice(3).forEach(function(card) {
+              card.style.padding = '32px';
+              card.style.minHeight = '340px';
+              var photo = card.querySelector('.team-photo');
+              if (photo) { photo.style.width = '90px'; photo.style.height = '90px'; }
+            });
+          }
+        });
 
-        /* Clean up slice canvas */
-        sliceCanvas.width = 0;
-        sliceCanvas.height = 0;
-        sliceCanvas = null;
-
-        srcY += sliceHpx;
-        chunkIdx++;
+      } else if (pg.type === 'mgmt-3') {
+        /* Management Team page 3: Board of Directors */
+        container = buildContainer(pg.slide, function(clone, inner) {
+          var h2 = inner.querySelector('h2');
+          if (h2) h2.innerHTML = 'Management Team <em>(cont.)</em>';
+          /* Hide intro paragraph, team grid, print-break */
+          var introP = inner.querySelector(':scope > p');
+          if (introP) introP.style.display = 'none';
+          var grid = inner.querySelector('.team-grid');
+          if (grid) grid.style.display = 'none';
+          var pb = inner.querySelector('.print-break');
+          if (pb) pb.style.display = 'none';
+          /* Tighten Board of Directors spacing */
+          var h4 = inner.querySelector('h4');
+          if (h4) h4.style.marginTop = '16px';
+        });
       }
+
+      /* ─── Capture with html2canvas ─── */
+      await sleep(100);
+
+      var canvas = await Promise.race([
+        html2canvas(container, h2cOpts),
+        sleep(30000).then(function() { throw new Error('html2canvas timeout'); })
+      ]);
+
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+
+      /* ─── Add page to PDF ─── */
+      if (!isFirstPage) pdf.addPage();
+      isFirstPage = false;
+
+      /* Solid background fill (safety net for transparency) */
+      var bgColor = getSlideBackground(pg.slide);
+      pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+      pdf.rect(0, 0, A4_W, A4_H, 'F');
+
+      /* Full-bleed image: 0,0 → 297×210 mm */
+      pdf.addImage(imgData, 'JPEG', 0, 0, A4_W, A4_H);
+
+      /* ─── Cleanup this container ─── */
+      if (container.parentNode) document.body.removeChild(container);
+      canvas.width = 0;
+      canvas.height = 0;
+      canvas = null;
+
+    } catch (err) {
+      console.warn('PDF capture failed for page ' + (i + 1) + ':', err);
+      if (container && container.parentNode) document.body.removeChild(container);
+      if (!isFirstPage) pdf.addPage();
+      isFirstPage = false;
     }
   }
 
-  /* ── 5. Exit capture mode & save ── */
-  document.body.classList.remove('pdf-capture-mode');
+  /* ── 7. Save PDF & dismiss overlay ── */
   overlay.classList.remove('active');
-  pdf.save('Boet-Materials-Pitch-Deck.pdf');
+  pdf.save('Boet-Materials-Corp-February-2026.pdf');
 };
 
 /* ── Helpers ── */
@@ -5295,7 +5243,7 @@ function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
 
 function getSlideBackground(slide) {
   var classes = slide.className;
-  /* Map slide classes to dominant background colors */
+  /* Map slide CSS classes → dominant background RGB */
   if (/slide-white/.test(classes)) return { r: 255, g: 255, b: 255 };
   if (/slide-light/.test(classes)) return { r: 247, g: 242, b: 236 };
   if (/slide-accent|slide-red/.test(classes)) return { r: 158, g: 27, b: 50 };
