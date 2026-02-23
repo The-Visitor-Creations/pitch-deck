@@ -4765,8 +4765,12 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
 
     slideInners.forEach(function(inner, i) {
-      // Skip first slide — already visible
-      if (i > 0) slideObserver.observe(inner);
+      if (i === 0) {
+        // Title slide — make visible immediately (not observer-driven)
+        inner.classList.add('visible');
+      } else {
+        slideObserver.observe(inner);
+      }
     });
   } else {
     // Fallback: show all immediately
