@@ -4940,23 +4940,71 @@
     min-height: auto !important;
     height: auto !important;
     overflow: visible !important;
-    padding: 36px 48px !important;
+    padding: 24px 36px !important;
   }
+  .pdf-capture-mode .slide-inner {
+    font-size: 12.5px !important;
+    line-height: 1.4 !important;
+  }
+  .pdf-capture-mode h2 { font-size: 22px !important; margin-bottom: 6px !important; }
+  .pdf-capture-mode h3 { font-size: 14px !important; margin-bottom: 4px !important; }
+  .pdf-capture-mode p { margin-bottom: 5px !important; }
+  .pdf-capture-mode .slide-tag { font-size: 9px !important; margin-bottom: 4px !important; padding: 2px 8px !important; }
+  .pdf-capture-mode .section-divider { margin: 4px 0 8px !important; }
+
+  /* Print breaks – compact */
   .pdf-capture-mode .print-break {
     display: block !important;
-    padding-top: 24px;
-    margin-bottom: 12px;
+    padding-top: 14px;
+    margin-bottom: 6px;
   }
   .pdf-capture-mode .print-break h2 {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin: 0 0 8px;
+    margin: 0 0 4px;
   }
+
+  /* Compact tables */
+  .pdf-capture-mode table { font-size: 11px !important; border-collapse: collapse !important; }
+  .pdf-capture-mode td, .pdf-capture-mode th { padding: 3px 8px !important; }
+
+  /* Constrain images */
+  .pdf-capture-mode .img-gallery-main img { max-height: 180px !important; }
+  .pdf-capture-mode .img-gallery-thumbs,
   .pdf-capture-mode .gallery-thumbs { display: none !important; }
-  .pdf-capture-mode .img-gallery img { max-height: 280px; }
-  .pdf-capture-mode h2 { font-size: 28px !important; }
+  .pdf-capture-mode img { max-height: 260px !important; object-fit: cover !important; }
+  .pdf-capture-mode .title-slide img,
+  .pdf-capture-mode .splash-overlay img { max-height: none !important; }
+
+  /* Compact grids & cards */
+  .pdf-capture-mode .team-grid { gap: 10px !important; }
+  .pdf-capture-mode .team-card { padding: 10px !important; }
+  .pdf-capture-mode .team-card h3 { font-size: 13px !important; margin-bottom: 2px !important; }
+  .pdf-capture-mode .team-card .team-title { font-size: 10px !important; }
+  .pdf-capture-mode .team-card p { font-size: 10px !important; }
+  .pdf-capture-mode .thesis-grid { gap: 10px !important; }
+  .pdf-capture-mode .thesis-card { padding: 10px !important; }
+  .pdf-capture-mode .thesis-card h3 { font-size: 13px !important; }
+  .pdf-capture-mode .esg-grid { gap: 10px !important; }
+  .pdf-capture-mode .esg-column { padding: 10px !important; }
+  .pdf-capture-mode .esg-column h3 { font-size: 13px !important; }
+  .pdf-capture-mode .esg-metric-panel { padding: 12px !important; }
+  .pdf-capture-mode .metric-card { padding: 10px !important; }
+  .pdf-capture-mode .step-card { padding: 10px !important; }
+  .pdf-capture-mode .step-card h4 { font-size: 12px !important; }
+  .pdf-capture-mode .phase-detail-card { padding: 10px !important; }
+  .pdf-capture-mode .highlight-card { padding: 6px 10px !important; }
+  .pdf-capture-mode .highlight-card .value { font-size: 18px !important; }
+
+  /* Reduce spacing */
+  .pdf-capture-mode .two-col { gap: 16px !important; }
+  .pdf-capture-mode li { margin-bottom: 2px !important; }
+  .pdf-capture-mode ul, .pdf-capture-mode ol { margin: 0 0 6px !important; }
+  .pdf-capture-mode blockquote,
+  .pdf-capture-mode .callout-box { font-size: 11px !important; padding: 6px 12px !important; margin: 6px 0 !important; }
+  .pdf-capture-mode .timeline-graphic { margin: 6px 0 !important; }
 
   /* ═══ PDF LOADING OVERLAY ═══ */
   .pdf-loading-overlay {
@@ -5067,8 +5115,11 @@ window.generateDeckPDF = async function() {
   });
 
   /* ── 4. Capture each segment ── */
+  var isFirstPage = true;
+  var TITLE_BAR_H = 44;
+
   for (var s = 0; s < segments.length; s++) {
-    progress.textContent = (s + 1) + ' / ' + totalPages + ' slides';
+    progress.textContent = (s + 1) + ' / ' + totalPages + ' sections';
     var seg = segments[s];
     var slide = seg.slide;
     var inner = seg.inner;
@@ -5108,34 +5159,129 @@ window.generateDeckPDF = async function() {
     } catch (err) {
       console.warn('PDF capture failed for segment ' + s, err);
       children.forEach(function(c, idx) { c.style.display = savedDisplay[idx]; });
-      if (s > 0) pdf.addPage();
+      if (!isFirstPage) pdf.addPage();
+      isFirstPage = false;
       continue;
     }
 
     /* Restore children */
     children.forEach(function(c, idx) { c.style.display = savedDisplay[idx]; });
 
-    /* Add page */
-    if (s > 0) pdf.addPage();
-
-    /* Scale image to fill the slide page */
-    var imgW = canvas.width / SCALE;
+    /* Segment metrics */
     var imgH = canvas.height / SCALE;
-    var fitScale = Math.min(SLIDE_W / imgW, SLIDE_H / imgH, 1);
-    var drawW = imgW * fitScale;
-    var drawH = imgH * fitScale;
-    var offX = (SLIDE_W - drawW) / 2;
-    var offY = 0; /* top-align for slide feel */
-
-    /* Fill page with slide background color */
     var bgColor = getSlideBackground(slide);
-    pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-    pdf.rect(0, 0, SLIDE_W, SLIDE_H, 'F');
+    var bgLum = 0.299 * bgColor.r + 0.587 * bgColor.g + 0.114 * bgColor.b;
 
-    pdf.addImage(
-      canvas.toDataURL('image/jpeg', 0.85),
-      'JPEG', offX, offY, drawW, drawH
-    );
+    /* Get segment title for overflow continuation headers */
+    var segTitle = '';
+    if (seg.hideBefore) {
+      var pbH2 = seg.hideBefore.querySelector('h2');
+      if (pbH2) segTitle = pbH2.textContent.replace(/\s*\(cont\.\)\s*/gi, '').trim();
+    }
+    if (!segTitle) {
+      var firstH2 = slide.querySelector('h2');
+      if (firstH2) segTitle = firstH2.textContent.replace(/\s*\(cont\.\)\s*/gi, '').trim();
+    }
+
+    var OVERFLOW_TOLERANCE = 1.25; /* up to 25% over — scale to fit rather than slice */
+
+    if (imgH <= SLIDE_H) {
+      /* ── Content fits on one page — draw at full size ── */
+      if (!isFirstPage) pdf.addPage();
+      isFirstPage = false;
+
+      pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+      pdf.rect(0, 0, SLIDE_W, SLIDE_H, 'F');
+
+      pdf.addImage(
+        canvas.toDataURL('image/jpeg', 0.88),
+        'JPEG', 0, 0, SLIDE_W, imgH
+      );
+    } else if (imgH <= SLIDE_H * OVERFLOW_TOLERANCE) {
+      /* ── Slightly over — scale to fit with small side margins ── */
+      if (!isFirstPage) pdf.addPage();
+      isFirstPage = false;
+
+      var fitScale = SLIDE_H / imgH;
+      var drawW = SLIDE_W * fitScale;
+      var drawH = SLIDE_H;
+      var offX = (SLIDE_W - drawW) / 2;
+
+      pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+      pdf.rect(0, 0, SLIDE_W, SLIDE_H, 'F');
+
+      pdf.addImage(
+        canvas.toDataURL('image/jpeg', 0.88),
+        'JPEG', offX, 0, drawW, drawH
+      );
+    } else {
+      /* ── Content overflows — slice into multiple full-size pages ── */
+      var srcY = 0;
+      var chunkIdx = 0;
+
+      while (srcY < canvas.height - 4 * SCALE) {
+        if (!isFirstPage) pdf.addPage();
+        isFirstPage = false;
+
+        /* Fill page background */
+        pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
+        pdf.rect(0, 0, SLIDE_W, SLIDE_H, 'F');
+
+        var drawY = 0;
+        var availH = SLIDE_H;
+
+        /* Title bar on overflow continuation pages (not the first chunk) */
+        if (chunkIdx > 0 && segTitle) {
+          drawY = TITLE_BAR_H;
+          availH = SLIDE_H - TITLE_BAR_H;
+
+          /* Slightly darker bar */
+          pdf.setFillColor(
+            Math.max(0, bgColor.r - 8),
+            Math.max(0, bgColor.g - 8),
+            Math.max(0, bgColor.b - 8)
+          );
+          pdf.rect(0, 0, SLIDE_W, TITLE_BAR_H, 'F');
+
+          /* Accent line */
+          pdf.setFillColor(158, 27, 50);
+          pdf.rect(36, TITLE_BAR_H - 2, 40, 2, 'F');
+
+          /* Title text */
+          if (bgLum > 128) {
+            pdf.setTextColor(30, 28, 26);
+          } else {
+            pdf.setTextColor(245, 240, 235);
+          }
+          pdf.setFont('helvetica', 'bold');
+          pdf.setFontSize(13);
+          pdf.text(segTitle.toUpperCase() + '  (CONT.)', 36, 26);
+        }
+
+        /* Slice the canvas at full resolution */
+        var sliceHpx = Math.min(Math.round(availH * SCALE), canvas.height - srcY);
+        if (sliceHpx < 10) break;
+
+        var sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sliceHpx;
+        var sliceCtx = sliceCanvas.getContext('2d');
+        sliceCtx.drawImage(canvas, 0, srcY, canvas.width, sliceHpx, 0, 0, canvas.width, sliceHpx);
+
+        pdf.addImage(
+          sliceCanvas.toDataURL('image/jpeg', 0.88),
+          'JPEG', 0, drawY, SLIDE_W, sliceHpx / SCALE
+        );
+
+        /* Clean up slice canvas */
+        sliceCanvas.width = 0;
+        sliceCanvas.height = 0;
+        sliceCanvas = null;
+
+        srcY += sliceHpx;
+        chunkIdx++;
+      }
+    }
   }
 
   /* ── 5. Exit capture mode & save ── */
