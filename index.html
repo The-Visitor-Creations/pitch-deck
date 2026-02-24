@@ -2598,27 +2598,41 @@
 
   /* ═══ TIMELINE GRAPHIC — VERTICAL ON MOBILE ═══ */
   @media (max-width: 600px) {
-    .timeline-graphic { padding: 28px 20px 20px; }
+    .timeline-graphic { padding: 24px 16px 16px; position: relative; overflow: visible; }
     .tg-track {
-      position: relative;
-      top: auto; left: auto; right: auto;
-      width: 4px;
+      position: absolute;
+      top: 48px;
+      bottom: 64px;
+      left: 22px;
+      right: auto;
+      width: 3px;
       height: auto;
-      margin: 0 auto 0 24px;
+      margin: 0;
+    }
+    .tg-progress {
+      width: 3px !important;
+      height: 50%;
+      background: linear-gradient(180deg, var(--accent-teal), var(--accent-gold));
     }
     .tg-nodes {
       flex-direction: column;
       gap: 0;
+      position: relative;
+      z-index: 2;
     }
     .tg-node {
       flex-direction: row;
       align-items: center;
       text-align: left;
-      gap: 16px;
-      padding: 14px 0;
+      gap: 14px;
+      padding: 11px 0;
     }
-    .tg-node-dot { margin-bottom: 0; margin-left: -32px; }
-    .tg-node-year { margin-top: 0; font-size: 12px; min-width: 60px; }
+    .tg-node-dot {
+      margin-bottom: 0;
+      margin-left: 0;
+      flex-shrink: 0;
+    }
+    .tg-node-year { margin-top: 0; font-size: 12px; min-width: 58px; }
     .tg-node-label { max-width: none; font-size: 12px; }
     .tg-legend { flex-wrap: wrap; gap: 12px; margin-top: 16px; }
   }
