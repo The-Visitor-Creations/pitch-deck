@@ -900,6 +900,8 @@
     border-radius: 8px;
     padding: 20px;
     transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
     min-width: 0;
   }
   .metric-card:hover { border-color: var(--accent-blue); }
@@ -919,6 +921,7 @@
     word-break: break-word;
     overflow-wrap: break-word;
     line-height: 1.2;
+    margin-top: auto;
   }
   .metric-card-value.accent { color: var(--accent-gold); }
 
@@ -5118,6 +5121,70 @@
       imgObserver.observe(img);
     });
   }
+
+  /* ═══ GRID BULLET ALIGNMENT ═══ */
+  /* Aligns corresponding bullet <li> heights across side-by-side columns */
+  function alignBulletRows(gridSelector, colSelector) {
+    document.querySelectorAll(gridSelector).forEach(function(grid) {
+      var cols = Array.from(grid.querySelectorAll(colSelector));
+      if (cols.length < 2) return;
+
+      /* Reset all min-heights first */
+      cols.forEach(function(col) {
+        col.querySelectorAll('.bullet-list li').forEach(function(li) { li.style.minHeight = ''; });
+      });
+
+      /* Group columns into visual rows by their top offset */
+      var rows = [];
+      var currentRow = [cols[0]];
+      var currentTop = cols[0].getBoundingClientRect().top;
+      for (var i = 1; i < cols.length; i++) {
+        var colTop = cols[i].getBoundingClientRect().top;
+        if (Math.abs(colTop - currentTop) < 30) {
+          currentRow.push(cols[i]);
+        } else {
+          rows.push(currentRow);
+          currentRow = [cols[i]];
+          currentTop = colTop;
+        }
+      }
+      rows.push(currentRow);
+
+      /* For each visual row of cards, align corresponding bullets */
+      rows.forEach(function(row) {
+        if (row.length < 2) return;
+        var bulletLists = row.map(function(col) {
+          return Array.from(col.querySelectorAll('.bullet-list li'));
+        });
+        var maxLen = Math.max.apply(null, bulletLists.map(function(l) { return l.length; }));
+        for (var j = 0; j < maxLen; j++) {
+          var maxH = 0;
+          bulletLists.forEach(function(list) {
+            if (list[j]) maxH = Math.max(maxH, list[j].offsetHeight);
+          });
+          bulletLists.forEach(function(list) {
+            if (list[j]) list[j].style.minHeight = maxH + 'px';
+          });
+        }
+      });
+    });
+  }
+
+  function runBulletAlignment() {
+    alignBulletRows('.two-col', ':scope > div');
+    alignBulletRows('.thesis-grid', '.thesis-card');
+    alignBulletRows('.esg-grid', '.esg-pillar');
+  }
+
+  /* Run after fonts and layout settle */
+  setTimeout(runBulletAlignment, 400);
+
+  /* Re-run on resize (debounced) */
+  var alignTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(alignTimer);
+    alignTimer = setTimeout(runBulletAlignment, 200);
+  });
 
   /* ═══ PRINT: Force all animated elements visible ═══ */
   window.addEventListener('beforeprint', function() {
