@@ -2376,6 +2376,81 @@
     transform: translateY(0);
   }
 
+  /* ═══ SITE MAP HOTSPOTS ═══ */
+  .site-map-wrap { cursor: default; }
+  .map-hotspot {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 10;
+  }
+  .map-ping {
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 5px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    border: 2px solid rgba(255,255,255,0.9);
+    box-shadow: 0 0 0 0 rgba(158,27,50,0.5);
+    animation: mapPulse 2.5s ease-out infinite;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  @keyframes mapPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(158,27,50,0.5); }
+    70%  { box-shadow: 0 0 0 10px rgba(158,27,50,0); }
+    100% { box-shadow: 0 0 0 0 rgba(158,27,50,0); }
+  }
+  .map-hotspot:hover .map-ping {
+    transform: scale(1.4);
+    background: var(--accent-gold);
+    animation: none;
+    box-shadow: 0 0 12px rgba(205,170,136,0.6);
+  }
+  /* Tooltip — name tag */
+  .map-hotspot::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    background: rgba(15,13,11,0.92);
+    color: #f5f0eb;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    border: 1px solid rgba(205,170,136,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .map-hotspot::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 1px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(15,13,11,0.92);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .map-hotspot:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .map-hotspot:hover::before {
+    opacity: 1;
+  }
+
   /* ═══ IMAGE GALLERY SELECTOR ═══ */
   .img-gallery {
     border-radius: 10px;
@@ -3101,10 +3176,21 @@
       </tbody>
     </table>
 
-    <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color); margin-bottom:8px;">
-      <img src="sitemap.png" alt="Project Site Map" loading="lazy" style="width:100%; max-height:440px; object-fit:cover; display:block;">
+    <div class="site-map-wrap" style="position:relative; border-radius:10px; overflow:hidden; border:1px solid var(--border-color); margin-bottom:8px;">
+      <img src="sitemap.png" alt="Project Site Map" loading="lazy" style="width:100%; display:block;">
+      <!-- Hotspots — positioned as % of image -->
+      <div class="map-hotspot" style="left:7%; top:55%;" data-label="Power Substation"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:18%; top:22%;" data-label="Evaporation Ponds"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:40%; top:14%;" data-label="Water Treatment Reservoir"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:38%; top:30%;" data-label="Storage Tanks"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:35%; top:50%;" data-label="Primary Processing Plant"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:55%; top:42%;" data-label="Refining &amp; Purification Hall"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:50%; top:60%;" data-label="Warehouse &amp; Logistics"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:72%; top:35%;" data-label="Quality Control Lab"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:78%; top:52%;" data-label="Administration Office"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:65%; top:68%;" data-label="Loading &amp; Dispatch Bay"><span class="map-ping"></span></div>
     </div>
-    <p style="font-size:11px; color:var(--text-muted); margin-bottom:28px; font-style:italic;">Site map overview of the flagship project area and surrounding infrastructure</p>
+    <p style="font-size:11px; color:var(--text-muted); margin-bottom:28px; font-style:italic;">Hover over the markers to explore the flagship project site layout</p>
 
     <div class="print-break"><div class="slide-tag">Slide 07</div><h2>Asset Portfolio <em>(cont.)</em></h2><div class="section-divider"></div></div>
 
