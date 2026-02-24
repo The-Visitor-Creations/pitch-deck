@@ -1928,11 +1928,12 @@
   /* ODOMETER COUNT-UP for key numbers              */
   /* ═══════════════════════════════════════════════ */
   .countup-number {
-    display: inline;
+    display: inline-block;
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
     font-family: inherit;
+    white-space: nowrap;
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -2402,12 +2403,12 @@
   /* Fade-in on scroll for slide content */
   .slide-inner {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translate3d(0, 20px, 0);
     transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .slide-inner.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 
   /* ═══ SITE MAP HOTSPOTS ═══ */
@@ -2711,21 +2712,21 @@
   /* Cards, team cards, thesis cards, bullet items, blockquotes, tables */
   .scroll-fade {
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translate3d(0, 18px, 0);
+    transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .scroll-fade.in-view {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
   .scroll-scale {
     opacity: 0;
-    transform: scale(0.92);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: scale3d(0.92, 0.92, 1);
+    transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .scroll-scale.in-view {
     opacity: 1;
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
   }
 
   /* ═══ REDUCED MOTION — Accessibility ═══ */
@@ -4754,9 +4755,11 @@
           entry.target.classList.add('visible');
           // Once visible, trigger count-up animations inside this slide with stagger
           var countups = entry.target.querySelectorAll('.countup-number:not(.cu-animated)');
+          // Adaptive stagger: shorter for large batches so total delay stays under 600ms
+          var cuStagger = countups.length > 8 ? Math.min(80, Math.floor(600 / countups.length)) : 80;
           countups.forEach(function(cu, cuIndex) {
             cu.classList.add('cu-animated');
-            animateCountup(cu, cuIndex * 80);
+            animateCountup(cu, cuIndex * cuStagger);
           });
 
           // Stagger ESG metric panels slide-up animation
@@ -4764,12 +4767,12 @@
           esgPanels.forEach(function(panel, pi) {
             panel.classList.add('sa-done');
             panel.style.opacity = '0';
-            panel.style.transform = 'translateY(30px)';
-            panel.style.transition = 'opacity 1.2s ease, transform 1.2s ease';
-            panel.style.transitionDelay = (pi * 250) + 'ms';
+            panel.style.transform = 'translate3d(0, 30px, 0)';
+            panel.style.transition = 'opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            panel.style.transitionDelay = (pi * 200) + 'ms';
             setTimeout(function() {
               panel.style.opacity = '1';
-              panel.style.transform = 'translateY(0)';
+              panel.style.transform = 'translate3d(0, 0, 0)';
             }, 50);
           });
 
@@ -4795,12 +4798,12 @@
           phases.forEach(function(phase, i) {
             phase.classList.add('phase-animated');
             phase.style.opacity = '0';
-            phase.style.transform = 'translateY(20px)';
-            phase.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            phase.style.transform = 'translate3d(0, 20px, 0)';
+            phase.style.transition = 'opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             phase.style.transitionDelay = (i * 150) + 'ms';
             setTimeout(function() {
               phase.style.opacity = '1';
-              phase.style.transform = 'translateY(0)';
+              phase.style.transform = 'translate3d(0, 0, 0)';
             }, 50);
           });
 
@@ -4808,11 +4811,11 @@
           var tgNodes = entry.target.querySelectorAll('.tg-node-dot:not(.dot-animated)');
           tgNodes.forEach(function(dot, i) {
             dot.classList.add('dot-animated');
-            dot.style.transform = 'scale(0)';
+            dot.style.transform = 'scale3d(0, 0, 1)';
             dot.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
             dot.style.transitionDelay = (i * 120) + 'ms';
             setTimeout(function() {
-              dot.style.transform = 'scale(1)';
+              dot.style.transform = 'scale3d(1, 1, 1)';
             }, 50);
           });
 
@@ -4834,12 +4837,12 @@
               tc.classList.add('sa-done');
               var row = Math.floor(ti / cols);
               tc.style.opacity = '0';
-              tc.style.transform = 'translateY(30px)';
-              tc.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-              tc.style.transitionDelay = (row * 250) + 'ms';
+              tc.style.transform = 'translate3d(0, 30px, 0)';
+              tc.style.transition = 'opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+              tc.style.transitionDelay = (row * 200) + 'ms';
               setTimeout(function() {
                 tc.style.opacity = '1';
-                tc.style.transform = 'translateY(0)';
+                tc.style.transform = 'translate3d(0, 0, 0)';
               }, 50);
             });
           }
@@ -4874,13 +4877,14 @@
             setTimeout(function() { h.classList.add('in-view'); }, 30);
           });
 
-          // Section dividers — width grow
+          // Section dividers — scaleX grow (GPU composited, no reflow)
           var dividers = entry.target.querySelectorAll('.section-divider:not(.sa-done)');
           dividers.forEach(function(d) {
             d.classList.add('sa-done');
-            d.style.width = '0';
-            d.style.transition = 'width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            setTimeout(function() { d.style.width = '60px'; }, 100);
+            d.style.transformOrigin = 'left center';
+            d.style.transform = 'scaleX(0)';
+            d.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            setTimeout(function() { d.style.transform = 'scaleX(1)'; }, 100);
           });
 
           // Paragraphs (direct children of slide-inner) — fade up
@@ -4953,6 +4957,12 @@
       return '\x00' + (nums.length - 1) + '\x00';
     });
     if (nums.length === 0) return;
+    // Lock cell dimensions BEFORE swapping content to prevent table reflow
+    var rect = el.getBoundingClientRect();
+    if (rect.width > 0 && !el.style.minWidth) {
+      el.style.minWidth = Math.ceil(rect.width) + 'px';
+      el.style.minHeight = Math.ceil(rect.height) + 'px';
+    }
     // Store the data for animation later
     var span = document.createElement('span');
     span.className = 'countup-number';
@@ -4967,7 +4977,7 @@
     var template = span.getAttribute('data-cu-template');
     var nums = JSON.parse(span.getAttribute('data-cu-nums'));
     if (!nums || nums.length === 0) return;
-    var duration = 1500;
+    var duration = 1200;
     function formatNum(val, info) {
       var fixed = val.toFixed(info.decimals);
       if (info.hasComma) {
@@ -4986,9 +4996,9 @@
       }
       span.textContent = text;
     }
-    // Start from 0
-    render(0);
+    // Keep original text visible until animation actually begins (no render(0) here)
     setTimeout(function() {
+      render(0);
       var start = performance.now();
       var done = false;
       function step() {
