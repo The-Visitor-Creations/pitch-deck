@@ -2491,10 +2491,9 @@
   .map-hotspot.active::before {
     opacity: 1;
   }
-  /* Desktop: disable click interaction on dots */
+  /* Desktop: keep hover tooltips but remove clickable cursor */
   @media (min-width: 769px) {
     .map-hotspot {
-      pointer-events: none;
       cursor: default;
     }
   }
@@ -5137,6 +5136,8 @@
     hotspots.forEach(function(hs) {
       hs.addEventListener('click', function(e) {
         e.stopPropagation();
+        // Only toggle on mobile/tablet — desktop uses hover
+        if (window.innerWidth >= 769) return;
         var wasActive = hs.classList.contains('active');
         // Close all others
         hotspots.forEach(function(h) { h.classList.remove('active'); });
