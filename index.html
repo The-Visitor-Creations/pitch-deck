@@ -37,6 +37,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 56px;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
   }
@@ -78,14 +79,7 @@
     }
   }
 
-  /* Defer rendering of off-screen slides */
-  .slide {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 100vh;
-  }
-  #slide-1, #slide-2 {
-    content-visibility: visible;
-  }
+  /* Contain layout for off-screen slides (no content-visibility to avoid scroll-position bugs) */
 
   /* Low-bandwidth: fall back to system fonts, skip non-essential animations */
   @media (prefers-reduced-data: reduce) {
@@ -491,6 +485,7 @@
     margin-left: 240px;
     padding: 80px 60px 80px;
     position: relative;
+    scroll-margin-top: 52px;
     /* scroll-snap-align removed for clean continuous scroll */
     border-bottom: 1px solid var(--border-color);
   }
@@ -2361,7 +2356,7 @@
   /* COMPREHENSIVE RESPONSIVE — Mobile (≤600px)     */
   /* ═══════════════════════════════════════════════ */
   @media (max-width: 600px) {
-    .slide { padding: 64px 16px 48px; }
+    .slide { padding: 64px 16px 48px; scroll-margin-top: 46px; }
     .title-slide .slide-inner { padding: 64px 16px; max-width: 100%; }
     h1 { font-size: 26px; letter-spacing: 0; }
     h2 { font-size: 22px; letter-spacing: 0; }
@@ -4354,7 +4349,9 @@
     if (index < 0) index = 0;
     if (index >= total) index = total - 1;
     currentSlide = index;
-    slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var barH = document.querySelector('.top-bar').offsetHeight;
+    var offset = slides[index].offsetTop - barH;
+    window.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
     updateActive(index);
   }
 
