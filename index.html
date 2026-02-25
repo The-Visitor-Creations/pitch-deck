@@ -2491,6 +2491,13 @@
   .map-hotspot.active::before {
     opacity: 1;
   }
+  /* Desktop: disable click interaction on dots */
+  @media (min-width: 769px) {
+    .map-hotspot {
+      pointer-events: none;
+      cursor: default;
+    }
+  }
 
   /* ═══ IMAGE GALLERY SELECTOR ═══ */
   .img-gallery {
@@ -3239,13 +3246,13 @@
       <div class="map-hotspot" style="left:8%; top:45%;" data-label="Power Substation"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:18%; top:22%;" data-label="Evaporation Ponds"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:55%; top:16%;" data-label="Water Treatment Reservoir"><span class="map-ping"></span></div>
-      <div class="map-hotspot" style="left:40%; top:23%;" data-label="Storage Tanks"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:44%; top:26%;" data-label="Storage Tanks"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:38%; top:38%;" data-label="Primary Processing Plant"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:55%; top:42%;" data-label="Refining &amp; Purification Hall"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:50%; top:60%;" data-label="Warehouse &amp; Logistics"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:72%; top:35%;" data-label="Quality Control Lab"><span class="map-ping"></span></div>
-      <div class="map-hotspot" style="left:78%; top:52%;" data-label="Administration Office"><span class="map-ping"></span></div>
-      <div class="map-hotspot" style="left:60%; top:62%;" data-label="Loading &amp; Dispatch Bay"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:76%; top:44%;" data-label="Administration Office"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:60%; top:78%;" data-label="Loading &amp; Dispatch Bay"><span class="map-ping"></span></div>
     </div>
     <p style="font-size:11px; color:var(--text-muted); margin-bottom:28px; font-style:italic;">Hover over the markers to explore the flagship project site layout</p>
 
