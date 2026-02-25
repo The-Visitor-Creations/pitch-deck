@@ -1085,6 +1085,12 @@
     gap: 24px;
     margin: 28px 0;
   }
+  .two-col > div {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+  }
   @media (max-width: 650px) {
     .two-col { grid-template-columns: 1fr; }
   }
@@ -3071,7 +3077,7 @@
         <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#CDAA88;display:inline-block;"></span> <span style="color:#FAF9F6; opacity:0.8;">Portable Electronics</span></span>
         <span style="display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#7A4E2D;display:inline-block;"></span> <span style="color:#FAF9F6; opacity:0.8;">Industrial &amp; Other</span></span>
       </div>
-      <div id="demand-tooltip" style="font-size:12px; color:#FAF9F6; margin-top:10px; min-height:18px; font-weight:600;">&nbsp;</div>
+      <div id="demand-tooltip" style="font-size:12px; color:#FAF9F6; margin-top:10px; min-height:18px; font-weight:600; transition:none;">&nbsp;</div>
       <p style="font-size:9px; color:#FAF9F6; opacity:0.4; margin:10px 0 0; font-style:italic;">Source: IEA Global Critical Minerals Outlook 2025; Albemarle; Benchmark Mineral Intelligence</p>
     </div>
 
@@ -4610,6 +4616,31 @@
     lbl.textContent = d.year;
     demandLabelsEl.appendChild(lbl);
   });
+
+  /* Lock demand-tooltip height so card never resizes on hover */
+  (function() {
+    var longest = '';
+    demandData.forEach(function(d) {
+      var total = d.ev + d.bess + d.portable + d.industrial;
+      var txt = d.year + ': Total ' + total.toLocaleString() + ' kt LCE \u2014 EV: ' + d.ev + ' | BESS: ' + d.bess + ' | Portable: ' + d.portable + ' | Industrial: ' + d.industrial;
+      if (txt.length > longest.length) longest = txt;
+    });
+    function lockTooltipHeight() {
+      var cur = demandTooltip.textContent.trim();
+      demandTooltip.style.minHeight = '0';
+      demandTooltip.textContent = longest;
+      var h = demandTooltip.scrollHeight;
+      demandTooltip.style.minHeight = h + 'px';
+      if (cur && cur !== longest) { demandTooltip.textContent = cur; }
+      else { demandTooltip.innerHTML = '&nbsp;'; }
+    }
+    lockTooltipHeight();
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(lockTooltipHeight, 150);
+    });
+  })();
 
   /* ═══ INTERACTIVE PRICE HISTORY (LINE CHART) ═══ */
   var priceData = [
