@@ -538,8 +538,8 @@
   .slide-white .metric-card-label { color: #666666; }
   .slide-white .metric-card-value { color: #111111; }
   .slide-white .metric-card-value.accent { color: #9E1B32; }
-  .slide-white .financial-kpi-card { background: #f5f5f5; border-color: #e0e0e0; }
-  .slide-white .financial-kpi-card:hover { border-color: #9E1B32; }
+  .slide-white .financial-kpi-card { background: #f5f5f5; }
+  .slide-white .financial-kpi-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
   .slide-white .financial-kpi-label { color: #666666; }
   .slide-white .financial-kpi-value { color: #111111; }
   .slide-white .financial-kpi-value.accent { color: #9E1B32; }
@@ -976,7 +976,8 @@
   }
   .financial-kpi-card {
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--kpi-color, var(--border-color));
+    border-top: 3px solid var(--kpi-color, var(--border-color));
     border-radius: 10px;
     padding: 18px 14px;
     text-align: center;
@@ -986,11 +987,12 @@
     align-items: center;
     gap: 8px;
     min-width: 0;
-    transition: border-color 0.2s, transform 0.2s;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
   }
   .financial-kpi-card:hover {
-    border-color: var(--accent-teal);
+    border-color: var(--kpi-color, var(--accent-teal));
     transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   }
   .financial-kpi-label {
     font-size: 10px;
@@ -2637,6 +2639,7 @@
     max-width: 100%;
     height: auto;
     aspect-ratio: 1;
+    overflow: hidden;
   }
   .pie-layout > div {
     font-size: 12px;
@@ -3714,23 +3717,23 @@
 
     <!-- Financial KPI Hero Metrics -->
     <div class="financial-kpi-grid" style="margin-bottom:32px;">
-      <div class="financial-kpi-card" style="border-top: 3px solid #9E1B32;">
+      <div class="financial-kpi-card" style="--kpi-color: #9E1B32; border-top: 3px solid #9E1B32; border-color: #9E1B32;">
         <div class="financial-kpi-label">After-Tax NPV&#8328;</div>
         <div class="financial-kpi-value accent">US$4.8 B</div>
       </div>
-      <div class="financial-kpi-card" style="border-top: 3px solid #184A63;">
+      <div class="financial-kpi-card" style="--kpi-color: #184A63; border-top: 3px solid #184A63; border-color: #184A63;">
         <div class="financial-kpi-label">After-Tax IRR</div>
         <div class="financial-kpi-value accent">15.2%</div>
       </div>
-      <div class="financial-kpi-card" style="border-top: 3px solid #9E1B32;">
+      <div class="financial-kpi-card" style="--kpi-color: #9E1B32; border-top: 3px solid #9E1B32; border-color: #9E1B32;">
         <div class="financial-kpi-label">Avg. Annual EBITDA</div>
         <div class="financial-kpi-value">US$585 M</div>
       </div>
-      <div class="financial-kpi-card" style="border-top: 3px solid #184A63;">
+      <div class="financial-kpi-card" style="--kpi-color: #184A63; border-top: 3px solid #184A63; border-color: #184A63;">
         <div class="financial-kpi-label">Payback Period</div>
         <div class="financial-kpi-value">4.9 Years</div>
       </div>
-      <div class="financial-kpi-card" style="border-top: 3px solid var(--accent-gold);">
+      <div class="financial-kpi-card" style="--kpi-color: #CDAA88; border-top: 3px solid var(--accent-gold); border-color: var(--accent-gold);">
         <div class="financial-kpi-label">CAPEX</div>
         <div class="financial-kpi-value">US$1,240 M</div>
       </div>
@@ -3799,7 +3802,7 @@
           <div id="cost-legend" style="font-size:12px; line-height:2.2; color:#333;">
           </div>
         </div>
-        <div id="cost-tooltip" style="font-size:12px; color:#111; margin-top:12px; min-height:18px; font-weight:600;">&nbsp;</div>
+        <div id="cost-tooltip" style="font-size:12px; color:#111; margin-top:12px; min-height:18px; height:18px; font-weight:600; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">&nbsp;</div>
       </div>
 
       <!-- ═══ INTERACTIVE LIABILITIES PIE CHART ═══ -->
@@ -3811,7 +3814,7 @@
           <div id="liab-legend" style="font-size:12px; line-height:2.2; color:#333;">
           </div>
         </div>
-        <div id="liab-tooltip" style="font-size:12px; color:#111; margin-top:12px; font-weight:600;">&nbsp;</div>
+        <div id="liab-tooltip" style="font-size:12px; color:#111; margin-top:12px; min-height:18px; height:18px; font-weight:600; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">&nbsp;</div>
       </div>
     </div>
 
@@ -6192,7 +6195,8 @@ window.generateDeckPDF = async function() {
       if (kpiGrid) {
         kpiGrid.style.cssText = 'display:grid;grid-template-columns:repeat(5,1fr);gap:14px;';
         kpiGrid.querySelectorAll('.financial-kpi-card').forEach(function(card) {
-          card.style.cssText = 'padding:24px 14px;border-radius:8px;background:rgba(18,16,14,0.03);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:240px;';
+          var kpiColor = card.style.getPropertyValue('--kpi-color') || '';
+          card.style.cssText = 'padding:24px 14px;border-radius:8px;background:rgba(18,16,14,0.03);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:240px;' + (kpiColor ? 'border:1px solid ' + kpiColor.trim() + ';border-top:3px solid ' + kpiColor.trim() + ';' : '');
           var val = card.querySelector('.financial-kpi-value');
           if (val) val.style.cssText = 'font-size:24px;font-weight:800;' + (val.classList.contains('accent') ? 'color:#9E1B32;' : 'color:#12100e;');
           var label = card.querySelector('.financial-kpi-label');
