@@ -6,7 +6,8 @@
 <title>Boet Materials Corp. — Corporate Presentation | February 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
 <style>
 
   :root {
@@ -74,6 +75,28 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+    }
+  }
+
+  /* Defer rendering of off-screen slides */
+  .slide {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100vh;
+  }
+  #slide-1, #slide-2 {
+    content-visibility: visible;
+  }
+
+  /* Low-bandwidth: fall back to system fonts, skip non-essential animations */
+  @media (prefers-reduced-data: reduce) {
+    body, h1, h2, h3, h4, .sidebar-logo, .metric-card-value, .contact-cta-btn {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    }
+    .tg-node-year, .metric-card-label, code {
+      font-family: 'SF Mono', Menlo, Consolas, monospace !important;
+    }
+    .map-ping::before, .tg-node.active .tg-node-dot::after {
+      animation: none !important;
     }
   }
 
@@ -1545,7 +1568,7 @@
   .contact-cta-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
     font-family: 'Outfit', sans-serif;
     font-size: 16px;
     font-weight: 700;
@@ -2090,11 +2113,19 @@
   .tg-node.active .tg-node-dot {
     background: var(--accent-gold);
     box-shadow: 0 0 12px rgba(205, 170, 136, 0.5), 0 0 0 3px rgba(205, 170, 136, 0.25);
+    position: relative;
+  }
+  .tg-node.active .tg-node-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid rgba(205, 170, 136, 0.3);
     animation: tg-pulse 2s ease-in-out infinite;
   }
   @keyframes tg-pulse {
-    0%, 100% { box-shadow: 0 0 12px rgba(205, 170, 136, 0.5), 0 0 0 3px rgba(205, 170, 136, 0.25); }
-    50% { box-shadow: 0 0 20px rgba(205, 170, 136, 0.7), 0 0 0 5px rgba(205, 170, 136, 0.3); }
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50%      { transform: scale(1.4); opacity: 0.8; }
   }
   .tg-node.future .tg-node-dot {
     background: var(--border-color);
@@ -2432,20 +2463,31 @@
     border-radius: 50%;
     background: var(--accent-blue);
     border: 2px solid rgba(255,255,255,0.9);
-    box-shadow: 0 0 0 0 rgba(158,27,50,0.5);
-    animation: mapPulse 2.5s ease-out infinite;
+    position: relative;
     transition: transform 0.2s ease, background 0.2s ease;
   }
+  .map-ping::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    border-radius: 50%;
+    border: 2px solid rgba(158,27,50,0.5);
+    animation: mapPulse 2.5s ease-out infinite;
+  }
   @keyframes mapPulse {
-    0%   { box-shadow: 0 0 0 0 rgba(158,27,50,0.5); }
-    70%  { box-shadow: 0 0 0 10px rgba(158,27,50,0); }
-    100% { box-shadow: 0 0 0 0 rgba(158,27,50,0); }
+    0%   { transform: scale(1); opacity: 0.5; }
+    70%  { transform: scale(2.5); opacity: 0; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  .map-hotspot:hover .map-ping::before,
+  .map-hotspot.active .map-ping::before {
+    animation: none;
+    opacity: 0;
   }
   .map-hotspot:hover .map-ping,
   .map-hotspot.active .map-ping {
     transform: scale(1.4);
     background: var(--accent-gold);
-    animation: none;
     box-shadow: 0 0 12px rgba(205,170,136,0.6);
   }
   /* Tooltip — name tag */
@@ -2594,8 +2636,10 @@
   }
   .pie-layout svg {
     flex-shrink: 0;
-    width: 160px;
-    height: 160px;
+    width: clamp(120px, 40vw, 180px);
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
   }
   .pie-layout > div {
     font-size: 12px;
@@ -2604,11 +2648,9 @@
     width: 100%;
   }
   @media (max-width: 600px) {
-    .pie-layout svg { width: 140px; height: 140px; }
     .pie-layout > div { font-size: 11px; }
   }
   @media (max-width: 375px) {
-    .pie-layout svg { width: 120px; height: 120px; }
     .pie-layout > div { font-size: 10px; }
   }
 
@@ -2621,6 +2663,14 @@
     box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.12);
     transform: translateY(-3px);
   }
+  /* Teal-border step cards: hover + active use teal instead of red */
+  .step-card-teal:hover {
+    border-color: var(--accent-teal) !important;
+  }
+  .step-card-teal.step-active {
+    border-color: var(--accent-teal);
+    box-shadow: 0 4px 20px rgba(24, 74, 99, 0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
 
   /* ═══ CATALYST BUTTONS ═══ */
   .catalyst-btn {
@@ -2630,8 +2680,11 @@
   .catalyst-btn:hover, .catalyst-btn:active {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    border-color: var(--accent-gold);
   }
+  /* Color-specific catalyst hover overrides */
+  .catalyst-btn-teal:hover, .catalyst-btn-teal:active { border-color: var(--accent-teal); }
+  .catalyst-btn-blue:hover, .catalyst-btn-blue:active { border-color: var(--accent-blue); }
+  .catalyst-btn-gold:hover, .catalyst-btn-gold:active { border-color: var(--accent-gold); }
 
   /* ═══ PHONE COLOR ON MOBILE ═══ */
   .contact-phone { color: inherit; }
@@ -2777,8 +2830,7 @@
 <!-- ═══════════════════════════════════════════════════ -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <a href="https://www.boetmaterials.com" style="display:inline-flex; align-items:flex-end; gap:8px; text-decoration:none; margin-bottom:14px; padding:8px 14px; border-radius:6px; background:rgba(158,27,50,0.08); border:1px solid rgba(158,27,50,0.15); transition:all 0.2s;" onmouseover="this.style.background='rgba(158,27,50,0.16)'" onmouseout="this.style.background='rgba(158,27,50,0.08)'">
-      <span style="font-size:22px; color:var(--accent-blue); line-height:0.7; display:inline-block;">&#8962;</span>
+    <a href="https://www.boetmaterials.com" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none; margin-bottom:14px; padding:8px 14px; border-radius:6px; background:rgba(158,27,50,0.08); border:1px solid rgba(158,27,50,0.15); transition:all 0.2s;" onmouseover="this.style.background='rgba(158,27,50,0.16)'" onmouseout="this.style.background='rgba(158,27,50,0.08)'">
       <span style="font-size:12px; font-weight:700; color:var(--text-primary); letter-spacing:1px; text-transform:uppercase; line-height:1;">HOME</span>
     </a>
     <div class="sidebar-logo">Boet <span>Materials</span></div>
@@ -3124,12 +3176,12 @@
         <h3 style="font-size:14px;">Purification</h3>
         <p style="font-size:12px; margin:0;">Multi-stage purification delivers high-purity intermediate product</p>
       </div>
-      <div class="metric-card step-card" style="border-top: 3px solid var(--accent-teal); cursor:pointer;" tabindex="0">
+      <div class="metric-card step-card step-card-teal" style="border-top: 3px solid var(--accent-teal); cursor:pointer;" tabindex="0">
         <div class="metric-card-label">Step 3</div>
         <h3 style="font-size:14px;">Conversion</h3>
         <p style="font-size:12px; margin:0;">Final processing produces battery-grade or industrial-grade end product</p>
       </div>
-      <div class="metric-card step-card" style="border-top: 3px solid var(--accent-teal); cursor:pointer;" tabindex="0">
+      <div class="metric-card step-card step-card-teal" style="border-top: 3px solid var(--accent-teal); cursor:pointer;" tabindex="0">
         <div class="metric-card-label">Step 4</div>
         <h3 style="font-size:14px;">Recycling</h3>
         <p style="font-size:12px; margin:0;">Closed-loop system minimizes waste and water consumption</p>
@@ -3240,12 +3292,12 @@
     </table>
 
     <div class="site-map-wrap" style="position:relative; border-radius:10px; overflow:visible; border:1px solid var(--border-color); margin-bottom:8px;">
-      <img src="sitemap.png" alt="Project Site Map" loading="lazy" style="width:100%; display:block; border-radius:10px;">
+      <img src="sitemap.png" alt="Project Site Map" loading="lazy" width="1200" height="800" style="width:100%; height:auto; display:block; border-radius:10px;">
       <!-- Hotspots — positioned as % of image -->
       <div class="map-hotspot" style="left:8%; top:45%;" data-label="Power Substation"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:18%; top:22%;" data-label="Evaporation Ponds"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:55%; top:16%;" data-label="Water Treatment Reservoir"><span class="map-ping"></span></div>
-      <div class="map-hotspot" style="left:44%; top:26%;" data-label="Storage Tanks"><span class="map-ping"></span></div>
+      <div class="map-hotspot" style="left:49%; top:29%;" data-label="Storage Tanks"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:38%; top:38%;" data-label="Primary Processing Plant"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:55%; top:42%;" data-label="Refining &amp; Purification Hall"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:50%; top:60%;" data-label="Warehouse &amp; Logistics"><span class="map-ping"></span></div>
@@ -3628,7 +3680,7 @@
       <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
         <h4 style="margin-bottom:16px; color:#184A63;">Cost Structure Breakdown</h4>
         <div class="pie-layout">
-          <svg id="cost-pie" viewBox="0 0 200 200" width="180" height="180" style="flex-shrink:0;">
+          <svg id="cost-pie" viewBox="0 0 200 200" style="flex-shrink:0;">
             <!-- Pie slices injected by JS -->
           </svg>
           <div id="cost-legend" style="font-size:12px; line-height:2.2; color:#333;">
@@ -3641,7 +3693,7 @@
       <div style="background:rgba(18,16,14,0.05); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(18,16,14,0.08); border-radius:10px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);">
         <h4 style="margin-bottom:16px; color:#184A63;">Projected Liabilities (at Construction)</h4>
         <div class="pie-layout">
-          <svg id="liab-pie" viewBox="0 0 200 200" width="180" height="180" style="flex-shrink:0;">
+          <svg id="liab-pie" viewBox="0 0 200 200" style="flex-shrink:0;">
           </svg>
           <div id="liab-legend" style="font-size:12px; line-height:2.2; color:#333;">
           </div>
@@ -3771,7 +3823,7 @@
 
     <div class="team-grid">
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-ceo.png" alt="Dr. Marcus Eliot"></div>
+        <div class="team-photo"><img src="headshot-ceo.png" alt="Dr. Marcus Eliot" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Dr. Marcus Eliot, P.Geo., ICD.D</h3>
           <div class="team-title">Chief Executive Officer &amp; President</div>
@@ -3780,7 +3832,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-3.png" alt="Catherine Hsu"></div>
+        <div class="team-photo"><img src="headshot-3.png" alt="Catherine Hsu" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Catherine Hsu, CFA, CPA</h3>
           <div class="team-title">Chief Financial Officer</div>
@@ -3789,7 +3841,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-4.png" alt="Dr. Raj Venkatesh"></div>
+        <div class="team-photo"><img src="headshot-4.png" alt="Dr. Raj Venkatesh" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Dr. Raj Venkatesh, P.Eng., Ph.D.</h3>
           <div class="team-title">Chief Technology Officer</div>
@@ -3798,7 +3850,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-2.png" alt="James Macleod"></div>
+        <div class="team-photo"><img src="headshot-2.png" alt="James Macleod" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>James Macleod, P.Eng.</h3>
           <div class="team-title">Chief Development Officer</div>
@@ -3807,7 +3859,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-5.png" alt="Sarah Fontaine"></div>
+        <div class="team-photo"><img src="headshot-5.png" alt="Sarah Fontaine" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Sarah Fontaine, LL.B.</h3>
           <div class="team-title">VP, Government &amp; Stakeholder Engagement</div>
@@ -3816,7 +3868,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-7.png" alt="Nadia Kowalski"></div>
+        <div class="team-photo"><img src="headshot-7.png" alt="Nadia Kowalski" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Nadia Kowalski, M.Sc.</h3>
           <div class="team-title">Chief Sustainability Officer</div>
@@ -3825,7 +3877,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-6.png" alt="Daniel Tanaka"></div>
+        <div class="team-photo"><img src="headshot-6.png" alt="Daniel Tanaka" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Daniel Tanaka, P.Geo.</h3>
           <div class="team-title">VP, Exploration</div>
@@ -3834,7 +3886,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-8.png" alt="Michael Brennan"></div>
+        <div class="team-photo"><img src="headshot-8.png" alt="Michael Brennan" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Michael Brennan, MBA</h3>
           <div class="team-title">VP, Operations</div>
@@ -3968,27 +4020,27 @@
 
     <h4 style="margin-top:32px;">Financials &amp; Additional Investor Documents</h4>
     <div class="metric-grid-5col catalyst-grid" style="grid-template-columns:repeat(3,1fr); margin-top:16px;">
-      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-teal); text-decoration:none; cursor:pointer;">
+      <a href="#" class="metric-card catalyst-btn catalyst-btn-teal" style="text-align:center; border-top: 3px solid var(--accent-teal); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">Q3 2025</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Earnings Release</p>
       </a>
-      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-teal); text-decoration:none; cursor:pointer;">
+      <a href="#" class="metric-card catalyst-btn catalyst-btn-teal" style="text-align:center; border-top: 3px solid var(--accent-teal); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">Q4 2025</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Earnings Release</p>
       </a>
-      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-blue); text-decoration:none; cursor:pointer;">
+      <a href="#" class="metric-card catalyst-btn catalyst-btn-blue" style="text-align:center; border-top: 3px solid var(--accent-blue); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">Q3 2025</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Quarterly Report</p>
       </a>
-      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-blue); text-decoration:none; cursor:pointer;">
+      <a href="#" class="metric-card catalyst-btn catalyst-btn-blue" style="text-align:center; border-top: 3px solid var(--accent-blue); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">Q4 2025</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Quarterly Report</p>
       </a>
-      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-gold); text-decoration:none; cursor:pointer;">
+      <a href="#" class="metric-card catalyst-btn catalyst-btn-gold" style="text-align:center; border-top: 3px solid var(--accent-gold); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">FY 2025</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Annual Report</p>
       </a>
-      <a href="#" class="metric-card catalyst-btn" style="text-align:center; border-top: 3px solid var(--accent-gold); text-decoration:none; cursor:pointer;">
+      <a href="#" class="metric-card catalyst-btn catalyst-btn-gold" style="text-align:center; border-top: 3px solid var(--accent-gold); text-decoration:none; cursor:pointer;">
         <div class="metric-card-label">February 2026</div>
         <p style="font-size:12px; margin:0; color:var(--text-primary);">Investor Presentation</p>
       </a>
@@ -4012,7 +4064,7 @@
       </div>
       <div class="contact-cta">
         <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Ready to learn more?</p>
-        <a href="mailto:investor@boetmaterials.com" class="contact-cta-btn"><span class="btn-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></span> Contact Us</a>
+        <a href="mailto:investor@boetmaterials.com" class="contact-cta-btn">Contact Us</a>
         <p style="font-size:11px; color:var(--text-muted); margin-top:16px;">investor@boetmaterials.com<br><span class="contact-phone">+1 (403) 555-0172</span></p>
       </div>
     </div>
@@ -4034,6 +4086,15 @@
 </footer>
 
 <script>
+/* ═══ SAVE-DATA DETECTION — drop web fonts on metered connections ═══ */
+(function() {
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn && conn.saveData) {
+    var fontLink = document.querySelector('link[href*="fonts.googleapis.com"]');
+    if (fontLink) fontLink.remove();
+  }
+})();
+
 (function() {
   /* ═══ DYNAMIC FAVICON — Red B in Outfit 900 ═══ */
   document.fonts.ready.then(function() {
