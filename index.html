@@ -7,7 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"></noscript>
 <style>
 
   :root {
@@ -691,7 +692,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('photo-industrial-1.jpg');
+    background-image: url('photo-industrial-1-desktop.jpg');
     background-size: cover;
     background-position: center;
     /* Desaturate, cool tones, lift shadows, soften contrast */
@@ -1446,7 +1447,7 @@
   .rp-photo-bg {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('investment-thesis-photo.png');
+    background-image: url('investment-thesis-photo-desktop.jpg');
     background-size: cover;
     background-position: center 40%;
     filter: saturate(0.35) brightness(0.85) contrast(0.9);
@@ -2114,7 +2115,7 @@
   .tg-node.active .tg-node-dot::after {
     content: '';
     position: absolute;
-    inset: -3px;
+    top: -3px; right: -3px; bottom: -3px; left: -3px;
     border-radius: 50%;
     border: 2px solid rgba(205, 170, 136, 0.3);
     animation: tg-pulse 2s ease-in-out infinite;
@@ -2871,6 +2872,14 @@
       transform: none;
     }
 
+    /* ── Use mobile-optimized background images ── */
+    .title-slide .hero-bg {
+      background-image: url('photo-industrial-1-mobile.jpg');
+    }
+    .rp-photo-bg {
+      background-image: url('investment-thesis-photo-mobile.jpg');
+    }
+
     /* ── Simplify filter chains on backgrounds ── */
     .title-slide .hero-bg {
       filter: saturate(0.35) brightness(1.1);
@@ -2915,6 +2924,68 @@
     }
     .timeline-badge.active {
       animation: none;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* LOW POWER MODE — JS-detected battery saver     */
+  /* ═══════════════════════════════════════════════ */
+  .low-power *,
+  .low-power *::before,
+  .low-power *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.1s !important;
+  }
+  .low-power .map-ping::before,
+  .low-power .tg-node.active .tg-node-dot::after {
+    animation: none !important;
+  }
+  .low-power .splash-overlay {
+    display: none !important;
+  }
+  .low-power .title-slide .hero-bg,
+  .low-power .slide-hero .hero-bg {
+    filter: none;
+  }
+  .low-power .rp-photo-bg {
+    filter: none;
+  }
+  .low-power .scroll-fade,
+  .low-power .scroll-scale {
+    opacity: 1; transform: none;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* SLOW NETWORK — 2G/3G detected via JS           */
+  /* ═══════════════════════════════════════════════ */
+  .slow-network body,
+  .slow-network h1, .slow-network h2, .slow-network h3, .slow-network h4,
+  .slow-network .sidebar-logo, .slow-network .metric-card-value,
+  .slow-network .contact-cta-btn {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+  .slow-network .tg-node-year, .slow-network .metric-card-label,
+  .slow-network code {
+    font-family: 'SF Mono', Menlo, Consolas, monospace !important;
+  }
+
+  /* ═══════════════════════════════════════════════ */
+  /* OLDER DEVICE COMPAT — Safari 14, Chrome 80+    */
+  /* ═══════════════════════════════════════════════ */
+  /* aspect-ratio fallback for browsers that don't support it */
+  @supports not (aspect-ratio: 16 / 9) {
+    .img-gallery-main {
+      aspect-ratio: auto;
+      padding-bottom: 56.25%;
+      height: 0;
+      position: relative;
+    }
+    .img-gallery-main img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
     }
   }
 </style>
@@ -3134,7 +3205,7 @@
 <!-- SLIDE 3 — MACRO OPPORTUNITY                         -->
 <!-- ═══════════════════════════════════════════════════ -->
 <section class="slide slide-hero slide-warm" id="slide-3">
-  <div class="hero-bg" style="background-image:url('photo-industrial-2.jpg');"></div>
+  <div class="hero-bg" data-bg-desktop="photo-industrial-2-desktop.jpg" data-bg-mobile="photo-industrial-2-mobile.jpg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-tint"></div>
   <div class="slide-inner">
@@ -3247,7 +3318,7 @@
 <!-- SLIDE 5 — PROCESSING TECHNOLOGY                      -->
 <!-- ═══════════════════════════════════════════════════ -->
 <section class="slide slide-hero slide-cool" id="slide-5">
-  <div class="hero-bg" style="background-image:url('photo-industrial-3.jpg');"></div>
+  <div class="hero-bg" data-bg-desktop="photo-industrial-3-desktop.jpg" data-bg-mobile="photo-industrial-3-mobile.jpg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-tint"></div>
   <div class="slide-inner">
@@ -3301,21 +3372,21 @@
 
     <div class="img-gallery" id="tech-gallery">
       <div class="img-gallery-main">
-        <img src="photo-tech-1.jpg" alt="Aerial view of extraction site" class="active" loading="lazy" width="1200" height="675">
-        <img src="photo-tech-2.jpg" alt="Haul truck transporting material" loading="lazy" width="1200" height="675">
-        <img src="photo-tech-3.jpg" alt="Underground tunnel infrastructure" loading="lazy" width="1200" height="675">
+        <img data-src="photo-tech-1-desktop.jpg" data-srcset="photo-tech-1-mobile.jpg 600w, photo-tech-1-desktop.jpg 1200w" sizes="(max-width: 900px) 100vw, 1200px" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 675'%3E%3Crect width='1200' height='675' fill='%23241f1b'/%3E%3C/svg%3E" alt="Aerial view of extraction site" class="active" loading="lazy" width="1200" height="675">
+        <img data-src="photo-tech-2-desktop.jpg" data-srcset="photo-tech-2-mobile.jpg 600w, photo-tech-2-desktop.jpg 1200w" sizes="(max-width: 900px) 100vw, 1200px" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 675'%3E%3Crect width='1200' height='675' fill='%23241f1b'/%3E%3C/svg%3E" alt="Haul truck transporting material" loading="lazy" width="1200" height="675">
+        <img data-src="photo-tech-3-desktop.jpg" data-srcset="photo-tech-3-mobile.jpg 600w, photo-tech-3-desktop.jpg 1200w" sizes="(max-width: 900px) 100vw, 1200px" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 675'%3E%3Crect width='1200' height='675' fill='%23241f1b'/%3E%3C/svg%3E" alt="Underground tunnel infrastructure" loading="lazy" width="1200" height="675">
       </div>
       <div class="img-gallery-thumbs">
         <button class="img-gallery-thumb active" data-idx="0">
-          <img src="photo-tech-1.jpg" alt="Extraction" loading="lazy" width="400" height="64">
+          <img src="photo-tech-1-mobile.jpg" alt="Extraction" loading="lazy" width="400" height="64">
           <span class="thumb-label">Extraction</span>
         </button>
         <button class="img-gallery-thumb" data-idx="1">
-          <img src="photo-tech-2.jpg" alt="Transport" loading="lazy" width="400" height="64">
+          <img src="photo-tech-2-mobile.jpg" alt="Transport" loading="lazy" width="400" height="64">
           <span class="thumb-label">Transport</span>
         </button>
         <button class="img-gallery-thumb" data-idx="2">
-          <img src="photo-tech-3.jpg" alt="Infrastructure" loading="lazy" width="400" height="64">
+          <img src="photo-tech-3-mobile.jpg" alt="Infrastructure" loading="lazy" width="400" height="64">
           <span class="thumb-label">Infrastructure</span>
         </button>
       </div>
@@ -3403,7 +3474,7 @@
     </table>
 
     <div class="site-map-wrap" style="position:relative; border-radius:10px; overflow:visible; border:1px solid var(--border-color); margin-bottom:8px;">
-      <img src="sitemap.png" alt="Project Site Map" loading="lazy" width="1200" height="800" style="width:100%; height:auto; display:block; border-radius:10px;">
+      <img data-src="sitemap-desktop.jpg" data-srcset="sitemap-mobile.jpg 600w, sitemap-desktop.jpg 1200w" sizes="(max-width: 900px) 100vw, 1200px" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'%3E%3Crect width='1200' height='800' fill='%23241f1b'/%3E%3C/svg%3E" alt="Project Site Map" loading="lazy" width="1200" height="800" style="width:100%; height:auto; display:block; border-radius:10px;">
       <!-- Hotspots — positioned as % of image -->
       <div class="map-hotspot" style="left:8%; top:45%;" data-label="Power Substation"><span class="map-ping"></span></div>
       <div class="map-hotspot" style="left:18%; top:22%;" data-label="Evaporation Ponds"><span class="map-ping"></span></div>
@@ -3435,7 +3506,7 @@
     </div>
 
     <div style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color);">
-      <img src="photo-industrial-3.jpg" alt="Regional overview" loading="lazy" width="1200" height="300" style="width:100%; max-height:300px; object-fit:cover; display:block;">
+      <img data-src="photo-industrial-3-desktop.jpg" data-srcset="photo-industrial-3-mobile.jpg 600w, photo-industrial-3-desktop.jpg 1200w" sizes="(max-width: 900px) 100vw, 1200px" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300'%3E%3Crect width='1200' height='300' fill='%23241f1b'/%3E%3C/svg%3E" alt="Regional overview" loading="lazy" width="1200" height="300" style="width:100%; max-height:300px; object-fit:cover; display:block;">
     </div>
 
     <blockquote>The Company&rsquo;s resource base supports multi-decade operations with clear expansion pathways across the district.</blockquote>
@@ -3588,7 +3659,7 @@
 <!-- SLIDE 9 — DEVELOPMENT ROADMAP                       -->
 <!-- ═══════════════════════════════════════════════════ -->
 <section class="slide slide-hero slide-accent-dark" id="slide-9">
-  <div class="hero-bg" style="background-image:url('photo-industrial-1.jpg');"></div>
+  <div class="hero-bg" data-bg-desktop="photo-industrial-1-desktop.jpg" data-bg-mobile="photo-industrial-1-mobile.jpg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-tint"></div>
   <div class="slide-inner">
@@ -3934,7 +4005,7 @@
 
     <div class="team-grid">
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-ceo.png" alt="Dr. Marcus Eliot" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-ceo-opt.jpg" alt="Dr. Marcus Eliot" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Dr. Marcus Eliot, P.Geo., ICD.D</h3>
           <div class="team-title">Chief Executive Officer &amp; President</div>
@@ -3943,7 +4014,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-3.png" alt="Catherine Hsu" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-3-opt.jpg" alt="Catherine Hsu" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Catherine Hsu, CFA, CPA</h3>
           <div class="team-title">Chief Financial Officer</div>
@@ -3952,7 +4023,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-4.png" alt="Dr. Raj Venkatesh" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-4-opt.jpg" alt="Dr. Raj Venkatesh" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Dr. Raj Venkatesh, P.Eng., Ph.D.</h3>
           <div class="team-title">Chief Technology Officer</div>
@@ -3961,7 +4032,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-2.png" alt="James Macleod" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-2-opt.jpg" alt="James Macleod" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>James Macleod, P.Eng.</h3>
           <div class="team-title">Chief Development Officer</div>
@@ -3970,7 +4041,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-5.png" alt="Sarah Fontaine" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-5-opt.jpg" alt="Sarah Fontaine" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Sarah Fontaine, LL.B.</h3>
           <div class="team-title">VP, Government &amp; Stakeholder Engagement</div>
@@ -3979,7 +4050,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-7.png" alt="Nadia Kowalski" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-7-opt.jpg" alt="Nadia Kowalski" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Nadia Kowalski, M.Sc.</h3>
           <div class="team-title">Chief Sustainability Officer</div>
@@ -3988,7 +4059,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-6.png" alt="Daniel Tanaka" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-6-opt.jpg" alt="Daniel Tanaka" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Daniel Tanaka, P.Geo.</h3>
           <div class="team-title">VP, Exploration</div>
@@ -3997,7 +4068,7 @@
         </div>
       </div>
       <div class="team-card">
-        <div class="team-photo"><img src="headshot-8.png" alt="Michael Brennan" loading="lazy" width="72" height="72"></div>
+        <div class="team-photo"><img src="headshot-8-opt.jpg" alt="Michael Brennan" loading="lazy" width="72" height="72"></div>
         <div class="team-info">
           <h3>Michael Brennan, MBA</h3>
           <div class="team-title">VP, Operations</div>
@@ -4181,12 +4252,68 @@
 </footer>
 
 <script>
-/* ═══ SAVE-DATA DETECTION — drop web fonts on metered connections ═══ */
+/* ═══ SAVE-DATA & SLOW NETWORK DETECTION — drop web fonts on constrained connections ═══ */
 (function() {
   var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  if (conn && conn.saveData) {
+  var shouldDropFonts = false;
+
+  if (conn && conn.saveData) shouldDropFonts = true;
+  if (conn && (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g')) shouldDropFonts = true;
+
+  if (shouldDropFonts) {
     var fontLink = document.querySelector('link[href*="fonts.googleapis.com"]');
     if (fontLink) fontLink.remove();
+  }
+})();
+
+/* ═══ LOW POWER / BATTERY SAVER DETECTION ═══ */
+(function() {
+  var html = document.documentElement;
+
+  function applyLowPower() {
+    if (!html.classList.contains('low-power')) html.classList.add('low-power');
+  }
+
+  /* 1. Battery API (Android primarily — iOS does not expose this) */
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then(function(battery) {
+      function checkBattery() {
+        if (!battery.charging && battery.level <= 0.2) {
+          applyLowPower();
+        } else {
+          html.classList.remove('low-power');
+        }
+      }
+      checkBattery();
+      battery.addEventListener('levelchange', checkBattery);
+      battery.addEventListener('chargingchange', checkBattery);
+    });
+  }
+
+  /* 2. Network quality detection — adapts in real-time */
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn) {
+    function checkConnection() {
+      var type = conn.effectiveType;
+      if (type === '2g' || type === 'slow-2g') {
+        html.classList.add('slow-network');
+        applyLowPower();
+        /* Force mobile image variants even on desktop for 2G */
+        document.querySelectorAll('img[data-src]').forEach(function(img) {
+          var mobileSrc = img.dataset.src.replace('-desktop.', '-mobile.');
+          if (mobileSrc !== img.dataset.src) img.dataset.src = mobileSrc;
+        });
+        document.querySelectorAll('.hero-bg[data-bg-desktop]').forEach(function(el) {
+          el.style.backgroundImage = 'url(' + el.getAttribute('data-bg-mobile') + ')';
+        });
+      } else if (type === '3g') {
+        html.classList.add('slow-network');
+      } else {
+        html.classList.remove('slow-network');
+      }
+    }
+    checkConnection();
+    conn.addEventListener('change', checkConnection);
   }
 })();
 
@@ -5374,6 +5501,15 @@
     });
   })();
 
+  /* ═══ RESPONSIVE BACKGROUND IMAGE LOADER ═══ */
+  (function() {
+    var isMob = window.innerWidth <= 900;
+    document.querySelectorAll('.hero-bg[data-bg-desktop]').forEach(function(el) {
+      var src = isMob ? el.getAttribute('data-bg-mobile') : el.getAttribute('data-bg-desktop');
+      if (src) el.style.backgroundImage = 'url(' + src + ')';
+    });
+  })();
+
   /* ═══ LAZY LOAD IMAGES BELOW THE FOLD ═══ */
   if ('IntersectionObserver' in window) {
     var imgObserver = new IntersectionObserver(function(entries) {
@@ -5384,11 +5520,15 @@
             img.src = img.dataset.src;
             img.removeAttribute('data-src');
           }
+          if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
+            img.removeAttribute('data-srcset');
+          }
           imgObserver.unobserve(img);
         }
       });
-    }, { rootMargin: '200px' });
-    document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
+    }, { rootMargin: '300px' });
+    document.querySelectorAll('img[data-src]').forEach(function(img) {
       imgObserver.observe(img);
     });
   }
@@ -5477,7 +5617,7 @@
   .pdf-loading-overlay {
     display: none;
     position: fixed;
-    inset: 0;
+    top: 0; right: 0; bottom: 0; left: 0;
     z-index: 99999;
     background: rgba(15,13,11,0.92);
     align-items: center;
