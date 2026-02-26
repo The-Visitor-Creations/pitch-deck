@@ -1396,12 +1396,9 @@
   /* ═══════════════════════════════════════════════ */
   .thesis-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
     margin: 28px 0;
-  }
-  @media (max-width: 1100px) {
-    .thesis-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 700px) {
     .thesis-grid { grid-template-columns: 1fr; }
@@ -4062,23 +4059,7 @@
         </ul>
       </div>
       <div class="thesis-card">
-        <div class="numbered-header"><span class="num">3</span><h3>Compelling Project Economics</h3></div>
-        <ul class="bullet-list" style="margin-top:0;">
-          <li>After-tax NPV&#8328; of US$4.8 billion with 15.2% IRR</li>
-          <li>First-third position on global cost curve</li>
-          <li>50+ year reserve life &middot; 5-year payback</li>
-        </ul>
-      </div>
-      <div class="thesis-card">
-        <div class="numbered-header"><span class="num">4</span><h3>Multiple Near-Term Catalysts</h3></div>
-        <ul class="bullet-list" style="margin-top:0;">
-          <li>Feasibility Study &amp; demo validation (2026)</li>
-          <li>Strategic off-take agreement(s) (2026)</li>
-          <li>Construction decision (2027)</li>
-        </ul>
-      </div>
-      <div class="thesis-card">
-        <div class="numbered-header"><span class="num">5</span><h3>Government Support &amp; Policy Tailwinds</h3></div>
+        <div class="numbered-header"><span class="num">3</span><h3>Government Support &amp; Policy Tailwinds</h3></div>
         <ul class="bullet-list" style="margin-top:0;">
           <li>Over C$37 million in grants secured</li>
           <li>Up to 30% refundable ITC on qualifying capex</li>
@@ -4086,7 +4067,7 @@
         </ul>
       </div>
       <div class="thesis-card">
-        <div class="numbered-header"><span class="num">6</span><h3>Experienced Team With a Track Record</h3></div>
+        <div class="numbered-header"><span class="num">4</span><h3>Experienced Team With a Track Record</h3></div>
         <ul class="bullet-list" style="margin-top:0;">
           <li>Consistently met or exceeded milestones</li>
           <li>Deep in-house technical &amp; capital markets expertise</li>
@@ -5615,9 +5596,8 @@ window.generateDeckPDF = async function() {
     /* 29 */ { slide: s('slide-12'), type: 'mgmt-2' },
     /* 30 */ { slide: s('slide-12'), type: 'mgmt-3' },
     /* 31 */ { slide: s('slide-13'), type: 'thesis-1' },
-    /* 32 */ { slide: s('slide-13'), type: 'thesis-2' },
-    /* 33 */ { slide: s('slide-13'), type: 'thesis-return' },
-    /* 34 */ { slide: s('slide-14'), type: 'ask-main' },
+    /* 32 */ { slide: s('slide-13'), type: 'thesis-return' },
+    /* 33 */ { slide: s('slide-14'), type: 'ask-main' },
     /* 35 */ { slide: s('slide-14'), type: 'ask-catalysts' }
   ];
 
@@ -6369,47 +6349,25 @@ window.generateDeckPDF = async function() {
       if (bq) { bq.style.cssText = 'font-size:12px;font-style:italic;padding:10px 16px;border-left:3px solid #CDAA88;margin:20px 0 0;color:rgba(245,240,235,0.8);'; inner.appendChild(bq); }
     },
 
-    /* ── Page 31: Investment Thesis — cards 1-3 ── */
+    /* ── Page 31: Investment Thesis — all 4 cards ── */
     'thesis-1': function(clone, inner) {
       var tag = inner.querySelector('.slide-tag');
       var h2 = inner.querySelector('h2');
       var divider = inner.querySelector('.section-divider');
       var introP = inner.querySelector(':scope > p');
       var grid = inner.querySelector('.thesis-grid');
-      var cards = grid ? Array.from(grid.querySelectorAll('.thesis-card')).slice(0, 3) : [];
+      var cards = grid ? Array.from(grid.querySelectorAll('.thesis-card')) : [];
       inner.innerHTML = '';
       if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;'; inner.appendChild(tag); }
       if (h2) { h2.style.cssText = 'font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 3px;'; inner.appendChild(h2); }
       if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:5px;'; inner.appendChild(divider); }
       if (introP) { introP.style.cssText = 'font-size:12px;margin:0 0 10px;'; inner.appendChild(introP); }
       var newGrid = document.createElement('div');
-      newGrid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:16px;';
+      newGrid.style.cssText = 'display:grid;grid-template-columns:repeat(2,1fr);gap:16px;';
       cards.forEach(function(card) {
-        card.style.cssText = 'padding:20px;border-radius:8px;min-height:340px;';
+        card.style.cssText = 'padding:20px;border-radius:8px;min-height:280px;';
         var nh = card.querySelector('.numbered-header');
         if (nh) { nh.style.cssText = 'display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;'; }
-        var num = card.querySelector('.num');
-        if (num) num.style.cssText = 'font-size:24px;font-weight:900;color:rgba(255,255,255,0.3);line-height:1;flex-shrink:0;';
-        var h3 = card.querySelector('h3');
-        if (h3) h3.style.cssText = 'font-size:13px;font-weight:700;margin:0;line-height:1.3;';
-        card.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:11px;line-height:1.45;margin-bottom:4px;'; });
-        newGrid.appendChild(card);
-      });
-      inner.appendChild(newGrid);
-    },
-
-    /* ── Page 32: Investment Thesis — cards 4-6 ── */
-    'thesis-2': function(clone, inner) {
-      var grid = inner.querySelector('.thesis-grid');
-      var cards = grid ? Array.from(grid.querySelectorAll('.thesis-card')).slice(3, 6) : [];
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 13', 'Investment Thesis <em>(cont.)</em>');
-      var newGrid = document.createElement('div');
-      newGrid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:4px;';
-      cards.forEach(function(card) {
-        card.style.cssText = 'padding:20px;border-radius:8px;min-height:340px;';
-        var nh = card.querySelector('.numbered-header');
-        if (nh) nh.style.cssText = 'display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;';
         var num = card.querySelector('.num');
         if (num) num.style.cssText = 'font-size:24px;font-weight:900;color:rgba(255,255,255,0.3);line-height:1;flex-shrink:0;';
         var h3 = card.querySelector('h3');
