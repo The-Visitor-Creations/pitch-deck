@@ -58,7 +58,7 @@
   }
 
   /* GPU-accelerate actively animated elements only */
-  .splash-overlay, .slide-inner,
+  .slide-inner,
   .map-ping, .tg-node-dot {
     will-change: transform;
     -webkit-backface-visibility: hidden;
@@ -1705,143 +1705,7 @@
     flex-shrink: 0;
   }
 
-  /* ═══════════════════════════════════════════════ */
-  /* LOAD-IN SPLASH ANIMATION                       */
-  /* ═══════════════════════════════════════════════ */
-  .splash-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 99999;
-    background: #0f0d0b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 32vh;
-    pointer-events: all;
-    opacity: 1;
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .splash-overlay.fade-out {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Logo — appears first */
-  .splash-logo {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: splash-logo-in 0.6s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    text-align: center;
-  }
-  @keyframes splash-logo-in {
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .splash-logo .splash-name {
-    font-family: 'Outfit', sans-serif;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    color: var(--text-primary);
-    line-height: 1.2;
-  }
-  .splash-logo .splash-name span {
-    color: var(--accent-blue);
-  }
-  /* "Investor Presentation" — appears second */
-  .splash-logo .splash-sub {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 5px;
-    opacity: 0;
-    animation: splash-fade-in 0.5s 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  }
-
-  /* Spacer between logo block and price block */
-  .splash-price-spacer {
-    height: 36px;
-  }
-
-  /* Exchange label — appears with price */
-  .splash-exchange-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    opacity: 0;
-  }
-
-  /* Odometer price container */
-  .splash-odometer {
-    display: flex;
-    align-items: baseline;
-    gap: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 56px;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: -0.5px;
-    line-height: 1;
-    overflow: hidden;
-  }
-
-  /* Each digit column */
-  .splash-digit-col {
-    display: inline-block;
-    height: 1.15em;
-    overflow: hidden;
-    position: relative;
-  }
-  .splash-digit-strip {
-    display: flex;
-    flex-direction: column;
-    transition: transform 1.1s cubic-bezier(0.33, 0, 0.2, 1);
-  }
-  .splash-digit-strip span {
-    display: block;
-    height: 1.15em;
-    line-height: 1.15em;
-    text-align: center;
-  }
-  /* Static characters ($, .) */
-  .splash-digit-static {
-    display: inline-block;
-    height: 1.15em;
-    line-height: 1.15em;
-  }
-
-  /* Change badge */
-  .splash-change {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-    margin-top: 12px;
-    opacity: 0;
-    transition: opacity 0.4s ease, color 0.4s ease;
-  }
-  .splash-change.visible {
-    opacity: 1;
-    color: #22c55e;
-  }
-
-  @keyframes splash-fade-in {
-    to { opacity: 1; }
-  }
-
-  /* Prevent scroll while splash is visible */
-  body.splash-active {
-    overflow: hidden;
-  }
+  /* LOAD-IN SPLASH ANIMATION — temporarily removed (code saved for re-adding) */
 
   /* ═══════════════════════════════════════════════ */
   /* CSS GRID SYSTEM                                 */
@@ -2380,11 +2244,7 @@
     .mobile-hamburger { width: 44px; height: 44px; }
     .mobile-hamburger span { width: 18px; }
     .nav-logo { font-size: 12px; letter-spacing: 1.5px; }
-    .splash-overlay { padding-top: 28vh; }
-    .splash-odometer { font-size: 34px; }
-    .splash-logo .splash-name { font-size: 18px; letter-spacing: 3px; }
-    .splash-logo .splash-sub { font-size: 8px; letter-spacing: 3px; }
-    .splash-price-spacer { height: 24px; }
+    /* splash mobile overrides removed — animation disabled */
     .ask-amount { font-size: 28px; }
     .ticker-badge { font-size: 9px; padding: 6px 10px; letter-spacing: 1px; }
     .stock-metrics { flex-direction: column; gap: 12px; }
@@ -2800,7 +2660,7 @@
     .scroll-fade, .scroll-scale { opacity: 1; transform: none; }
     .esg-metric-panel { opacity: 1; transform: none; }
     .thesis-card { opacity: 1; transform: none; }
-    .splash-overlay { display: none !important; }
+    /* .splash-overlay reduced-motion rule removed — animation disabled */
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -2909,9 +2769,9 @@
     }
 
     /* ── Kill will-change on mobile (save VRAM) ── */
-    .splash-overlay, .slide-inner,
+    .slide-inner,
     .map-ping, .tg-node-dot,
-    .splash-digit-strip, .sticky-promo {
+    .sticky-promo {
       will-change: auto;
     }
 
@@ -2941,9 +2801,7 @@
   .low-power .tg-node.active .tg-node-dot::after {
     animation: none !important;
   }
-  .low-power .splash-overlay {
-    display: none !important;
-  }
+  /* .low-power .splash-overlay removed — animation disabled */
   .low-power .title-slide .hero-bg,
   .low-power .slide-hero .hero-bg {
     filter: none;
@@ -2990,24 +2848,8 @@
   }
 </style>
 </head>
-<!-- splash-active class removed while animations disabled; re-add to enable -->
-<body class="splash-active">
-
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- LOAD-IN SPLASH OVERLAY                              -->
-<!-- ═══════════════════════════════════════════════════ -->
-<div class="splash-overlay" id="splash-overlay">
-  <div class="splash-logo">
-    <div class="splash-name">Boet <span>Materials</span></div>
-    <div class="splash-sub">Investor Presentation</div>
-  </div>
-  <div class="splash-price-spacer"></div>
-  <div class="splash-exchange-label" id="splash-exchange">TSXV: AUM</div>
-  <div class="splash-odometer" id="splash-odometer">
-    <!-- Built by JS -->
-  </div>
-  <div class="splash-change" id="splash-change">+0.18 (+5.56%)</div>
-</div>
+<!-- splash-active class and splash overlay removed — animation temporarily disabled -->
+<body>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- LEFT SIDEBAR — Always Open                          -->
@@ -4337,111 +4179,7 @@
     document.head.appendChild(link);
   });
 
-  /* ═══ SPLASH SCREEN — ODOMETER PRICE ═══ */
-  /*
-   * Timeline:
-   *   0.0s  — screen appears
-   *   0.2s  — logo fades up                     (CSS: splash-logo-in, 0.6s)
-   *   0.7s  — "Investor Presentation" fades in   (CSS: splash-fade-in, 0.5s)
-   *   1.7s  — 0.5s pause, then exchange label + price appear
-   *   1.8s  — odometer digits begin rolling      (CSS transition: 1.1s)
-   *   2.9s  — odometer settles
-   *   3.2s  — change badge fades in
-   *   4.4s  — splash fades out
-   */
-  var splash = document.getElementById('splash-overlay');
-  if (splash) {
-    var targetPrice = '3.42';
-    var startPrice  = '3.24';
-    var odoEl = document.getElementById('splash-odometer');
-    var changeEl = document.getElementById('splash-change');
-    var exchangeEl = document.getElementById('splash-exchange');
-
-    // Hide price block initially
-    exchangeEl.style.opacity = '0';
-    odoEl.style.opacity = '0';
-
-    // Build digit columns: $ sign + each character
-    var chars = targetPrice.split('');
-    var startChars = startPrice.split('');
-    var cols = [];
-
-    // Dollar sign (static)
-    var dollarSpan = document.createElement('span');
-    dollarSpan.className = 'splash-digit-static';
-    dollarSpan.textContent = '$';
-    odoEl.appendChild(dollarSpan);
-
-    chars.forEach(function(ch, i) {
-      if (ch === '.') {
-        var dot = document.createElement('span');
-        dot.className = 'splash-digit-static';
-        dot.textContent = '.';
-        odoEl.appendChild(dot);
-        cols.push(null);
-      } else {
-        var endDigit = parseInt(ch, 10);
-        var startDigit = parseInt(startChars[i], 10);
-
-        var colDiv = document.createElement('span');
-        colDiv.className = 'splash-digit-col';
-
-        var strip = document.createElement('span');
-        strip.className = 'splash-digit-strip';
-
-        var digitCount = endDigit - startDigit;
-        if (digitCount < 0) digitCount += 10;
-        for (var d = 0; d <= digitCount; d++) {
-          var numSpan = document.createElement('span');
-          numSpan.textContent = (startDigit + d) % 10;
-          strip.appendChild(numSpan);
-        }
-
-        colDiv.appendChild(strip);
-        odoEl.appendChild(colDiv);
-        cols.push({ strip: strip, count: digitCount });
-      }
-    });
-
-    // 1.2s — Reveal exchange label + price (faster)
-    setTimeout(function() {
-      exchangeEl.style.transition = 'opacity 0.3s ease';
-      exchangeEl.style.opacity = '1';
-      odoEl.style.transition = 'opacity 0.3s ease';
-      odoEl.style.opacity = '1';
-    }, 1200);
-
-    // 1.3s — Start the odometer roll
-    setTimeout(function() {
-      cols.forEach(function(col) {
-        if (!col) return;
-        col.strip.style.transform = 'translateY(-' + (col.count * 1.15) + 'em)';
-      });
-    }, 1300);
-
-    // 2.2s — Show the change badge after odometer settles
-    setTimeout(function() {
-      changeEl.classList.add('visible');
-    }, 2200);
-
-    // 3.0s — Fade out splash
-    setTimeout(function() {
-      splash.classList.add('fade-out');
-      document.body.classList.remove('splash-active');
-    }, 3000);
-
-    // 3.8s — Remove from DOM
-    setTimeout(function() {
-      splash.remove();
-    }, 3800);
-
-    // Allow skip on tap/click
-    splash.addEventListener('click', function() {
-      splash.classList.add('fade-out');
-      document.body.classList.remove('splash-active');
-      setTimeout(function() { splash.remove(); }, 500);
-    });
-  }
+  /* ═══ SPLASH SCREEN — temporarily removed ═══ */
 
   /* ═══ SLIDE NAVIGATION ═══ */
   var slides = Array.from(document.querySelectorAll('.slide'));
