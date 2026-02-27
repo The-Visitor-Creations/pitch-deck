@@ -430,6 +430,17 @@
     background: #7A2E2E;
     transform: translateY(-1px);
   }
+  .download-btn.downloading {
+    background: #555;
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .download-btn.download-done {
+    background: #22c55e;
+  }
+  .download-btn.download-fail {
+    background: #ef4444;
+  }
 
   /* Button icon scaling */
   .btn-icon {
@@ -3069,7 +3080,7 @@
     <div class="nav-jump-links">
       <a href="#slide-10">&#9656; Financials</a>
     </div>
-    <a href="https://github.com/owenkava/Mining-Pitch-Deck-Example/releases/download/v1.0-pdf/BOET.Materials.Coorporate.Presentation.-.EXAMPLE.pdf" download="BOET Materials Corporate Presentation.pdf" class="download-btn" id="download-pdf-btn" target="_blank" rel="noopener"><span class="btn-icon">&#8615;</span> Download PDF</a>
+    <a href="https://github.com/owenkava/Mining-Pitch-Deck-Example/releases/download/v1.0-pdf/BOET.Materials.Coorporate.Presentation.-.EXAMPLE.pdf" class="download-btn" id="download-pdf-btn"><span class="btn-icon">&#8615;</span> Download PDF</a>
   </div>
 </header>
 
@@ -5086,7 +5097,85 @@
     });
   });
 
-  /* ═══ PDF DOWNLOAD — now uses direct file link (no JS generation) ═══ */
+  /* ═══ PDF DOWNLOAD — fetch blob + save (works cross-origin on all devices) ═══ */
+  (function() {
+    var btn = document.getElementById('download-pdf-btn');
+    if (!btn) return;
+    var pdfUrl = btn.href;
+    var originalHTML = btn.innerHTML;
+    var fileName = 'BOET Materials Corporate Presentation.pdf';
+
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (btn.classList.contains('downloading')) return;
+
+      /* ── iOS Safari / devices that can't blob-download: just open the link ── */
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (isIOS) {
+        window.open(pdfUrl, '_blank');
+        return;
+      }
+
+      btn.classList.add('downloading');
+      btn.innerHTML = '<span class="btn-icon">&#8987;</span> Downloading\u2026';
+
+      /* Use XMLHttpRequest for widest device/browser support + progress tracking */
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', pdfUrl, true);
+      xhr.responseType = 'blob';
+
+      xhr.onprogress = function(ev) {
+        if (ev.lengthComputable) {
+          var pct = Math.round((ev.loaded / ev.total) * 100);
+          btn.innerHTML = '<span class="btn-icon">&#8987;</span> ' + pct + '%';
+        }
+      };
+
+      xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+          var blob = xhr.response;
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+          }, 200);
+
+          btn.classList.remove('downloading');
+          btn.classList.add('download-done');
+          btn.innerHTML = '<span class="btn-icon">&#10003;</span> Downloaded';
+          setTimeout(function() {
+            btn.classList.remove('download-done');
+            btn.innerHTML = originalHTML;
+          }, 3000);
+        } else {
+          downloadFailed();
+        }
+      };
+
+      xhr.onerror = function() { downloadFailed(); };
+      xhr.ontimeout = function() { downloadFailed(); };
+      xhr.timeout = 300000; /* 5 min timeout for slow networks */
+
+      xhr.send();
+
+      function downloadFailed() {
+        /* Fallback: just open the link directly */
+        btn.classList.remove('downloading');
+        btn.classList.add('download-fail');
+        btn.innerHTML = '<span class="btn-icon">&#8615;</span> Retrying\u2026';
+        setTimeout(function() {
+          btn.classList.remove('download-fail');
+          btn.innerHTML = originalHTML;
+        }, 2000);
+        window.open(pdfUrl, '_blank');
+      }
+    });
+  })();
 
   /* ═══════════════════════════════════════════════════════════ */
   /* INTERSECTION OBSERVER — Fade-in slide content on scroll     */
