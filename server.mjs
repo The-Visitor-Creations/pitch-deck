@@ -1,9 +1,10 @@
 import { createServer } from 'http';
-import { readFile, stat } from 'fs/promises';
+import { readFile, stat, createReadStream } from 'fs/promises';
 import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 import { gzip, brotliCompress, constants } from 'zlib';
 import { promisify } from 'util';
+import { createReadStream as fsCreateReadStream } from 'fs';
 
 const gzipAsync = promisify(gzip);
 const brotliAsync = promisify(brotliCompress);
@@ -25,6 +26,8 @@ const MIME = {
   '.webp': 'image/webp',
   '.woff2': 'font/woff2',
   '.woff': 'font/woff',
+  '.pdf': 'application/pdf',
+  '.mp4': 'video/mp4',
 };
 
 /* Only compress text-based formats (images are already compressed) */
@@ -44,7 +47,7 @@ createServer(async (req, res) => {
   const ext = extname(filePath);
 
   try {
-    const [data, fileStat] = await Promise.all([readFile(filePath), stat(filePath)]);
+    const fileStat = await stat(filePath);
     const contentType = MIME[ext] || 'application/octet-stream';
     const headers = { 'Content-Type': contentType };
 
@@ -65,6 +68,19 @@ createServer(async (req, res) => {
     } else {
       headers['Cache-Control'] = 'public, max-age=86400';
     }
+
+    /* ── Large files (>5 MB): stream instead of buffering ── */
+    if (fileStat.size > 5 * 1024 * 1024) {
+      headers['Content-Length'] = fileStat.size;
+      if (ext === '.pdf') {
+        headers['Content-Disposition'] = 'attachment; filename="BOET Materials Corporate Presentation.pdf"';
+      }
+      res.writeHead(200, headers);
+      fsCreateReadStream(filePath).pipe(res);
+      return;
+    }
+
+    const data = await readFile(filePath);
 
     /* ── Compression for text-based formats ── */
     if (COMPRESSIBLE.has(ext) && data.length > 1024) {

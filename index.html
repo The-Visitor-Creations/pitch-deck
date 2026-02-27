@@ -58,7 +58,7 @@
   }
 
   /* GPU-accelerate actively animated elements only */
-  .slide-inner,
+  .splash-overlay, .slide-inner,
   .map-ping, .tg-node-dot {
     will-change: transform;
     -webkit-backface-visibility: hidden;
@@ -1705,7 +1705,143 @@
     flex-shrink: 0;
   }
 
-  /* LOAD-IN SPLASH ANIMATION — temporarily removed (code saved for re-adding) */
+  /* ═══════════════════════════════════════════════ */
+  /* LOAD-IN SPLASH ANIMATION                       */
+  /* ═══════════════════════════════════════════════ */
+  .splash-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 99999;
+    background: #0f0d0b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 32vh;
+    pointer-events: all;
+    opacity: 1;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .splash-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Logo — appears first */
+  .splash-logo {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: splash-logo-in 0.6s 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    text-align: center;
+  }
+  @keyframes splash-logo-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .splash-logo .splash-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  .splash-logo .splash-name span {
+    color: var(--accent-blue);
+  }
+  /* "Investor Presentation" — appears second */
+  .splash-logo .splash-sub {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 5px;
+    opacity: 0;
+    animation: splash-fade-in 0.5s 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  /* Spacer between logo block and price block */
+  .splash-price-spacer {
+    height: 36px;
+  }
+
+  /* Exchange label — appears with price */
+  .splash-exchange-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    opacity: 0;
+  }
+
+  /* Odometer price container */
+  .splash-odometer {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    overflow: hidden;
+  }
+
+  /* Each digit column */
+  .splash-digit-col {
+    display: inline-block;
+    height: 1.15em;
+    overflow: hidden;
+    position: relative;
+  }
+  .splash-digit-strip {
+    display: flex;
+    flex-direction: column;
+    transition: transform 1.1s cubic-bezier(0.33, 0, 0.2, 1);
+  }
+  .splash-digit-strip span {
+    display: block;
+    height: 1.15em;
+    line-height: 1.15em;
+    text-align: center;
+  }
+  /* Static characters ($, .) */
+  .splash-digit-static {
+    display: inline-block;
+    height: 1.15em;
+    line-height: 1.15em;
+  }
+
+  /* Change badge */
+  .splash-change {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+    opacity: 0;
+    transition: opacity 0.4s ease, color 0.4s ease;
+  }
+  .splash-change.visible {
+    opacity: 1;
+    color: #22c55e;
+  }
+
+  @keyframes splash-fade-in {
+    to { opacity: 1; }
+  }
+
+  /* Prevent scroll while splash is visible */
+  body.splash-active {
+    overflow: hidden;
+  }
 
   /* ═══════════════════════════════════════════════ */
   /* CSS GRID SYSTEM                                 */
@@ -2244,7 +2380,11 @@
     .mobile-hamburger { width: 44px; height: 44px; }
     .mobile-hamburger span { width: 18px; }
     .nav-logo { font-size: 12px; letter-spacing: 1.5px; }
-    /* splash mobile overrides removed — animation disabled */
+    .splash-overlay { padding-top: 28vh; }
+    .splash-odometer { font-size: 34px; }
+    .splash-logo .splash-name { font-size: 18px; letter-spacing: 3px; }
+    .splash-logo .splash-sub { font-size: 8px; letter-spacing: 3px; }
+    .splash-price-spacer { height: 24px; }
     .ask-amount { font-size: 28px; }
     .ticker-badge { font-size: 9px; padding: 6px 10px; letter-spacing: 1px; }
     .stock-metrics { flex-direction: column; gap: 12px; }
@@ -2660,7 +2800,7 @@
     .scroll-fade, .scroll-scale { opacity: 1; transform: none; }
     .esg-metric-panel { opacity: 1; transform: none; }
     .thesis-card { opacity: 1; transform: none; }
-    /* .splash-overlay reduced-motion rule removed — animation disabled */
+    .splash-overlay { display: none !important; }
   }
 
   /* ═══════════════════════════════════════════════ */
@@ -2769,9 +2909,9 @@
     }
 
     /* ── Kill will-change on mobile (save VRAM) ── */
-    .slide-inner,
+    .splash-overlay, .slide-inner,
     .map-ping, .tg-node-dot,
-    .sticky-promo {
+    .splash-digit-strip, .sticky-promo {
       will-change: auto;
     }
 
@@ -2801,7 +2941,9 @@
   .low-power .tg-node.active .tg-node-dot::after {
     animation: none !important;
   }
-  /* .low-power .splash-overlay removed — animation disabled */
+  .low-power .splash-overlay {
+    display: none !important;
+  }
   .low-power .title-slide .hero-bg,
   .low-power .slide-hero .hero-bg {
     filter: none;
@@ -2848,8 +2990,23 @@
   }
 </style>
 </head>
-<!-- splash-active class and splash overlay removed — animation temporarily disabled -->
-<body>
+<body class="splash-active">
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- LOAD-IN SPLASH OVERLAY                              -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="splash-overlay" id="splash-overlay">
+  <div class="splash-logo">
+    <div class="splash-name">Boet <span>Materials</span></div>
+    <div class="splash-sub">Investor Presentation</div>
+  </div>
+  <div class="splash-price-spacer"></div>
+  <div class="splash-exchange-label" id="splash-exchange">TSXV: AUM</div>
+  <div class="splash-odometer" id="splash-odometer">
+    <!-- Built by JS -->
+  </div>
+  <div class="splash-change" id="splash-change">+0.18 (+5.56%)</div>
+</div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- LEFT SIDEBAR — Always Open                          -->
@@ -2912,7 +3069,7 @@
     <div class="nav-jump-links">
       <a href="#slide-10">&#9656; Financials</a>
     </div>
-    <a href="#" class="download-btn" id="download-pdf-btn"><span class="btn-icon">&#8615;</span> Download PDF</a>
+    <a href="BOET-Materials-Corporate-Presentation.pdf" download="BOET Materials Corporate Presentation.pdf" class="download-btn" id="download-pdf-btn"><span class="btn-icon">&#8615;</span> Download PDF</a>
   </div>
 </header>
 
@@ -4179,7 +4336,111 @@
     document.head.appendChild(link);
   });
 
-  /* ═══ SPLASH SCREEN — temporarily removed ═══ */
+  /* ═══ SPLASH SCREEN — ODOMETER PRICE ═══ */
+  /*
+   * Timeline:
+   *   0.0s  — screen appears
+   *   0.2s  — logo fades up                     (CSS: splash-logo-in, 0.6s)
+   *   0.7s  — "Investor Presentation" fades in   (CSS: splash-fade-in, 0.5s)
+   *   1.7s  — 0.5s pause, then exchange label + price appear
+   *   1.8s  — odometer digits begin rolling      (CSS transition: 1.1s)
+   *   2.9s  — odometer settles
+   *   3.2s  — change badge fades in
+   *   4.4s  — splash fades out
+   */
+  var splash = document.getElementById('splash-overlay');
+  if (splash) {
+    var targetPrice = '3.42';
+    var startPrice  = '3.24';
+    var odoEl = document.getElementById('splash-odometer');
+    var changeEl = document.getElementById('splash-change');
+    var exchangeEl = document.getElementById('splash-exchange');
+
+    // Hide price block initially
+    exchangeEl.style.opacity = '0';
+    odoEl.style.opacity = '0';
+
+    // Build digit columns: $ sign + each character
+    var chars = targetPrice.split('');
+    var startChars = startPrice.split('');
+    var cols = [];
+
+    // Dollar sign (static)
+    var dollarSpan = document.createElement('span');
+    dollarSpan.className = 'splash-digit-static';
+    dollarSpan.textContent = '$';
+    odoEl.appendChild(dollarSpan);
+
+    chars.forEach(function(ch, i) {
+      if (ch === '.') {
+        var dot = document.createElement('span');
+        dot.className = 'splash-digit-static';
+        dot.textContent = '.';
+        odoEl.appendChild(dot);
+        cols.push(null);
+      } else {
+        var endDigit = parseInt(ch, 10);
+        var startDigit = parseInt(startChars[i], 10);
+
+        var colDiv = document.createElement('span');
+        colDiv.className = 'splash-digit-col';
+
+        var strip = document.createElement('span');
+        strip.className = 'splash-digit-strip';
+
+        var digitCount = endDigit - startDigit;
+        if (digitCount < 0) digitCount += 10;
+        for (var d = 0; d <= digitCount; d++) {
+          var numSpan = document.createElement('span');
+          numSpan.textContent = (startDigit + d) % 10;
+          strip.appendChild(numSpan);
+        }
+
+        colDiv.appendChild(strip);
+        odoEl.appendChild(colDiv);
+        cols.push({ strip: strip, count: digitCount });
+      }
+    });
+
+    // 1.2s — Reveal exchange label + price (faster)
+    setTimeout(function() {
+      exchangeEl.style.transition = 'opacity 0.3s ease';
+      exchangeEl.style.opacity = '1';
+      odoEl.style.transition = 'opacity 0.3s ease';
+      odoEl.style.opacity = '1';
+    }, 1200);
+
+    // 1.3s — Start the odometer roll
+    setTimeout(function() {
+      cols.forEach(function(col) {
+        if (!col) return;
+        col.strip.style.transform = 'translateY(-' + (col.count * 1.15) + 'em)';
+      });
+    }, 1300);
+
+    // 2.2s — Show the change badge after odometer settles
+    setTimeout(function() {
+      changeEl.classList.add('visible');
+    }, 2200);
+
+    // 3.0s — Fade out splash
+    setTimeout(function() {
+      splash.classList.add('fade-out');
+      document.body.classList.remove('splash-active');
+    }, 3000);
+
+    // 3.8s — Remove from DOM
+    setTimeout(function() {
+      splash.remove();
+    }, 3800);
+
+    // Allow skip on tap/click
+    splash.addEventListener('click', function() {
+      splash.classList.add('fade-out');
+      document.body.classList.remove('splash-active');
+      setTimeout(function() { splash.remove(); }, 500);
+    });
+  }
 
   /* ═══ SLIDE NAVIGATION ═══ */
   var slides = Array.from(document.querySelectorAll('.slide'));
@@ -4825,22 +5086,7 @@
     });
   });
 
-  /* ═══ PDF DOWNLOAD ═══ */
-  document.getElementById('download-pdf-btn').addEventListener('click', function(e) {
-    e.preventDefault();
-    if (window.generateDeckPDF && window.jspdf) {
-      window.generateDeckPDF();
-    } else {
-      var btn = e.currentTarget;
-      btn.style.opacity = '0.6';
-      btn.style.pointerEvents = 'none';
-      window.loadPDFLibs(function() {
-        btn.style.opacity = '';
-        btn.style.pointerEvents = '';
-        if (window.generateDeckPDF) window.generateDeckPDF();
-      });
-    }
-  });
+  /* ═══ PDF DOWNLOAD — now uses direct file link (no JS generation) ═══ */
 
   /* ═══════════════════════════════════════════════════════════ */
   /* INTERSECTION OBSERVER — Fade-in slide content on scroll     */
@@ -5350,1133 +5596,17 @@
 <style>
   /* ═══ PRINT-BREAK DIVIDER (hidden on screen) ═══ */
   .print-break { display: none; }
-
-  /* ═══ PDF LOADING OVERLAY ═══ */
-  .pdf-loading-overlay {
-    display: none;
-    position: fixed;
-    top: 0; right: 0; bottom: 0; left: 0;
-    z-index: 99999;
-    background: rgba(15,13,11,0.92);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-    font-family: var(--font-body, sans-serif);
-    color: #f5f0eb;
-  }
-  .pdf-loading-overlay.active { display: flex; }
-  .pdf-loading-spinner {
-    width: 48px; height: 48px;
-    border: 4px solid rgba(205,170,136,0.2);
-    border-top-color: #CDAA88;
-    border-radius: 50%;
-    animation: pdfSpin 0.8s linear infinite;
-  }
-  @keyframes pdfSpin { to { transform: rotate(360deg); } }
-  .pdf-loading-text { font-size: 16px; letter-spacing: 1px; text-transform: uppercase; }
-  .pdf-loading-progress { font-size: 13px; color: #CDAA88; }
 </style>
 
-<!-- PDF Loading Overlay -->
-<div class="pdf-loading-overlay" id="pdf-loading">
-  <div class="pdf-loading-spinner"></div>
-  <div class="pdf-loading-text">Generating Slide Deck</div>
-  <div class="pdf-loading-progress" id="pdf-progress">Preparing slides...</div>
-</div>
-
-<!-- PDF Generation Libraries — lazy loaded on first use -->
-<script>
-(function() {
-  var pdfLibsLoaded = false;
-  var pdfLibsLoading = false;
-  var pdfLibsCallbacks = [];
-  window.loadPDFLibs = function(cb) {
-    if (pdfLibsLoaded) { if (cb) cb(); return; }
-    if (cb) pdfLibsCallbacks.push(cb);
-    if (pdfLibsLoading) return;
-    pdfLibsLoading = true;
-    var s1 = document.createElement('script');
-    s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-    s1.onload = function() {
-      var s2 = document.createElement('script');
-      s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      s2.onload = function() {
-        pdfLibsLoaded = true;
-        pdfLibsCallbacks.forEach(function(fn) { fn(); });
-        pdfLibsCallbacks = [];
-      };
-      document.head.appendChild(s2);
-    };
-    document.head.appendChild(s1);
-  };
-  // Preload after page is idle
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(function() { window.loadPDFLibs(); }, { timeout: 8000 });
-  } else {
-    setTimeout(function() { window.loadPDFLibs(); }, 5000);
-  }
-})();
-</script>
+<!-- PDF generation removed — download button now links directly to the PDF file -->
+<!-- Old code: html2canvas + jsPDF lazy-loader, generateDeckPDF, loading overlay -->
 
 <script>
-/* ═══════════════════════════════════════════════════════════ */
-/* DECK PDF GENERATOR v3 — 35-Page Slide Deck                */
-/* Off-screen 1280×720 clones → A4 landscape full-bleed      */
-/* ═══════════════════════════════════════════════════════════ */
-window.generateDeckPDF = async function() {
-  var W = 1280, H = 720, SCALE = 2;
-  var A4_W = 297, A4_H = 210; /* mm */
-
-  var overlay = document.getElementById('pdf-loading');
-  var progress = document.getElementById('pdf-progress');
-  overlay.classList.add('active');
-  progress.textContent = 'Loading fonts\u2026';
-
-  try { await document.fonts.ready; } catch(e) {}
-  await sleep(200);
-
-  /* ── Slide references ── */
-  var s = function(id) { return document.getElementById(id); };
-
-  /* ── 35-page descriptor array ── */
-  var pages = [
-    /* 1  */ { slide: s('slide-1'),  type: 'title' },
-    /* 2  */ { type: 'toc' },
-    /* 3  */ { type: 'disclaimer' },
-    /* 4  */ { slide: s('slide-2'),  type: 'exec-summary' },
-    /* 5  */ { slide: s('slide-3'),  type: 'before-break' },
-    /* 6  */ { slide: s('slide-3'),  type: 'macro-demand' },
-    /* 7  */ { slide: s('slide-3'),  type: 'macro-price' },
-    /* 8  */ { slide: s('slide-4'),  type: 'full' },
-    /* 9  */ { slide: s('slide-5'),  type: 'sol-intro' },
-    /* 10 */ { slide: s('slide-5'),  type: 'sol-steps' },
-    /* 11 */ { slide: s('slide-5'),  type: 'sol-gallery' },
-    /* 12 */ { slide: s('slide-5'),  type: 'sol-decade' },
-    /* 13 */ { slide: s('slide-6'),  type: 'comp-table' },
-    /* 14 */ { slide: s('slide-6'),  type: 'comp-diff' },
-    /* 15 */ { slide: s('slide-7'),  type: 'asset-flagship' },
-    /* 16 */ { slide: s('slide-7'),  type: 'asset-sitemap' },
-    /* 17 */ { slide: s('slide-7'),  type: 'asset-resource' },
-    /* 18 */ { slide: s('slide-8'),  type: 'esg-pillars' },
-    /* 19 */ { slide: s('slide-8'),  type: 'esg-metrics' },
-    /* 20 */ { slide: s('slide-9'),  type: 'road-timeline' },
-    /* 21 */ { slide: s('slide-9'),  type: 'road-phases' },
-    /* 22 */ { slide: s('slide-10'), type: 'fin-npv' },
-    /* 23 */ { slide: s('slide-10'), type: 'fin-pfs' },
-    /* 24 */ { slide: s('slide-10'), type: 'fin-revenue' },
-    /* 25 */ { slide: s('slide-10'), type: 'fin-pies' },
-    /* 26 */ { slide: s('slide-11'), type: 'cap-main' },
-    /* 27 */ { slide: s('slide-11'), type: 'cap-govt' },
-    /* 28 */ { slide: s('slide-12'), type: 'mgmt-1' },
-    /* 29 */ { slide: s('slide-12'), type: 'mgmt-2' },
-    /* 30 */ { slide: s('slide-12'), type: 'mgmt-3' },
-    /* 31 */ { slide: s('slide-13'), type: 'thesis-1' },
-    /* 32 */ { slide: s('slide-13'), type: 'thesis-return' },
-    /* 33 */ { slide: s('slide-14'), type: 'ask-main' },
-    /* 35 */ { slide: s('slide-14'), type: 'ask-catalysts' }
-  ];
-
-  var totalPages = pages.length;
-  progress.textContent = '0 / ' + totalPages + ' pages';
-
-  var jsPDF = window.jspdf.jsPDF;
-  var pdf = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4', compress:true });
-
-  var h2cOpts = {
-    scale: SCALE, useCORS: true, allowTaint: true, backgroundColor: null,
-    width: W, height: H, windowWidth: W, windowHeight: H,
-    logging: false, imageTimeout: 15000, removeContainer: false
-  };
-
-  /* ── Helper: add a section header to a continuation page ── */
-  function addContHeader(inner, tagText, titleHtml, color) {
-    var c = color || '#f5f0eb';
-    var tag = document.createElement('div');
-    tag.style.cssText = 'font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;opacity:0.6;color:' + c + ';';
-    tag.textContent = tagText;
-    var h2 = document.createElement('h2');
-    h2.innerHTML = titleHtml;
-    h2.style.cssText = 'font-size:26px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:' + c + ';';
-    var div = document.createElement('div');
-    div.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:12px;';
-    inner.appendChild(tag);
-    inner.appendChild(h2);
-    inner.appendChild(div);
-  }
-
-  /* ── Helper: style a data table for PDF ── */
-  function styleTable(tbl, opts) {
-    opts = opts || {};
-    var fs = opts.fontSize || '11px';
-    var w = opts.width || '100%';
-    tbl.style.cssText = 'width:' + w + ';border-collapse:collapse;font-size:' + fs + ';';
-    tbl.querySelectorAll('th,td').forEach(function(cell) {
-      cell.style.padding = '5px 8px';
-      cell.style.borderBottom = '1px solid ' + (opts.borderColor || 'rgba(0,0,0,0.08)');
-      if (opts.color) cell.style.color = opts.color;
-    });
-    tbl.querySelectorAll('th').forEach(function(th) {
-      th.style.fontWeight = '700';
-      th.style.fontSize = opts.thFontSize || fs;
-      th.style.textTransform = 'uppercase';
-      th.style.letterSpacing = '0.5px';
-    });
-  }
-
-  /* ── Helper: build generated page (TOC / Disclaimer) ── */
-  function buildGeneratedPage(bgClass, contentFn) {
-    var sec = document.createElement('section');
-    sec.className = 'slide ' + bgClass;
-    sec.style.cssText = 'position:fixed !important;left:-9999px !important;top:0 !important;' +
-      'width:' + W + 'px !important;height:' + H + 'px !important;' +
-      'min-height:' + H + 'px !important;max-height:' + H + 'px !important;' +
-      'overflow:hidden !important;margin:0 !important;padding:0 !important;' +
-      'box-sizing:border-box !important;z-index:-1 !important;display:flex !important;align-items:stretch !important;';
-    var inner = document.createElement('div');
-    inner.className = 'slide-inner';
-    inner.style.cssText = 'width:100% !important;height:100% !important;' +
-      'padding:36px 48px !important;box-sizing:border-box !important;overflow:hidden !important;';
-    contentFn(inner);
-    sec.appendChild(inner);
-    document.body.appendChild(sec);
-    return sec;
-  }
-
-  /* ── Helper: build off-screen clone ── */
-  function buildContainer(slideEl, modifier) {
-    var clone = slideEl.cloneNode(true);
-    clone.removeAttribute('id');
-    clone.style.cssText =
-      'position:fixed !important;left:-9999px !important;top:0 !important;' +
-      'width:' + W + 'px !important;height:' + H + 'px !important;' +
-      'min-height:' + H + 'px !important;max-height:' + H + 'px !important;' +
-      'overflow:hidden !important;margin:0 !important;padding:0 !important;' +
-      'box-sizing:border-box !important;z-index:-1 !important;';
-    var inner = clone.querySelector('.slide-inner');
-    if (inner) {
-      inner.style.cssText =
-        'width:100% !important;height:100% !important;' +
-        'padding:36px 48px !important;box-sizing:border-box !important;' +
-        'overflow:hidden !important;';
-    }
-    /* Force all animated elements visible */
-    clone.querySelectorAll(
-      '.scroll-animate,.thesis-card,.esg-metric-panel,.step-card,' +
-      '.metric-card,.team-card,.slide-inner,.phase-detail-card,' +
-      '.highlight-card,.esg-column,.callout-box,blockquote,' +
-      '.two-col,.timeline-graphic,.timeline,h2,h3,h4,p,li,' +
-      'table,.data-table,.board-table,img,.catalyst-card'
-    ).forEach(function(el) {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-      el.style.transition = 'none';
-    });
-    if (modifier && inner) modifier(clone, inner);
-    document.body.appendChild(clone);
-    return clone;
-  }
-
-  /* ═══ PAGE MODIFIERS — Vector Layout Approach ═══ */
-  /* Each modifier: 1) saves references to wanted elements, 2) clears inner,
-     3) re-appends only wanted elements with explicit sizes/positions */
-
-  var modifiers = {
-
-    /* ── Page 1: Title ── */
-    'title': function(clone, inner) {
-      var tagline = inner.querySelector('.tagline');
-      var h1 = inner.querySelector('h1');
-      var divider = inner.querySelector('.section-divider');
-      var subtitle = inner.querySelector('.subtitle');
-      var ticker = inner.querySelector('.ticker-badge');
-      var website = inner.querySelector(':scope > p:last-child');
-      inner.innerHTML = '';
-      inner.style.cssText += 'display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;';
-      if (tagline) { tagline.style.cssText = 'font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,235,0.6);margin-bottom:16px;'; inner.appendChild(tagline); }
-      if (h1) { h1.style.cssText = 'font-size:68px;line-height:1.05;letter-spacing:4px;font-weight:900;text-transform:uppercase;margin:0 0 16px;color:#f5f0eb;'; inner.appendChild(h1); }
-      if (divider) { divider.style.cssText = 'width:80px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin:0 auto 16px;'; inner.appendChild(divider); }
-      if (subtitle) { subtitle.style.cssText = 'font-size:14px;color:rgba(245,240,235,0.7);margin:0 0 12px;'; inner.appendChild(subtitle); }
-      if (ticker) { ticker.style.cssText = 'font-size:12px;letter-spacing:2px;padding:8px 20px;border:1px solid rgba(205,170,136,0.3);border-radius:6px;color:#CDAA88;margin-bottom:12px;'; inner.appendChild(ticker); }
-      if (website) { website.style.cssText = 'font-size:13px;color:rgba(255,255,255,0.7);margin:0;'; inner.appendChild(website); }
-    },
-
-    /* ── Page 4: Executive Summary ── */
-    'exec-summary': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var allH4 = inner.querySelectorAll('h4');
-      var grid = inner.querySelector('.metric-grid');
-      var ul = inner.querySelector('.bullet-list');
-      inner.innerHTML = '';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 2px;opacity:0.5;color:#3a3530;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 3px;color:#12100e;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:6px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:10px;line-height:1.4;margin:0 0 6px;color:#3a3530;'; inner.appendChild(introP); }
-      if (allH4[0]) { allH4[0].style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:4px 0 4px;color:#12100e;'; inner.appendChild(allH4[0]); }
-      if (grid) {
-        grid.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px;';
-        grid.querySelectorAll('.metric-card').forEach(function(card) {
-          card.style.cssText = 'padding:8px 10px;border-radius:6px;background:rgba(18,16,14,0.04);';
-          var label = card.querySelector('.metric-card-label');
-          if (label) label.style.cssText = 'font-size:8px;margin-bottom:1px;text-transform:uppercase;letter-spacing:0.5px;color:#888;';
-          var val = card.querySelector('.metric-card-value');
-          if (val) val.style.cssText = 'font-size:15px;font-weight:800;' + (val.classList.contains('accent') ? 'color:#9E1B32;' : 'color:#12100e;');
-        });
-        inner.appendChild(grid);
-      }
-      if (allH4[1]) { allH4[1].style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:4px 0 3px;color:#12100e;'; inner.appendChild(allH4[1]); }
-      if (ul) {
-        ul.style.cssText = 'margin:0;padding-left:16px;';
-        ul.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:10px;line-height:1.35;margin-bottom:2px;color:#3a3530;'; });
-        inner.appendChild(ul);
-      }
-    },
-
-    /* ── Page 5: Macro Opportunity — first half (drivers two-col) ── */
-    'before-break': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var twoCol = inner.querySelector('.two-col');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;color:#f2ede8;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:26px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:#f2ede8;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:10px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:12px;line-height:1.5;margin:0 0 14px;color:#f2ede8;'; inner.appendChild(introP); }
-      if (twoCol) {
-        twoCol.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:28px;';
-        twoCol.querySelectorAll('h4').forEach(function(h4) { h4.style.cssText = 'font-size:14px;font-weight:700;color:#CDAA88;margin:0 0 8px;'; });
-        twoCol.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:12px;line-height:1.5;margin-bottom:8px;color:#f2ede8;'; });
-        inner.appendChild(twoCol);
-      }
-    },
-
-    /* ── Page 6: Macro Opportunity — demand chart ── */
-    'macro-demand': function(clone, inner) {
-      var demandWrapper = null;
-      var dc = inner.querySelector('#demand-chart');
-      if (dc) demandWrapper = dc.closest('div[style*="background"]') || dc.parentElement;
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      addContHeader(inner, 'Slide 03', 'Macro Opportunity <em>(cont.)</em>', '#f2ede8');
-      if (demandWrapper) {
-        demandWrapper.style.cssText = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:24px;margin:0;';
-        inner.appendChild(demandWrapper);
-      }
-    },
-
-    /* ── Page 7: Macro Opportunity — price chart + quote ── */
-    'macro-price': function(clone, inner) {
-      var priceWrapper = null;
-      var pc = inner.querySelector('#price-line-chart');
-      if (pc) priceWrapper = pc.closest('div[style*="background"]') || pc.parentElement.parentElement;
-      var bq = inner.querySelector('blockquote');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      addContHeader(inner, 'Slide 03', 'Macro Opportunity <em>(cont.)</em>', '#f2ede8');
-      if (priceWrapper) {
-        priceWrapper.style.cssText = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:24px;margin:0 0 14px;';
-        inner.appendChild(priceWrapper);
-      }
-      if (bq) { bq.style.cssText = 'font-size:12px;font-style:italic;margin:10px 0 0;padding:10px 16px;border-left:3px solid #CDAA88;color:rgba(245,240,235,0.8);'; inner.appendChild(bq); }
-    },
-
-    /* ── Page 8: Market Context (full) ── */
-    'full': function(clone, inner) {
-      /* Hide print-breaks, keep everything else and compact to fit */
-      clone.querySelectorAll('.print-break').forEach(function(pb) { pb.remove(); });
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var twoCol = inner.querySelector('.two-col');
-      var bq = inner.querySelector('blockquote');
-      inner.innerHTML = '';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:8px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:11px;line-height:1.4;margin:0 0 12px;'; inner.appendChild(introP); }
-      if (twoCol) {
-        twoCol.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:12px;';
-        twoCol.querySelectorAll('h4').forEach(function(h4) { h4.style.cssText = 'font-size:13px;font-weight:700;margin:0 0 8px;'; });
-        twoCol.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:11px;line-height:1.45;margin-bottom:6px;'; });
-        inner.appendChild(twoCol);
-      }
-      if (bq) { bq.style.cssText = 'font-size:12px;font-style:italic;padding:10px 16px;border-left:3px solid #CDAA88;margin:0;'; inner.appendChild(bq); }
-    },
-
-    /* ── Page 9: Processing Technology — intro + comparison table ── */
-    'sol-intro': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var techH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Technology Advantages') !== -1) techH4 = h4; });
-      var tableWrapper = inner.querySelector('.comparison-table');
-      if (tableWrapper) tableWrapper = tableWrapper.closest('div[style]') || tableWrapper.parentElement;
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;color:#f2ede8;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:#f2ede8;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:8px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:11px;line-height:1.45;margin:0 0 12px;color:#f2ede8;'; inner.appendChild(introP); }
-      if (techH4) { techH4.style.cssText = 'font-size:14px;font-weight:700;margin:0 0 8px;color:#CDAA88;'; inner.appendChild(techH4); }
-      if (tableWrapper) {
-        tableWrapper.style.cssText = 'background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:16px;';
-        var tbl = tableWrapper.querySelector('table');
-        if (tbl) {
-          tbl.style.cssText = 'width:100%;border-collapse:collapse;font-size:11px;margin:0;';
-          tbl.querySelectorAll('th,td').forEach(function(c) { c.style.padding = '6px 10px'; });
-        }
-        inner.appendChild(tableWrapper);
-      }
-    },
-
-    /* ── Page 10: Processing Technology — How It Works steps ── */
-    'sol-steps': function(clone, inner) {
-      var howH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('How It Works') !== -1) howH4 = h4; });
-      var stepGrid = inner.querySelector('.metric-grid.how-it-works-grid') || inner.querySelector('.metric-grid');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      addContHeader(inner, 'Slide 05', 'Proprietary Processing Technology <em>(cont.)</em>', '#f2ede8');
-      if (howH4) { howH4.style.cssText = 'font-size:16px;font-weight:700;margin:4px 0 12px;color:#CDAA88;'; inner.appendChild(howH4); }
-      if (stepGrid) {
-        stepGrid.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:14px;';
-        stepGrid.querySelectorAll('.step-card').forEach(function(card) {
-          card.style.cssText = 'padding:20px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);min-height:300px;';
-          var lbl = card.querySelector('.metric-card-label');
-          if (lbl) lbl.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#CDAA88;margin-bottom:6px;';
-          var h3 = card.querySelector('h3');
-          if (h3) h3.style.cssText = 'font-size:15px;font-weight:700;margin:0 0 8px;color:#f2ede8;';
-          var p = card.querySelector('p');
-          if (p) p.style.cssText = 'font-size:12px;line-height:1.5;color:rgba(245,240,235,0.8);margin:0;';
-        });
-        inner.appendChild(stepGrid);
-      }
-    },
-
-    /* ── Page 11: Processing Technology — Image gallery ── */
-    'sol-gallery': function(clone, inner) {
-      var gallery = inner.querySelector('.img-gallery');
-      var captionP = null;
-      inner.querySelectorAll(':scope > p').forEach(function(p) {
-        if (p.textContent && p.textContent.indexOf('Advanced extraction') !== -1) captionP = p;
-      });
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      addContHeader(inner, 'Slide 05', 'Proprietary Processing Technology <em>(cont.)</em>', '#f2ede8');
-      if (gallery) {
-        gallery.style.cssText = 'margin:0;';
-        var mainContainer = gallery.querySelector('.img-gallery-main');
-        if (mainContainer) {
-          mainContainer.style.cssText = 'width:100%;height:440px;border-radius:10px;overflow:hidden;';
-          var mainImg = mainContainer.querySelector('img.active, img:first-child');
-          if (mainImg) mainImg.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-          /* Hide non-active images */
-          mainContainer.querySelectorAll('img').forEach(function(img) { if (!img.classList.contains('active')) img.style.display = 'none'; });
-        }
-        var thumbs = gallery.querySelector('.img-gallery-thumbs');
-        if (thumbs) thumbs.style.display = 'none';
-        inner.appendChild(gallery);
-      }
-      if (captionP) { captionP.style.cssText = 'font-size:11px;color:rgba(245,240,235,0.5);margin:8px 0 0;font-style:italic;'; inner.appendChild(captionP); }
-    },
-
-    /* ── Page 12: Processing Technology — Over a Decade ── */
-    'sol-decade': function(clone, inner) {
-      var decadeH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Decade') !== -1) decadeH4 = h4; });
-      var allUL = inner.querySelectorAll(':scope > ul.bullet-list');
-      var lastUL = allUL.length > 0 ? allUL[allUL.length - 1] : null;
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      addContHeader(inner, 'Slide 05', 'Proprietary Processing Technology <em>(cont.)</em>', '#f2ede8');
-      if (decadeH4) { decadeH4.style.cssText = 'font-size:18px;font-weight:700;margin:8px 0 16px;color:#CDAA88;'; inner.appendChild(decadeH4); }
-      if (lastUL) {
-        lastUL.style.cssText = 'margin:0;padding-left:20px;';
-        lastUL.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:14px;line-height:1.7;margin-bottom:14px;color:#f2ede8;'; });
-        inner.appendChild(lastUL);
-      }
-    },
-
-    /* ── Page 13: Competitive — Peer table ── */
-    'comp-table': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var peerH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Peer') !== -1) peerH4 = h4; });
-      var tableWrapper = inner.querySelector('.comparison-table');
-      if (tableWrapper) tableWrapper = tableWrapper.closest('div[style]') || tableWrapper.parentElement;
-      var sourceP = null;
-      inner.querySelectorAll(':scope > p').forEach(function(p) { if (p.textContent.indexOf('Source:') !== -1) sourceP = p; });
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f5f0eb;';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;color:#f5f0eb;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:#f5f0eb;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:6px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:11px;line-height:1.4;margin:0 0 8px;color:rgba(245,240,235,0.8);'; inner.appendChild(introP); }
-      if (peerH4) { peerH4.style.cssText = 'font-size:13px;font-weight:700;margin:0 0 6px;color:#CDAA88;'; inner.appendChild(peerH4); }
-      if (tableWrapper) {
-        tableWrapper.style.cssText = 'overflow:visible;';
-        var tbl = tableWrapper.querySelector('table') || tableWrapper;
-        if (tbl.tagName === 'TABLE') {
-          tbl.style.cssText = 'width:100%;border-collapse:collapse;font-size:10px;';
-          tbl.querySelectorAll('th').forEach(function(th) { th.style.cssText = 'padding:5px 6px;font-size:9px;text-transform:uppercase;letter-spacing:0.5px;background:rgba(255,255,255,0.08);color:#CDAA88;border-bottom:1px solid rgba(255,255,255,0.1);'; });
-          tbl.querySelectorAll('td').forEach(function(td) { td.style.cssText = 'padding:5px 6px;border-bottom:1px solid rgba(255,255,255,0.06);color:#f2ede8;'; });
-          tbl.querySelectorAll('.aum-row td').forEach(function(td) { td.style.fontWeight = '700'; td.style.color = '#CDAA88'; });
-        }
-        inner.appendChild(tableWrapper);
-      }
-      if (sourceP) { sourceP.style.cssText = 'font-size:9px;color:rgba(245,240,235,0.4);font-style:italic;margin:6px 0 0;'; inner.appendChild(sourceP); }
-    },
-
-    /* ── Page 14: Competitive — Key Differentiators ── */
-    'comp-diff': function(clone, inner) {
-      var diffH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Differentiator') !== -1) diffH4 = h4; });
-      var allUL = inner.querySelectorAll(':scope > ul');
-      var diffUL = allUL.length > 0 ? allUL[allUL.length - 1] : null;
-      var bq = inner.querySelector('blockquote');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f5f0eb;';
-      addContHeader(inner, 'Slide 06', 'Competitive Landscape <em>(cont.)</em>', '#f5f0eb');
-      if (diffH4) { diffH4.style.cssText = 'font-size:16px;font-weight:700;margin:4px 0 12px;color:#CDAA88;'; inner.appendChild(diffH4); }
-      if (diffUL) {
-        diffUL.style.cssText = 'margin:0;padding-left:20px;';
-        diffUL.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:14px;line-height:1.65;margin-bottom:12px;color:#f2ede8;'; });
-        inner.appendChild(diffUL);
-      }
-      if (bq) { bq.style.cssText = 'font-size:13px;font-style:italic;padding:12px 18px;border-left:3px solid #CDAA88;margin:16px 0 0;color:rgba(245,240,235,0.8);'; inner.appendChild(bq); }
-    },
-
-    /* ── Page 15: Asset Portfolio — flagship table ── */
-    'asset-flagship': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var flagH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Flagship') !== -1) flagH4 = h4; });
-      var tbl = inner.querySelector('.data-table');
-      inner.innerHTML = '';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;color:#3a3530;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:#12100e;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:6px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:11px;line-height:1.4;margin:0 0 10px;color:#3a3530;'; inner.appendChild(introP); }
-      if (flagH4) { flagH4.style.cssText = 'font-size:14px;font-weight:700;margin:0 0 8px;color:#12100e;'; inner.appendChild(flagH4); }
-      if (tbl) {
-        styleTable(tbl, { fontSize: '12px' });
-        tbl.querySelectorAll('.highlight-row td').forEach(function(td) { td.style.fontWeight = '700'; td.style.color = '#9E1B32'; });
-        inner.appendChild(tbl);
-      }
-    },
-
-    /* ── Page 16: Asset Portfolio — site map ── */
-    'asset-sitemap': function(clone, inner) {
-      var sitemapImg = inner.querySelector('img[src*="sitemap"]');
-      var imgWrapper = sitemapImg ? (sitemapImg.closest('div') || sitemapImg.parentElement) : null;
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 07', 'Asset Portfolio <em>(cont.)</em>', '#12100e');
-      var mapH4 = document.createElement('h4');
-      mapH4.textContent = 'Site Map \u2014 Clearwater Basin';
-      mapH4.style.cssText = 'font-size:15px;font-weight:700;margin:0 0 10px;color:#12100e;';
-      inner.appendChild(mapH4);
-      if (imgWrapper) {
-        imgWrapper.style.cssText = 'border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.08);text-align:center;';
-        if (sitemapImg) sitemapImg.style.cssText = 'width:100%;max-height:460px;object-fit:contain;display:block;';
-        inner.appendChild(imgWrapper);
-      }
-    },
-
-    /* ── Page 17: Asset Portfolio — resource summary ── */
-    'asset-resource': function(clone, inner) {
-      var resH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Consolidated') !== -1 || h4.textContent.indexOf('Resource Summary') !== -1) resH4 = h4; });
-      var allTables = inner.querySelectorAll('.data-table, table');
-      var resTbl = allTables.length > 1 ? allTables[allTables.length - 1] : null;
-      var tblWrapper = resTbl ? (resTbl.parentElement !== inner ? resTbl.parentElement : null) : null;
-      var imgDiv = null;
-      inner.querySelectorAll(':scope > div').forEach(function(d) {
-        if (d.querySelector('img[src*="industrial"]')) imgDiv = d;
-      });
-      var bq = inner.querySelector('blockquote');
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 07', 'Asset Portfolio <em>(cont.)</em>', '#12100e');
-      if (resH4) { resH4.style.cssText = 'font-size:15px;font-weight:700;margin:4px 0 10px;color:#12100e;'; inner.appendChild(resH4); }
-      if (tblWrapper) {
-        tblWrapper.style.cssText = 'overflow:visible;';
-        if (resTbl) {
-          styleTable(resTbl, { fontSize: '12px' });
-          resTbl.querySelectorAll('.highlight-row td').forEach(function(td) { td.style.fontWeight = '700'; td.style.color = '#9E1B32'; });
-        }
-        inner.appendChild(tblWrapper);
-      } else if (resTbl) {
-        styleTable(resTbl, { fontSize: '12px' });
-        inner.appendChild(resTbl);
-      }
-      if (imgDiv) {
-        imgDiv.style.cssText = 'border-radius:10px;overflow:hidden;margin:14px 0;border:1px solid rgba(0,0,0,0.08);';
-        var img = imgDiv.querySelector('img');
-        if (img) img.style.cssText = 'width:100%;max-height:220px;object-fit:cover;display:block;';
-        inner.appendChild(imgDiv);
-      }
-      if (bq) { bq.style.cssText = 'font-size:12px;font-style:italic;padding:10px 16px;border-left:3px solid #CDAA88;margin:8px 0 0;color:#555;'; inner.appendChild(bq); }
-    },
-
-    /* ── Page 18: ESG — 3 pillars ── */
-    'esg-pillars': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var grid = inner.querySelector('.esg-grid');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f5f0eb;';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 2px;opacity:0.5;color:#f5f0eb;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 3px;color:#f5f0eb;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:5px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:10px;line-height:1.35;margin:0 0 8px;color:rgba(245,240,235,0.8);'; inner.appendChild(introP); }
-      if (grid) {
-        grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:10px;';
-        grid.querySelectorAll('.esg-pillar').forEach(function(col) {
-          col.style.cssText = 'padding:12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);';
-          var colH4 = col.querySelector('h4');
-          if (colH4) colH4.style.cssText = 'font-size:12px;font-weight:700;margin:0 0 6px;';
-          col.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:9px;line-height:1.35;margin-bottom:2px;color:rgba(245,240,235,0.85);'; });
-        });
-        inner.appendChild(grid);
-      }
-    },
-
-    /* ── Page 19: ESG — performance metrics ── */
-    'esg-metrics': function(clone, inner) {
-      var perfH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Performance') !== -1) perfH4 = h4; });
-      var metricsGrid = inner.querySelector('.esg-metrics-grid');
-      var bq = inner.querySelector('blockquote');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f5f0eb;';
-      addContHeader(inner, 'Slide 08', 'ESG &amp; Sustainability <em>(cont.)</em>', '#f5f0eb');
-      if (perfH4) { perfH4.style.cssText = 'font-size:15px;font-weight:700;margin:4px 0 12px;color:#CDAA88;'; inner.appendChild(perfH4); }
-      if (metricsGrid) {
-        metricsGrid.style.cssText = 'display:grid;grid-template-columns:repeat(2,1fr);gap:14px;';
-        metricsGrid.querySelectorAll('.esg-metric-panel').forEach(function(panel) {
-          panel.style.cssText = 'padding:16px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);';
-          var barFill = panel.querySelector('.esg-bar-fill');
-          if (barFill) {
-            var w = barFill.style.getPropertyValue('--bar-width') || barFill.style.width;
-            if (!w) try { w = getComputedStyle(barFill).getPropertyValue('--bar-width'); } catch(e) {}
-            barFill.style.width = w || '50%';
-            barFill.style.minHeight = '8px';
-            barFill.style.display = 'block';
-            barFill.style.borderRadius = '4px';
-            if (!barFill.style.background || barFill.style.background === '') barFill.style.background = '#CDAA88';
-          }
-          var barTrack = panel.querySelector('.esg-bar-track');
-          if (barTrack) { barTrack.style.cssText = 'display:block;min-height:8px;background:rgba(255,255,255,0.1);border-radius:4px;margin-top:6px;overflow:hidden;position:relative;'; }
-        });
-        inner.appendChild(metricsGrid);
-      }
-      if (bq) { bq.style.cssText = 'font-size:12px;font-style:italic;padding:10px 16px;border-left:3px solid #CDAA88;margin:12px 0 0;color:rgba(245,240,235,0.8);'; inner.appendChild(bq); }
-    },
-
-    /* ── Page 20: Roadmap — timeline graphic ── */
-    'road-timeline': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var tg = inner.querySelector('.timeline-graphic');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;color:#f2ede8;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:#f2ede8;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:8px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:12px;line-height:1.5;margin:0 0 24px;color:#f2ede8;'; inner.appendChild(introP); }
-      if (tg) {
-        tg.style.cssText = 'margin:0;padding:24px 0;';
-        var tgProgress = tg.querySelector('.tg-progress');
-        if (tgProgress) { tgProgress.style.width = '58%'; tgProgress.style.display = 'block'; }
-        var activeNode = tg.querySelector('.tg-node.active .tg-node-dot');
-        if (activeNode) activeNode.style.cssText += 'box-shadow:0 0 0 4px rgba(205,170,136,0.4);border:2px solid #CDAA88;';
-        inner.appendChild(tg);
-      }
-    },
-
-    /* ── Page 21: Roadmap — phase cards ── */
-    'road-phases': function(clone, inner) {
-      var timeline = inner.querySelector('.timeline');
-      var bq = inner.querySelector('blockquote');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      addContHeader(inner, 'Slide 09', 'Development Roadmap <em>(cont.)</em>', '#f2ede8');
-      if (timeline) {
-        timeline.style.cssText = 'display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:4px;';
-        timeline.querySelectorAll('.timeline-phase').forEach(function(phase) {
-          phase.style.cssText = 'padding:16px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);';
-          var yr = phase.querySelector('.timeline-year');
-          if (yr) yr.style.cssText = 'font-size:13px;font-weight:700;color:#CDAA88;margin-bottom:4px;';
-          var title = phase.querySelector('.timeline-title');
-          if (title) title.style.cssText = 'font-size:14px;font-weight:700;margin:4px 0 6px;color:#f2ede8;';
-          phase.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:10px;line-height:1.4;margin-bottom:2px;color:rgba(245,240,235,0.85);'; });
-          var badge = phase.querySelector('.timeline-badge');
-          if (badge) badge.style.cssText = 'font-size:9px;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px;';
-        });
-        inner.appendChild(timeline);
-      }
-      if (bq) { bq.style.cssText = 'font-size:11px;font-style:italic;padding:8px 14px;border-left:3px solid #CDAA88;margin:10px 0 0;color:rgba(245,240,235,0.8);'; inner.appendChild(bq); }
-    },
-
-    /* ── Page 22: Financial — NPV cards ── */
-    'fin-npv': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var kpiGrid = inner.querySelector('.financial-kpi-grid');
-      inner.innerHTML = '';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;color:#3a3530;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:#12100e;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:6px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:11px;line-height:1.4;margin:0 0 20px;color:#3a3530;'; inner.appendChild(introP); }
-      if (kpiGrid) {
-        kpiGrid.style.cssText = 'display:grid;grid-template-columns:repeat(5,1fr);gap:14px;';
-        kpiGrid.querySelectorAll('.financial-kpi-card').forEach(function(card) {
-          var kpiColor = card.style.getPropertyValue('--kpi-color') || '';
-          card.style.cssText = 'padding:24px 14px;border-radius:8px;background:rgba(18,16,14,0.03);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:240px;' + (kpiColor ? 'border:1px solid ' + kpiColor.trim() + ';border-top:3px solid ' + kpiColor.trim() + ';' : '');
-          var val = card.querySelector('.financial-kpi-value');
-          if (val) val.style.cssText = 'font-size:24px;font-weight:800;' + (val.classList.contains('accent') ? 'color:#9E1B32;' : 'color:#12100e;');
-          var label = card.querySelector('.financial-kpi-label');
-          if (label) label.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:#888;margin-bottom:8px;';
-        });
-        inner.appendChild(kpiGrid);
-      }
-    },
-
-    /* ── Page 23: Financial — PFS table ── */
-    'fin-pfs': function(clone, inner) {
-      var pfsH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Pre-Feasibility') !== -1 || h4.textContent.indexOf('PFS') !== -1) pfsH4 = h4; });
-      var tables = inner.querySelectorAll('.data-table, table');
-      var pfsTbl = tables.length > 0 ? tables[0] : null;
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 10', 'Financial Overview <em>(cont.)</em>', '#12100e');
-      if (pfsH4) { pfsH4.style.cssText = 'font-size:15px;font-weight:700;margin:4px 0 10px;color:#12100e;'; inner.appendChild(pfsH4); }
-      if (pfsTbl) {
-        styleTable(pfsTbl, { fontSize: '12px' });
-        pfsTbl.querySelectorAll('.highlight-row td').forEach(function(td) { td.style.fontWeight = '700'; td.style.color = '#9E1B32'; });
-        inner.appendChild(pfsTbl);
-      }
-    },
-
-    /* ── Page 24: Financial — revenue chart ── */
-    'fin-revenue': function(clone, inner) {
-      var revChart = inner.querySelector('#revenue-chart');
-      var revWrapper = revChart ? (revChart.closest('div[style*="background"]') || revChart.parentElement) : null;
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 10', 'Financial Overview <em>(cont.)</em>', '#12100e');
-      if (revWrapper) {
-        revWrapper.style.cssText = 'background:rgba(18,16,14,0.04);border:1px solid rgba(18,16,14,0.08);border-radius:10px;padding:24px;margin:0;';
-        inner.appendChild(revWrapper);
-      }
-    },
-
-    /* ── Page 25: Financial — pies + highlights ── */
-    'fin-pies': function(clone, inner) {
-      var twoCol = inner.querySelector('.two-col');
-      var hlH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Highlight') !== -1) hlH4 = h4; });
-      var allUL = inner.querySelectorAll(':scope > ul');
-      var hlUL = allUL.length > 0 ? allUL[allUL.length - 1] : null;
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 10', 'Financial Overview <em>(cont.)</em>', '#12100e');
-      if (twoCol) {
-        twoCol.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:10px;';
-        twoCol.querySelectorAll(':scope > div').forEach(function(col) {
-          col.style.cssText = 'background:rgba(18,16,14,0.04);border:1px solid rgba(18,16,14,0.08);border-radius:10px;padding:18px;';
-        });
-        inner.appendChild(twoCol);
-      }
-      if (hlH4) { hlH4.style.cssText = 'font-size:13px;font-weight:700;margin:6px 0 4px;color:#12100e;'; inner.appendChild(hlH4); }
-      if (hlUL) {
-        hlUL.style.cssText = 'margin:0;padding-left:16px;';
-        hlUL.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:10px;line-height:1.4;margin-bottom:2px;color:#3a3530;'; });
-        inner.appendChild(hlUL);
-      }
-    },
-
-    /* ── Page 26: Capital Structure — main tables ── */
-    'cap-main': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var twoCol = inner.querySelector('.two-col');
-      inner.innerHTML = '';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;color:#3a3530;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px;color:#12100e;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:6px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:11px;line-height:1.4;margin:0 0 10px;color:#3a3530;'; inner.appendChild(introP); }
-      if (twoCol) {
-        twoCol.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:20px;';
-        twoCol.querySelectorAll('h4').forEach(function(h4) { h4.style.cssText = 'font-size:13px;font-weight:700;margin:0 0 6px;color:#12100e;'; });
-        twoCol.querySelectorAll('.data-table, table').forEach(function(tbl) {
-          styleTable(tbl, { fontSize: '11px' });
-          tbl.querySelectorAll('.highlight-row td').forEach(function(td) { td.style.fontWeight = '700'; td.style.color = '#9E1B32'; });
-        });
-        inner.appendChild(twoCol);
-      }
-    },
-
-    /* ── Page 27: Capital Structure — govt funding ── */
-    'cap-govt': function(clone, inner) {
-      var govtH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Government') !== -1 || h4.textContent.indexOf('Funding') !== -1) govtH4 = h4; });
-      var tables = inner.querySelectorAll('.data-table, table');
-      var govtTbl = tables.length > 0 ? tables[tables.length - 1] : null;
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 11', 'Capital Structure <em>(cont.)</em>', '#12100e');
-      if (govtH4) { govtH4.style.cssText = 'font-size:15px;font-weight:700;margin:4px 0 10px;color:#12100e;'; inner.appendChild(govtH4); }
-      if (govtTbl) {
-        styleTable(govtTbl, { fontSize: '12px' });
-        govtTbl.querySelectorAll('.highlight-row td').forEach(function(td) { td.style.fontWeight = '700'; td.style.color = '#9E1B32'; });
-        inner.appendChild(govtTbl);
-      }
-    },
-
-    /* ── Page 28: Management — first 3 cards ── */
-    'mgmt-1': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var grid = inner.querySelector('.team-grid');
-      var cards = grid ? Array.from(grid.querySelectorAll('.team-card')).slice(0, 3) : [];
-      inner.innerHTML = '';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 3px;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:5px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:10px;line-height:1.35;margin:0 0 10px;'; inner.appendChild(introP); }
-      var newGrid = document.createElement('div');
-      newGrid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:16px;';
-      cards.forEach(function(card) {
-        card.style.cssText = 'padding:20px;border-radius:8px;';
-        card.querySelectorAll('.team-linkedin').forEach(function(el) { el.style.display = 'none'; });
-        var photo = card.querySelector('.team-photo');
-        if (photo) photo.style.cssText = 'width:70px;height:70px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.1);font-size:10px;text-align:center;';
-        var h3 = card.querySelector('h3');
-        if (h3) h3.style.cssText = 'font-size:12px;font-weight:700;margin:0 0 2px;';
-        var title = card.querySelector('.team-title');
-        if (title) title.style.cssText = 'font-size:10px;margin:0 0 4px;opacity:0.7;';
-        var p = card.querySelector('p');
-        if (p) p.style.cssText = 'font-size:9px;line-height:1.4;margin:0;opacity:0.8;';
-        newGrid.appendChild(card);
-      });
-      inner.appendChild(newGrid);
-    },
-
-    /* ── Page 29: Management — last 3 cards ── */
-    'mgmt-2': function(clone, inner) {
-      var grid = inner.querySelector('.team-grid');
-      var cards = grid ? Array.from(grid.querySelectorAll('.team-card')).slice(3, 6) : [];
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 12', 'Management Team <em>(cont.)</em>');
-      var newGrid = document.createElement('div');
-      newGrid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:4px;';
-      cards.forEach(function(card) {
-        card.style.cssText = 'padding:20px;border-radius:8px;';
-        card.querySelectorAll('.team-linkedin').forEach(function(el) { el.style.display = 'none'; });
-        var photo = card.querySelector('.team-photo');
-        if (photo) photo.style.cssText = 'width:70px;height:70px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.1);font-size:10px;text-align:center;';
-        var h3 = card.querySelector('h3');
-        if (h3) h3.style.cssText = 'font-size:12px;font-weight:700;margin:0 0 2px;';
-        var title = card.querySelector('.team-title');
-        if (title) title.style.cssText = 'font-size:10px;margin:0 0 4px;opacity:0.7;';
-        var p = card.querySelector('p');
-        if (p) p.style.cssText = 'font-size:9px;line-height:1.4;margin:0;opacity:0.8;';
-        newGrid.appendChild(card);
-      });
-      inner.appendChild(newGrid);
-    },
-
-    /* ── Page 30: Management — Board of Directors ── */
-    'mgmt-3': function(clone, inner) {
-      var boardH4 = inner.querySelector('h4:last-of-type') || null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Board') !== -1) boardH4 = h4; });
-      var boardTbl = inner.querySelector('.board-table');
-      var bq = inner.querySelector('blockquote');
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 12', 'Management Team <em>(cont.)</em>');
-      if (boardH4) { boardH4.style.cssText = 'font-size:16px;font-weight:700;margin:4px 0 12px;color:#f5f0eb;'; inner.appendChild(boardH4); }
-      if (boardTbl) {
-        styleTable(boardTbl, { fontSize: '12px', borderColor: 'rgba(255,255,255,0.08)', color: '#f2ede8' });
-        boardTbl.querySelectorAll('th').forEach(function(th) { th.style.color = '#CDAA88'; th.style.background = 'rgba(255,255,255,0.06)'; });
-        inner.appendChild(boardTbl);
-      }
-      if (bq) { bq.style.cssText = 'font-size:12px;font-style:italic;padding:10px 16px;border-left:3px solid #CDAA88;margin:20px 0 0;color:rgba(245,240,235,0.8);'; inner.appendChild(bq); }
-    },
-
-    /* ── Page 31: Investment Thesis — all 4 cards ── */
-    'thesis-1': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var introP = inner.querySelector(':scope > p');
-      var grid = inner.querySelector('.thesis-grid');
-      var cards = grid ? Array.from(grid.querySelectorAll('.thesis-card')) : [];
-      inner.innerHTML = '';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 3px;opacity:0.5;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 3px;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:5px;'; inner.appendChild(divider); }
-      if (introP) { introP.style.cssText = 'font-size:12px;margin:0 0 10px;'; inner.appendChild(introP); }
-      var newGrid = document.createElement('div');
-      newGrid.style.cssText = 'display:grid;grid-template-columns:repeat(2,1fr);gap:16px;';
-      cards.forEach(function(card) {
-        card.style.cssText = 'padding:20px;border-radius:8px;min-height:280px;';
-        var nh = card.querySelector('.numbered-header');
-        if (nh) { nh.style.cssText = 'display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;'; }
-        var num = card.querySelector('.num');
-        if (num) num.style.cssText = 'font-size:24px;font-weight:900;color:rgba(255,255,255,0.3);line-height:1;flex-shrink:0;';
-        var h3 = card.querySelector('h3');
-        if (h3) h3.style.cssText = 'font-size:13px;font-weight:700;margin:0;line-height:1.3;';
-        card.querySelectorAll('li').forEach(function(li) { li.style.cssText = 'font-size:11px;line-height:1.45;margin-bottom:4px;'; });
-        newGrid.appendChild(card);
-      });
-      inner.appendChild(newGrid);
-    },
-
-    /* ── Page 33: Investment Thesis — return potential ── */
-    'thesis-return': function(clone, inner) {
-      var retPanel = inner.querySelector('.return-potential-glass');
-      inner.innerHTML = '';
-      addContHeader(inner, 'Slide 13', 'Investment Thesis <em>(cont.)</em>');
-      if (retPanel) {
-        retPanel.style.cssText = 'padding:24px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);margin-top:4px;';
-        var rh4 = retPanel.querySelector('h4');
-        if (rh4) rh4.style.cssText = 'font-size:16px;font-weight:700;margin:0 0 12px;color:#CDAA88;';
-        var tbl = retPanel.querySelector('table');
-        if (tbl) {
-          styleTable(tbl, { fontSize: '13px', borderColor: 'rgba(255,255,255,0.08)', color: '#f2ede8' });
-          tbl.querySelectorAll('th').forEach(function(th) { th.style.color = '#CDAA88'; });
-          tbl.querySelectorAll('.highlight-row td').forEach(function(td) { td.style.fontWeight = '700'; td.style.color = '#CDAA88'; });
-        }
-        var bq = retPanel.querySelector('blockquote');
-        if (bq) bq.style.cssText = 'font-size:13px;font-style:italic;padding:12px 18px;border-left:3px solid #CDAA88;margin:16px 0 0;color:rgba(245,240,235,0.8);';
-        inner.appendChild(retPanel);
-      }
-    },
-
-    /* ── Page 34: Endnotes — mineral resources disclosure ── */
-    'ask-main': function(clone, inner) {
-      var tag = inner.querySelector('.slide-tag');
-      var h2 = inner.querySelector('h2');
-      var divider = inner.querySelector('.section-divider');
-      var mineralH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Mineral') !== -1) mineralH4 = h4; });
-      var paras = [];
-      inner.querySelectorAll(':scope > p').forEach(function(p) { paras.push(p); });
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      if (tag) { tag.style.cssText = 'font-size:10px;text-transform:uppercase;letter-spacing:2px;margin:0 0 2px;opacity:0.5;color:#f2ede8;'; inner.appendChild(tag); }
-      if (h2) { h2.style.cssText = 'font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:0 0 3px;color:#f2ede8;'; inner.appendChild(h2); }
-      if (divider) { divider.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:8px;'; inner.appendChild(divider); }
-      if (mineralH4) { mineralH4.style.cssText = 'font-size:12px;font-weight:700;margin:4px 0 6px;color:#CDAA88;'; inner.appendChild(mineralH4); }
-      paras.forEach(function(p) {
-        p.style.cssText = 'font-size:8px;line-height:1.5;margin:0 0 6px;color:rgba(245,240,235,0.8);';
-        inner.appendChild(p);
-      });
-    },
-
-    /* ── Page 35: Endnotes — financials & contact ── */
-    'ask-catalysts': function(clone, inner) {
-      var docH4 = null;
-      inner.querySelectorAll('h4').forEach(function(h4) { if (h4.textContent.indexOf('Financials') !== -1) docH4 = h4; });
-      var docGrid = inner.querySelector('.metric-grid-5col, .catalyst-grid');
-      var contactRow = inner.querySelector('.contact-row');
-      inner.innerHTML = '';
-      inner.style.cssText += 'color:#f2ede8;';
-      addContHeader(inner, 'Slide 14', 'Endnotes &amp; Additional Reports <em>(cont.)</em>', '#f2ede8');
-      if (docH4) { docH4.style.cssText = 'font-size:14px;font-weight:700;margin:4px 0 10px;color:#CDAA88;'; inner.appendChild(docH4); }
-      if (docGrid) {
-        docGrid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;';
-        docGrid.querySelectorAll('.metric-card').forEach(function(card) {
-          card.style.cssText = 'padding:14px;border-radius:8px;text-align:center;text-decoration:none;display:block;min-height:70px;';
-          var lbl = card.querySelector('.metric-card-label');
-          if (lbl) lbl.style.cssText = 'font-size:9px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;';
-          var p = card.querySelector('p');
-          if (p) p.style.cssText = 'font-size:11px;margin:0;line-height:1.3;';
-        });
-        inner.appendChild(docGrid);
-      }
-      if (contactRow) {
-        contactRow.style.cssText = 'display:flex;gap:40px;align-items:flex-start;margin-top:8px;';
-        contactRow.querySelectorAll('p').forEach(function(p) { p.style.fontSize = '11px'; p.style.margin = '0 0 2px'; });
-        var ctaBtn = contactRow.querySelector('.contact-cta-btn');
-        if (ctaBtn) ctaBtn.style.cssText = 'display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:6px;background:#CDAA88;color:#12100e;text-decoration:none;font-weight:700;font-size:12px;';
-        inner.appendChild(contactRow);
-      }
-    }
-  };
-
-  /* ═══ CAPTURE LOOP ═══ */
-  var isFirstPage = true;
-
-  for (var i = 0; i < pages.length; i++) {
-    progress.textContent = (i + 1) + ' / ' + totalPages + ' pages';
-    var pg = pages[i];
-    var container = null;
-
-    try {
-      /* ─── Generated pages (TOC, Disclaimer) ─── */
-      if (pg.type === 'toc') {
-        container = buildGeneratedPage('slide-darkest', function(inner) {
-          inner.style.color = '#f5f0eb';
-          var logo = document.createElement('div');
-          logo.style.cssText = 'font-size:12px;text-transform:uppercase;letter-spacing:3px;color:rgba(245,240,235,0.5);margin-bottom:6px;';
-          logo.textContent = 'Boet Materials Corp.';
-          inner.appendChild(logo);
-          var h2 = document.createElement('h2');
-          h2.textContent = 'Table of Contents';
-          h2.style.cssText = 'font-size:32px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#f5f0eb;margin:0 0 6px;';
-          inner.appendChild(h2);
-          var div = document.createElement('div');
-          div.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:24px;';
-          inner.appendChild(div);
-
-          var tocItems = [
-            ['Executive Summary', '4'],
-            ['Macro Opportunity', '5'],
-            ['Market Context', '8'],
-            ['Proprietary Processing Technology', '9'],
-            ['Competitive Landscape', '13'],
-            ['Asset Portfolio & Projects', '15'],
-            ['ESG & Sustainability', '18'],
-            ['Development Roadmap', '20'],
-            ['Financial Overview', '22'],
-            ['Capital Structure', '26'],
-            ['Management Team', '28'],
-            ['Investment Thesis', '31'],
-            ['Endnotes & Additional Reports', '34']
-          ];
-          var list = document.createElement('div');
-          list.style.cssText = 'display:flex;flex-direction:column;gap:10px;margin-top:8px;';
-          tocItems.forEach(function(item, idx) {
-            var row = document.createElement('div');
-            row.style.cssText = 'display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(205,170,136,0.15);padding-bottom:8px;';
-            var title = document.createElement('span');
-            title.style.cssText = 'font-size:15px;font-weight:600;color:#f5f0eb;letter-spacing:0.5px;';
-            title.textContent = item[0];
-            var num = document.createElement('span');
-            num.style.cssText = 'font-size:14px;font-family:"JetBrains Mono",monospace;color:#CDAA88;font-weight:600;';
-            num.textContent = item[1];
-            row.appendChild(title);
-            row.appendChild(num);
-            list.appendChild(row);
-          });
-          inner.appendChild(list);
-        });
-
-      } else if (pg.type === 'disclaimer') {
-        container = buildGeneratedPage('slide-darkest', function(inner) {
-          inner.style.color = '#f5f0eb';
-          var tag = document.createElement('div');
-          tag.style.cssText = 'font-size:11px;text-transform:uppercase;letter-spacing:2px;color:rgba(245,240,235,0.5);margin-bottom:6px;';
-          tag.textContent = 'Legal Notice';
-          inner.appendChild(tag);
-          var h2 = document.createElement('h2');
-          h2.innerHTML = 'Disclaimer &amp; Forward-Looking Statements';
-          h2.style.cssText = 'font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#f5f0eb;margin:0 0 6px;';
-          inner.appendChild(h2);
-          var div = document.createElement('div');
-          div.style.cssText = 'width:60px;height:3px;background:linear-gradient(90deg,#CDAA88,#9E1B32);border-radius:2px;margin-bottom:24px;';
-          inner.appendChild(div);
-
-          var p1 = document.createElement('p');
-          p1.style.cssText = 'font-size:13px;line-height:1.7;color:rgba(245,240,235,0.85);margin-bottom:20px;';
-          p1.textContent = 'This presentation has been prepared by management of Boet Materials Corp. (\u201cBoet\u201d, \u201cAUM\u201d, or the \u201cCompany\u201d) and does not constitute a recommendation to buy or sell securities of the Company. Investors should consult qualified investment advisors prior to making investment decisions.';
-          inner.appendChild(p1);
-          var p2 = document.createElement('p');
-          p2.style.cssText = 'font-size:13px;line-height:1.7;color:rgba(245,240,235,0.85);margin-bottom:20px;';
-          p2.textContent = 'This presentation contains forward-looking statements and forward-looking information within the meaning of applicable securities laws. Forward-looking statements are subject to known and unknown risks, uncertainties, and other factors that may cause actual results to differ materially from those expressed or implied. Readers should not place undue reliance on forward-looking statements. The Company undertakes no obligation to update any forward-looking statements except as required by applicable securities laws.';
-          inner.appendChild(p2);
-          var p3 = document.createElement('p');
-          p3.style.cssText = 'font-size:12px;line-height:1.6;color:rgba(245,240,235,0.5);margin-top:32px;font-style:italic;';
-          p3.textContent = 'All dollar amounts are in Canadian dollars unless otherwise stated. All resource estimates are compliant with NI 43-101 standards. Mineral resources that are not mineral reserves do not have demonstrated economic viability.';
-          inner.appendChild(p3);
-        });
-
-      } else {
-        /* ─── Slide-based pages ─── */
-        var mod = modifiers[pg.type];
-        if (!mod) mod = modifiers['full'];
-        container = buildContainer(pg.slide, mod);
-      }
-
-      /* ─── Capture ─── */
-      await sleep(100);
-
-      var canvas = await Promise.race([
-        html2canvas(container, h2cOpts),
-        sleep(30000).then(function() { throw new Error('html2canvas timeout'); })
-      ]);
-
-      var imgData = canvas.toDataURL('image/jpeg', 0.92);
-
-      if (!isFirstPage) pdf.addPage();
-      isFirstPage = false;
-
-      /* Background fill */
-      var bgColor;
-      if (pg.type === 'toc' || pg.type === 'disclaimer') {
-        bgColor = { r: 15, g: 13, b: 11 };
-      } else {
-        bgColor = getSlideBackground(pg.slide);
-      }
-      pdf.setFillColor(bgColor.r, bgColor.g, bgColor.b);
-      pdf.rect(0, 0, A4_W, A4_H, 'F');
-      pdf.addImage(imgData, 'JPEG', 0, 0, A4_W, A4_H);
-
-      /* Cleanup */
-      if (container.parentNode) document.body.removeChild(container);
-      canvas.width = 0; canvas.height = 0; canvas = null;
-
-    } catch (err) {
-      console.warn('PDF capture failed for page ' + (i + 1) + ' (' + pg.type + '):', err);
-      if (container && container.parentNode) document.body.removeChild(container);
-      if (!isFirstPage) pdf.addPage();
-      isFirstPage = false;
-    }
-  }
-
-  overlay.classList.remove('active');
-  pdf.save('Boet-Materials-Corp-February-2026.pdf');
-};
-
-/* ── Helpers ── */
-function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
-
-function getSlideBackground(slide) {
-  var classes = slide.className;
-  if (/slide-white/.test(classes)) return { r: 255, g: 255, b: 255 };
-  if (/slide-light/.test(classes)) return { r: 247, g: 242, b: 236 };
-  if (/slide-accent|slide-red/.test(classes)) return { r: 158, g: 27, b: 50 };
-  if (/slide-warm/.test(classes)) return { r: 24, g: 20, b: 16 };
-  if (/slide-cool/.test(classes)) return { r: 16, g: 20, b: 26 };
-  if (/slide-accent-dark/.test(classes)) return { r: 26, g: 16, b: 12 };
-  if (/slide-dark/.test(classes)) return { r: 18, g: 16, b: 14 };
-  if (/title-slide|slide-darkest/.test(classes)) return { r: 15, g: 13, b: 11 };
-  return { r: 18, g: 16, b: 14 };
-}
+/* Old PDF generator removed — direct file download used instead */
+void 0;
 </script>
+
+<!-- REMOVED: generateDeckPDF + helpers — direct PDF download used instead -->
 
 </body>
 </html>
