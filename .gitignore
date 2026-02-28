@@ -1,0 +1,15 @@
+# misc
+.DS_Store
+*.pem
+
+# build artifacts
+node_modules/
+.next/
+/out/
+/build
+
+# env files
+.env*.local
+
+# screenshots
+Screenshot*.png
