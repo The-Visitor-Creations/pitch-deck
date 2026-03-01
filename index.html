@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boet Materials Corp. — Corporate Presentation | February 2026</title>
+<link rel="icon" type="image/png" href="boet-icon-logo.png">
+<link rel="apple-touch-icon" href="boet-icon-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -430,14 +432,7 @@
     background: #7A2E2E;
     transform: translateY(-1px);
   }
-  .download-btn.downloading {
-    background: #555;
-    pointer-events: none;
-    opacity: 0.85;
-  }
-  .download-btn.download-done {
-    background: #22c55e;
-  }
+  /* Download states removed — direct link download, no animation */
 
   /* Button icon scaling */
   .btn-icon {
@@ -3077,7 +3072,7 @@
     <div class="nav-jump-links">
       <a href="#slide-10">&#9656; Financials</a>
     </div>
-    <a href="https://github.com/owenkava/Mining-Pitch-Deck-Example/releases/download/v1.0-pdf/pitch-deck.pdf" class="download-btn" id="download-pdf-btn"><span class="btn-icon">&#8615;</span> Download PDF</a>
+    <a href="https://github.com/owenkava/Mining-Pitch-Deck-Example/releases/download/v1.0-pdf/pitch-deck.pdf" class="download-btn" download="Boet-Materials-Corporate-Presentation.pdf"><span class="btn-icon">&#8615;</span> Download PDF</a>
   </div>
 </header>
 
@@ -4325,24 +4320,7 @@
 })();
 
 (function() {
-  /* ═══ DYNAMIC FAVICON — Red B in Outfit 900 ═══ */
-  document.fonts.ready.then(function() {
-    var c = document.createElement('canvas');
-    c.width = 64; c.height = 64;
-    var ctx = c.getContext('2d');
-    ctx.font = '900 56px Outfit, sans-serif';
-    ctx.fillStyle = '#9E1B32';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('B', 32, 35);
-    var link = document.createElement('link');
-    link.rel = 'icon';
-    link.type = 'image/png';
-    link.href = c.toDataURL('image/png');
-    var old = document.querySelector('link[rel="icon"]');
-    if (old) old.remove();
-    document.head.appendChild(link);
-  });
+  /* Favicon set via <link> in <head> — boet-icon-logo.png */
 
   /* ═══ SPLASH SCREEN — ODOMETER PRICE ═══ */
   /*
@@ -5094,44 +5072,7 @@
     });
   });
 
-  /* ═══ PDF DOWNLOAD — lightweight, native browser download (zero memory overhead) ═══ */
-  (function() {
-    var btn = document.getElementById('download-pdf-btn');
-    if (!btn) return;
-    var pdfUrl = btn.href;
-    var originalHTML = btn.innerHTML;
-
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (btn.classList.contains('downloading')) return;
-
-      /* Hand off to the browser's native download manager via hidden iframe.
-         This avoids loading 130 MB into page memory — the OS download manager
-         streams it to disk directly, keeping RAM usage near zero. */
-      var iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-      iframe.src = pdfUrl;
-
-      /* Visual feedback */
-      btn.classList.add('downloading');
-      btn.innerHTML = '<span class="btn-icon">&#8987;</span> Starting download\u2026';
-
-      /* After a short delay, show "check your downloads" and reset */
-      setTimeout(function() {
-        btn.innerHTML = '<span class="btn-icon">&#10003;</span> Check downloads';
-        btn.classList.remove('downloading');
-        btn.classList.add('download-done');
-      }, 2500);
-
-      setTimeout(function() {
-        btn.classList.remove('download-done');
-        btn.innerHTML = originalHTML;
-        /* Clean up iframe */
-        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-      }, 5000);
-    });
-  })();
+  /* PDF download — direct link, no animation (native browser handles it) */
 
   /* ═══════════════════════════════════════════════════════════ */
   /* INTERSECTION OBSERVER — Fade-in slide content on scroll     */
